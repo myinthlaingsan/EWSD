@@ -6,4 +6,6 @@ select user
 
 
 test link
+http://localhost/ewsd../src/Auth/design/login.php
+
 http://localhost/ewsd/src/Admin/design/dashboard.php
