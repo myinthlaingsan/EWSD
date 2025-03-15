@@ -8,8 +8,8 @@ after this in your vs code terminal run "composer install"
 in phpmyadmin create database name with "ewsd" and then 
 
 in chrome => db connect and create table
-first => http://localhost/ewsd/_classes/MySQL.php
-second => http://localhost/ewsd/_classes/Setup.php
+first => http://localhost/ewsd/_classes/Libs/Database/MySQL.php
+second => http://localhost/ewsd/_classes/Libs/Database/Setup.php
 
 to test register with using simple password using "password"
 third register => http://localhost/ewsd../src/Auth/design/login.php
