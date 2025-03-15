@@ -1,0 +1,9 @@
+register
+login
+role
+assignrole
+select user
+
+
+test link
+http://localhost/ewsd/src/Admin/design/dashboard.php
