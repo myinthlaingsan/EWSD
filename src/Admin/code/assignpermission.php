@@ -4,7 +4,7 @@ use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
     $table = new UsersTable(new MySQL);
-
+    
     // Get role_id from POST
     $role_id = $_POST['role_id'] ?? null;
     if (!$role_id) {
