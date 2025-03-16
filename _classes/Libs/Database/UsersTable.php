@@ -14,11 +14,27 @@ class UsersTable{
     public function insert($data){
         try{
             $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+            // Start a transaction
+            $this->db->beginTransaction();
 
             $statement = $this->db->prepare(
                 "INSERT INTO users (name,email,address,phone,password,created_at) values(:name,:email,:address,:phone,:password,NOW())"
             );
             $statement->execute($data);
+            // Get the last inserted user ID
+            $user_id = $this->db->lastInsertId();
+
+            $role_id = 1;
+            $statement = $this->db->prepare(
+                "INSERT INTO role_user (user_id, role_id) 
+                VALUES (:user_id, :role_id)"
+            );
+            $statement->execute([
+                'user_id' => $user_id,
+                'role_id' => $role_id,
+            ]);
+            // Commit the transaction
+            $this->db->commit();
             return $this->db;
         }catch(PDOException $e){
             echo $e->getMessage();
