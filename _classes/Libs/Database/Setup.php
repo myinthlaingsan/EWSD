@@ -62,6 +62,17 @@ try {
             FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
         )
     ");
+    // Create settings table
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS settings(
+            setting_id INT NOT NULL,
+            academicyear VARCHAR(100) UNIQUE NOT NULL,
+            closure_date DATE NOT NULL,
+            final_closure_date DATE NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ");
     
     echo "Database setup completed successfully!";
 } catch (PDOException $e) {

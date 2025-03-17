@@ -160,6 +160,13 @@ class UsersTable{
         $statement->execute(['role_id' => $role_id]);
     }
 
+    //insert setting
+    public function insertSetting($data){
+        $statement = $this->db->prepare("INSERT INTO settings (academicyear,closure_date,final_closure_date,created_at,updated_at) values (:academicyear,:closuredate,:finalclosuredate,NOW(),NOW())");
+        $statement->execute($data);
+        return $this->db;
+    }
+
     //login
     public function find($email,$password){
         try{

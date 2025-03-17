@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../../css/bootstrap.min.css"/>
 </head>
 <body>
+
     <h1>Login</h1>
     <div class="container text-center" style="max-width: 680px">
         <form action="../code/login.php" method="post" class="mb-2">
