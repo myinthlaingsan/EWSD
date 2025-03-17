@@ -5,7 +5,6 @@ use Libs\Database\UsersTable;
 
 // Get role ID from URL
 $role_id = $_POST['role_id'] ?? $_GET['id'] ?? null;
-
 if (!$role_id) {
     die("Role ID is required!");
 }
@@ -14,7 +13,6 @@ $roles=$table->getrolebyId($role_id);
 $permissions=$table->allpermissions();
 $assigned_permissions = $table->getPermissionByRole($role_id);
 $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
-
 ?>
 
 <!DOCTYPE html>

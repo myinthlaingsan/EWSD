@@ -25,6 +25,7 @@ $users=$table->allusers();
     <a href="./permissions.php">Create Permission</a>|
     <a href="./assignpermission.php">Assign Permission</a>|
     <a href="../../Auth/code/logout.php">Logout</a>|
+    <a href="./setting.php">Settings</a>|
     <div class="container" >
         <table class="table table-striped table-bordered">
             <tr>
@@ -52,4 +53,5 @@ $users=$table->allusers();
         </table>
     </div>
 </body>
+<script src="../../../js/bootstrap.bundle.min.js"></script>
 </html>
