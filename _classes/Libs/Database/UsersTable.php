@@ -166,7 +166,35 @@ class UsersTable{
         $statement->execute($data);
         return $this->db;
     }
+    //select setting
+    public function selectSetting(){
+        $statement = $this->db->prepare("
+            SELECT * FROM settings
+        ");
+        return $statement->fetchAll();
+    }
 
+    //select setting by id
+    public function getsettingby($settingid){
+        $statement = $this->db->prepare("SELECT * FROM settings WHERE setting_id = :settingid");
+        // $statement->execute([$id]);
+        $statement->execute(['settingid' => $settingid]);
+        return $statement->fetch(PDO::FETCH_OBJ);
+    }
+
+    //insert faculty
+    public function insertFaculty($data){
+        try{
+            $statement = $this->db->prepare(
+                "INSERT INTO faculties (faculty_name,created_at) values(:faculty_name,NOW())"
+            );
+            $statement->execute($data);
+            return $this->db;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
     //login
     public function find($email,$password){
         try{

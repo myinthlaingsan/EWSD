@@ -21,7 +21,7 @@ $users=$table->allusers();
 <body>
     <h1>HELLO ADMIN</h1>
     <a href="./role.php">Create Role</a>|
-    <a href="./assignrole.php">Assign Role</a>|
+    <a href="./faculty.php">Faculty</a>|
     <a href="./permissions.php">Create Permission</a>|
     <a href="./assignpermission.php">Assign Permission</a>|
     <a href="../../Auth/code/logout.php">Logout</a>|
