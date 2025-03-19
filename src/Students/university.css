@@ -1,0 +1,233 @@
+:root {
+  --headerbdcolor: #cdcfd1;
+  --bgcolor: #3966ad;
+  --color1: #2e4583;
+  --color2: #293556;
+  --color3: #3e60c1;
+}
+
+/* Nav bar start */
+body .navbar {
+  background-color: #2e4583;
+}
+
+.container-fluid h3 {
+  margin-left: 16px;
+}
+#offcanvasNavbar .hearder1 {
+  color: white;
+  font-size: 25px;
+}
+.offcanvas-header {
+  background-color: #3966ad;
+}
+#offcanvasNavbar {
+  background-color: white;
+}
+.navbar-nav .nav-item a {
+  color: rgb(34, 45, 79);
+  font-size: 18px;
+}
+.nav-item ul {
+  background-color: #c9cfdb;
+  border-color: rgb(221, 225, 227);
+}
+@media screen and (min-width: 992px) {
+  .navbar-nav .nav-item a {
+    font-size: 19px;
+    color: rgb(221, 225, 227);
+    position: relative;
+  }
+  #offcanvasNavbar li a {
+    color: white;
+  }
+  .nav-item ul {
+    background-color: #c9cfdb;
+    border-color: rgb(221, 225, 227);
+  }
+  #offcanvasNavbar .nav-item ul li a {
+    color: rgb(34, 45, 79);
+  }
+  .nav-item a::before {
+    content: "";
+    background-color: #86b5b4;
+    width: 0%;
+    left: 8px;
+    bottom: 6px;
+    height: 1px;
+    position: absolute;
+  }
+  .nav-item a:hover::before {
+    width: 85%;
+    transition: 0.5s;
+  }
+}
+/* Nav bar end */
+
+/* Start Header */
+.headertitle
+{
+    line-height: 3ch;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--color1);
+}
+.headertext
+{
+    text-align: justify;
+    line-height: 3ch;
+}
+/* End header */
+/* course start */
+.card-body .card-title
+{
+  color: var(--color1);
+}
+/* course end */
+/* Form Start */
+.registerform {
+  border: solid rgb(84, 79, 79);
+  border-radius: 12px;
+}
+.registerform .stuinfo {
+  font-size: 25px;
+}
+.stulogin {
+  border: solid rgb(84, 79, 79);
+  border-radius: 12px;
+}
+/* Form end */
+
+/* Activity start */
+@media screen and (min-width: 1200px) {
+  .activityslide {
+    height: 600px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .activityslide {
+    height: 700px;
+  }
+}
+/* Activity end */
+
+/* Professor start */
+.professorimg img {
+  width: 400px;
+  height: 500px;
+}
+.slidearrowicon {
+  position: relative;
+  bottom: 250px;
+}
+.previcon,
+.nexticon {
+  color: rgb(78, 123, 133);
+  transition: 0.4s;
+}
+.nexticon {
+  float: right;
+}
+.previcon:hover,
+.nexticon:hover {
+  color: rgb(60, 132, 214);
+  cursor: pointer;
+}
+.previcon:hover {
+  transform: translate(-10px);
+}
+.nexticon:hover {
+  transform: translate(10px);
+}
+.caption-container {
+  text-align: center;
+  background-color: rgb(237, 238, 244);
+  padding: 2px 16px;
+  color: var(--color1);
+  font-weight: bold;
+  font-size: 20px;
+}
+.smallprofessorimg img {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .smallprofessorimg img {
+    display: block;
+    height: 120px;
+    width: 120px;
+  }
+  .slidearrowicon
+  {
+    width: 500px !important
+  }
+}
+@media screen and (min-width: 1200px) {
+    .smallprofessorimg img 
+    {
+        width: 150px;
+        height: 180px;
+    }
+  }
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
+.active,
+.demo:hover {
+  opacity: 1;
+}
+/* professor end */
+
+/* About start */
+.abouttext {
+  text-align: justify;
+}
+.aboutus {
+  color: var(--color1);
+}
+@media screen and (min-width: 1200px) {
+  .aboutimage {
+    height: 740px !important;
+  }
+}
+/* About End */
+
+/* Contact start */
+.contactheader h4 {
+  color: var(--color1);
+}
+.contactdiv {
+  background-color: rgb(237, 238, 244);
+  height: 200px;
+}
+
+.contactdiv h6 {
+  text-align: center;
+}
+.contactdiv h4 {
+  color: var(--color2);
+}
+.contacticon {
+  color: var(--color1);
+}
+.contactdiv:hover .contacticon {
+  color: var(--bgcolor);
+}
+/* contact end */
+
+/* Footer start */
+footer {
+  background-color: var(--color1);
+}
+.footermap1 {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .footermap2 {
+    display: none;
+  }
+  .footermap1 {
+    display: block;
+  }
+}
+/* Footer end */
