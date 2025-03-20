@@ -73,7 +73,39 @@ try {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ");
-    
+    $db->exec("
+        CREATE TABLE articles (
+            article_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            setting_id INT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            status VARCHAR(30),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (setting_id) REFERENCES settings(setting_id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE doc_attachment (
+            doc_attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT NOT NULL,
+            docfile VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (article_id) REFERENCES articles(article_id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE img_attachment (
+            img_attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT NOT NULL,
+            imagefile VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (article_id) REFERENCES articles(article_id)
+        );
+    ");
     echo "Database setup completed successfully!";
 } catch (PDOException $e) {
     echo "Error setting up the database: " . $e->getMessage();

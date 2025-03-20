@@ -6,7 +6,8 @@
     <title>Responsive Admin Header</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
     <script src="../../../js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="../../../css/all.min.css">
+    <!-- <link rel="stylesheet" href="../../../css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-dark: #1e3a8a;
