@@ -24,7 +24,6 @@ $user = $table->getuserbyId($auth->id);
     />
     <!-- Main CSS Link -->
     <link rel="stylesheet" href="../university.css" />
-
     <!-- Bootstrap CSS CDN LInk -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -73,12 +72,12 @@ $user = $table->getuserbyId($auth->id);
               <a
                 class="nav-link"
                 aria-current="page"
-                href="Studenthomepage.html"
+                href="./dashboard.php"
                 >Home</a
               >
             </li>
             <li class="nav-item me-5">
-              <a class="nav-link" aria-current="page" href="article.html"
+              <a class="nav-link" aria-current="page" href="create_articles.php"
                 >Article</a
               >
             </li>
@@ -119,22 +118,13 @@ $user = $table->getuserbyId($auth->id);
           <label for="inputname" class="form-label">Article Title</label>
           <input type="text" class="form-control" id="inputname" name="title" required/>
         </div>
-
+        <div class="col-md-12">
+          <label for="inputname" class="form-label">Author(s) Name</label>
+          <input type="text" class="form-control" id="inputname" name="userid" value="<?= htmlspecialchars($user->id) ?>" required/>
+        </div>
         <div class="col-md-12">
           <label for="inputname" class="form-label">Author(s) Name</label>
           <input type="text" class="form-control" id="inputname" name="username" value="<?= htmlspecialchars($user->name) ?>" required/>
-        </div>
-
-        <div class="col-md-6">
-          <label for="formFileMultiple" class="form-label">Upload Images</label>
-          <input
-            class="form-control"
-            type="file"
-            id="formFileMultiple"
-            name="imgfile"
-            accept="image/*"
-            multiple required
-          />
         </div>
 
         <div class="col-md-6">
@@ -153,9 +143,21 @@ $user = $table->getuserbyId($auth->id);
           >
         </div>
 
+        <div class="col-md-6">
+          <label for="formFileMultiple" class="form-label">Upload Images</label>
+          <input
+            class="form-control"
+            type="file"
+            id="formFileMultiple"
+            name="imagefile"
+            accept="image/*"
+            multiple required
+          />
+        </div>
+
         <div class="col-12 mb-lg-2">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck" />
+            <input class="form-check-input" type="checkbox" id="gridCheck" name="agree"/>
             <label class="form-check-label" for="gridCheck">
               Agree Terms and Conditions
             </label>

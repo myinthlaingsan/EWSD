@@ -14,7 +14,7 @@ class ArticleTable {
     public function articleInsert($data) {
         try {
             $statement = $this->db->prepare(
-                "INSERT INTO articles (title, created_at) VALUES (:title, NOW())"
+                "INSERT INTO articles (user_id,setting_id,title,status, created_at) VALUES (:user_id,:setting_id,:title,:status, NOW())"
             );
             $statement->execute($data);
             return $this->db->lastInsertId();
