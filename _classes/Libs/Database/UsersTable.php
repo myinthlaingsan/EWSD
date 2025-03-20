@@ -167,19 +167,30 @@ class UsersTable{
         return $this->db;
     }
     //select setting
-    public function selectSetting(){
-        $statement = $this->db->prepare("
-            SELECT * FROM settings
-        ");
-        return $statement->fetchAll();
-    }
+    // public function selectSetting(){
+    //     $statement = $this->db->prepare("
+    //         SELECT * FROM settings
+    //     ");
+    //     return $statement->fetchAll();
+    // }
 
     //select setting by id
-    public function getsettingby($settingid){
-        $statement = $this->db->prepare("SELECT * FROM settings WHERE setting_id = :settingid");
-        // $statement->execute([$id]);
-        $statement->execute(['settingid' => $settingid]);
-        return $statement->fetch(PDO::FETCH_OBJ);
+    // public function getsettingby($settingid){
+    //     $statement = $this->db->prepare("SELECT * FROM settings WHERE setting_id = :settingid");
+    //     // $statement->execute([$id]);
+    //     $statement->execute(['settingid' => $settingid]);
+    //     return $statement->fetch(PDO::FETCH_OBJ);
+    // }
+    public function selectClosureDate(){
+        try {
+            // Prepare the SQL query to fetch the latest closure date
+            $closureQuery = $this->db->prepare("SELECT closure_date FROM settings ORDER BY created_at DESC LIMIT 1");
+            $closureQuery->execute();
+            $closureDate = $closureQuery->fetchColumn();
+            return $closureDate;
+        } catch (PDOException $e) {
+            die("Database error: " . $e->getMessage());
+        }
     }
 
     //insert faculty

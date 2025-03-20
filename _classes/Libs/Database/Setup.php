@@ -77,13 +77,11 @@ try {
         CREATE TABLE articles (
             article_id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT NOT NULL,
-            setting_id INT NOT NULL,
             title VARCHAR(255) NOT NULL,
             status VARCHAR(30),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (setting_id) REFERENCES settings(setting_id)
         );
     ");
     $db->exec("

@@ -8,21 +8,26 @@ include("../../../vendor/autoload.php");
 use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\ArticleTable;
-
+use Libs\Database\UsersTable;
 // $table = new ArticleTable(new MySQL);
 $table = new ArticleTable(new MySQL);
+$table2 = new UsersTable(new MySQL);
+$closuredate = $table2->selectClosureDate();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST['agree'])) {
         die("You must agree to the Terms and Conditions.");
     }
-
+    // Check if new submissions are allowed
+    if ($closuredate && date('Y-m-d') > $closuredate) {
+        die("New article submissions are closed.");
+    }
     // Get form data
     $id = $_POST['userid'];
     $title = $_POST['title'];
     // Insert article metadata
     $article_id = $table->articleInsert([
         "user_id" => $id,
-        "setting_id" => 1,
+        // "setting_id" => 1,
         "title" => $title,
         "status" => "submitted",
         
