@@ -84,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
     }
-
     HTTP::redirect('/src/Students/design/create_articles.php');
 }
 ?>

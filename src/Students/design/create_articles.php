@@ -133,7 +133,7 @@ $user = $table->getuserbyId($auth->id);
             class="form-control"
             type="file"
             id="formFileMultiple"
-            name="docfile"
+            name="docfile[]"
             accept=".doc,.docx,.pdf,.txt"
             multiple required aria-describedby="filehelp"
           />
@@ -149,7 +149,7 @@ $user = $table->getuserbyId($auth->id);
             class="form-control"
             type="file"
             id="formFileMultiple"
-            name="imagefile"
+            name="imagefile[]"
             accept="image/*"
             multiple required
           />
@@ -242,7 +242,7 @@ $user = $table->getuserbyId($auth->id);
      <!-- footer end -->
   </body>
   <!-- Main JS Link -->
-  <script src="main.js"></script>
+  <script src="../main.js"></script>
 
   <!-- Bootstrap JS CDN Link -->
   <script
