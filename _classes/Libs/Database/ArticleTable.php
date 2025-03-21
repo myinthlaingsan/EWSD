@@ -1,6 +1,7 @@
 <?php
 namespace Libs\Database;
 
+use PDO;
 use PDOException;
 
 class ArticleTable {
@@ -51,5 +52,26 @@ class ArticleTable {
             exit();
         }
     }
+
+    //select articles by insert student id
+    public function getArticlesByUserId($user_id){
+        try{
+            $statement = $this->db->prepare("
+                SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile from articles a
+                LEFT JOIN doc_attachment d on a.article_id = d.article_id
+                LEFT JOIN img_attachment i on a.article_id = i.article_id
+                WHERE a.user_id = :user_id
+                ORDER BY a.created_at DESC;
+            ");
+            $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e){
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
+
+
 }
 ?>

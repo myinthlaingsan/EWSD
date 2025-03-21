@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'rh_computer/ewsd',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '8a27113f18c2411ce16fbb8c2037052d94505e07',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'rh_computer/ewsd' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '8a27113f18c2411ce16fbb8c2037052d94505e07',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
