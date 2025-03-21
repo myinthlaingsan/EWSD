@@ -10,12 +10,6 @@ $auth = AUTH::check();
 $user_id = $auth->id;
 $table = new ArticleTable(new MySQL);
 $articles = $table->getArticlesByUserId($user_id);
-function convertToPDF($docxFile, $pdfFile)
-{
-    $phpWord = IOFactory::load($docxFile);
-    $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
-    $pdfWriter->save($pdfFile);
-}
 
 ?>
 

@@ -23,7 +23,6 @@ composer init
 
 in psr4 add ("Helpers\\":"_classes/Helpers",
             "Libs\\":"_classes/Libs")
-composer require phpoffice/phpword
 
 after this in command line run this =>
 composer dump autoload
