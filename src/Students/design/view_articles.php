@@ -4,7 +4,6 @@ include("../../../vendor/autoload.php");
 use Helpers\Auth;
 use Libs\Database\ArticleTable;
 use Libs\Database\MySQL;
-use PhpOffice\PhpWord\IOFactory;
 
 $auth = AUTH::check();
 $user_id = $auth->id;
@@ -82,6 +81,7 @@ $articles = $table->getArticlesByUserId($user_id);
                         <form action="../code/comments.php" method="post">
                             <br>
                             <label>Commnets</label><br>
+                            <input type="text" name="article_id" value="<?= $article['article_id'] ?>">
                             <input type="text" name="comment">
                             <input type="submit" value="Add commnet">
                             <?php if(1>100) : ?>
