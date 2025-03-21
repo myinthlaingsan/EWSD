@@ -18,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         die("You must agree to the Terms and Conditions.");
     }
     // Check if new submissions are allowed
-    if ($closuredate && date('Y-m-d') > $closuredate) {
-        die("New article submissions are closed.");
-    }
+    // if ($closuredate && date('Y-m-d') > $closuredate) {
+    //     die("New article submissions are closed.");
+    // }
     // Get form data
     $id = $_POST['userid'];
     $title = $_POST['title'];
