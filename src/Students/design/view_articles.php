@@ -9,7 +9,10 @@ $auth = AUTH::check();
 $user_id = $auth->id;
 $table = new ArticleTable(new MySQL);
 $articles = $table->getArticlesByUserId($user_id);
-
+foreach($articles as $article){
+    $article_id = $article['article_id'];
+}
+$comments = $table->getCommnetbyarticleid($article_id);
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +32,7 @@ $articles = $table->getArticlesByUserId($user_id);
             <?php foreach ($articles as $article) : ?>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5><?= htmlspecialchars($article['title']) ?></h5>
+                        <h5><strong>Article Title:</strong> <?= htmlspecialchars($article['title']) ?></h5>
                         <p><strong>Status:</strong> <?= ucfirst($article['status']) ?></p>
                         <p><small>Created on: <?= date('F j, Y', strtotime($article['created_at'])) ?></small></p>
 
@@ -80,15 +83,25 @@ $articles = $table->getArticlesByUserId($user_id);
                         <?php endif; ?>
                         <form action="../code/comments.php" method="post">
                             <br>
+                            
+                            <label>articleID</label><br>
+                            <input type="text" name="article_id" value="<?= $article['article_id'] ?>"><br>
+                            <label>userID</label><br>
+                            <input type="text" name="user_id" value="<?= $user_id ?>"><br>
                             <label>Commnets</label><br>
-                            <input type="text" name="article_id" value="<?= $article['article_id'] ?>">
-                            <input type="text" name="comment">
+                            <input type="text" name="comment_text">
                             <input type="submit" value="Add commnet">
-                            <?php if(1>100) : ?>
-                                <h1>1 commnets</h1>
+
+                            <?php if($article_id == $article['article_id']) : ?>
+                                <?php foreach ($comments as $comment) : ?>
+                                    <h1><?= $comment['comment_text'] ?></h1>
+                                <?php endforeach ?>
                             <?php else : ?>
-                                <h1>No comment found</h1>
+                                <h1>No comment found for articlecID<?= $article['article_id'] ?></h1>
                             <?php endif ?>
+
+
+                            
                         </form>
                     </div>
                 </div>

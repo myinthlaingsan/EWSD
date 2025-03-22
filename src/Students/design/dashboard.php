@@ -85,7 +85,7 @@
               <a class="nav-link" href="#contactpage">Contact Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="studentregister.html"
+              <a class="nav-link" href="../../Auth/design/register.php"
                 ><i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>Sign
                 In</a
               >

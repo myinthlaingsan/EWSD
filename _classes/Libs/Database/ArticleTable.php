@@ -71,6 +71,33 @@ class ArticleTable {
             exit();
         }
     }
+    // insert comment
+    public function insertComment($data){
+        try{
+            $statement = $this->db->prepare(
+                "INSERT INTO comments (user_id,article_id,comment_text,created_at,updated_at) VALUES (:user_id,:article_id,:comment_text,NOW(), NOW())"
+            );
+            $statement->execute($data);
+            return $this->db;
+        }catch (PDOException $e){
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
+
+    //select comment article_id
+    public function getCommnetbyarticleid($article_id){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT * FROM comments WHERE article_id = :article_id"
+            );
+            $statement->execute(['article_id' => $article_id]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
 
 
 }
