@@ -64,7 +64,7 @@
               <a
                 class="nav-link"
                 aria-current="page"
-                href="Studenthomepage.html"
+                href="./dashboard.php"
                 >Home</a
               >
             </li>
@@ -113,7 +113,7 @@
                 <a class="btn btn-primary rounded p-2 mb-5" href="#courselink">View Our Program</a>
           </div>
           <div class="col-12 col-lg-6 order-1 order-lg-2 align-content-md-center">
-            <img class="img img-fluid mt-2 mt-lg-4 shadow-sm" src="./image/university.jpg" alt="headerimage">
+            <img class="img img-fluid mt-2 mt-lg-4 shadow-sm" src="../image/university.jpg" alt="headerimage">
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@
           <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course1.jpg" class="card-img-top" alt="...">
+                <img src="../image/course1.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Bachelor of Science in Computer Science</h5>
                   <p class="card-text"><b>Description</b>:  Gain expertise in programming, AI, and software development for a thriving tech career.</p>
@@ -146,7 +146,7 @@
 
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course2.jpg" class="card-img-top" alt="...">
+                <img src="../image/course2.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Master of Business Administration (MBA)</h5>
                   <p class="card-text"><b>Description</b>:  Develop leadership and strategic skills for global business success.</p>
@@ -160,7 +160,7 @@
 
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course3.jpg" class="card-img-top" alt="...">
+                <img src="../image/course3.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Master of Arts in Psychology</h5>
                   <p class="card-text"><b>Description</b>:  Advanced training in clinical, cognitive, and developmental psychology.</p>
@@ -173,7 +173,7 @@
 
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course4.jpg" class="card-img-top" alt="...">
+                <img src="../image/course4.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Doctor of Philosophy (PhD) in Environmental Science</h5>
                   <p class="card-text"><b>Description</b>:  Research-focused program addressing global environmental challenges.</p>
@@ -186,7 +186,7 @@
 
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course6.jpg" class="card-img-top" alt="...">
+                <img src="../image/course6.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Bachelor of Science in Data Science</h5>
                   <p class="card-text"><b>Description</b>:  Learn to analyze and interpret complex data for decision-making in tech, business, and research.</p>
@@ -199,7 +199,7 @@
 
             <div class="col">
               <div class="card h-100">
-                <img src="./image/course7.jpg" class="card-img-top" alt="...">
+                <img src="../image/course7.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Bachelor of Engineering (BEng) in Mechanical Engineering</h5>
                   <p class="card-text"><b>Description</b>:  Design and innovate with a strong foundation in mechanical systems and technology.</p>
@@ -230,7 +230,7 @@
           <div class="col-12 col-xxl-6">
             <img
               class="img img-fluid img-thumbnail rounded-2 aboutimage"
-              src="./image/pexels-quang-vuong-724225078-31156602.jpg"
+              src="../image/pexels-quang-vuong-724225078-31156602.jpg"
               alt=""
             />
           </div>
@@ -300,35 +300,35 @@
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <img
-                  src="./image/activity1.jpg"
+                  src="../image/activity1.jpg"
                   class="activityslide d-block w-100"
                   alt="..."
                 />
               </div>
               <div class="carousel-item">
                 <img
-                  src="./image/activity6.jpg"
+                  src="../image/activity6.jpg"
                   class="activityslide d-block w-100"
                   alt="..."
                 />
               </div>
               <div class="carousel-item">
                 <img
-                  src="./image/activity7.jpg"
+                  src="../image/activity7.jpg"
                   class="activityslide d-block w-100"
                   alt="..."
                 />
               </div>
               <div class="carousel-item">
                 <img
-                  src="./image/activity2.jpg"
+                  src="../image/activity2.jpg"
                   class="activityslide d-block w-100"
                   alt="..."
                 />
               </div>
               <div class="carousel-item">
                 <img
-                  src="./image/activity3.jpg"
+                  src="../image/activity3.jpg"
                   class="activityslide d-block w-100"
                   alt="..."
                 />
@@ -376,56 +376,56 @@
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor1.jpg"
+                src="../image/professor1.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor2.jpg"
+                src="../image/professor2.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor3.jpg"
+                src="../image/professor3.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor4.jpg"
+                src="../image/professor4.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor10.jpg"
+                src="../image/professor10.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor6.jpg"
+                src="../image/professor6.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor9.jpg"
+                src="../image/professor9.jpg"
                 alt=""
               />
             </div>
             <div class="col-12 professorimg">
               <img
                 class="img img-fluid img-thumbnail"
-                src="./image/professor8.jpg"
+                src="../image/professor8.jpg"
                 alt=""
               />
             </div>
@@ -448,29 +448,29 @@
           <!-- Thumbnail images -->
           <div class=" d-flex justify-content-center">
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor1.jpg"  onclick="currentSlide(1)" alt="Dr. Emily Carter">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor1.jpg"  onclick="currentSlide(1)" alt="Dr. Emily Carter">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor2.jpg"  onclick="currentSlide(2)" alt="Dr. Michael Reynolds">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor2.jpg"  onclick="currentSlide(2)" alt="Dr. Michael Reynolds">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor3.jpg"  onclick="currentSlide(3)" alt="Dr. Sarah Thompson">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor3.jpg"  onclick="currentSlide(3)" alt="Dr. Sarah Thompson">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor4.jpg"  onclick="currentSlide(4)" alt="Dr. Angela White">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor4.jpg"  onclick="currentSlide(4)" alt="Dr. Angela White">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor10.jpg"  onclick="currentSlide(5)" alt="Dr. Sophia Bennett">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor10.jpg"  onclick="currentSlide(5)" alt="Dr. Sophia Bennett">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor6.jpg"  onclick="currentSlide(6)" alt="Dr. Charlotte Lee
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor6.jpg"  onclick="currentSlide(6)" alt="Dr. Charlotte Lee
               ">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor9.jpg"  onclick="currentSlide(7)" alt="Dr. Thomas Harris">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor9.jpg"  onclick="currentSlide(7)" alt="Dr. Thomas Harris">
             </div>
             <div class="smallprofessorimg">
-              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="./image/professor8.jpg"  onclick="currentSlide(8)" alt="Dr. Olivia Martinez">
+              <img class="demo cursor img img-fluid img-thumbnail mx-2" src="../image/professor8.jpg"  onclick="currentSlide(8)" alt="Dr. Olivia Martinez">
             </div>
           </div>
         </div>
@@ -534,7 +534,7 @@
             <div class="col-12 col-md-4 my-3 text-center">
               <img
                 class="img img-fluid w-75"
-                src="./image/undraw_new-message_nl8w.svg"
+                src="../image/undraw_new-message_nl8w.svg"
                 alt=""
               />
             </div>
@@ -645,7 +645,7 @@
     <!-- footer end -->
   </body>
   <!-- Main JS Link -->
-  <script src="main.js"></script>
+  <script src="../main.js"></script>
 
   <!-- Bootstrap JS CDN Link -->
   <script

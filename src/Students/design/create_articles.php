@@ -78,7 +78,12 @@ $user = $table->getuserbyId($auth->id);
             </li>
             <li class="nav-item me-5">
               <a class="nav-link" aria-current="page" href="create_articles.php"
-                >Article</a
+                >Add Article</a
+              >
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" aria-current="page" href="view_articles.php"
+                >View Article</a
               >
             </li>
             <li class="nav-item me-5">
