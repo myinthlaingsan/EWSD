@@ -98,6 +98,22 @@ class UsersTable{
         return $statement->fetch(PDO::FETCH_OBJ);
     }
 
+    // for check if the user is the marketing manager
+    public function getUserRoleName($user_id){
+        try{
+            $statement = $this->db->prepare("
+                SELECT roles.role_name FROM role_user
+                JOIN roles ON role_user.role_id = roles.id
+                WHERE role_user.user_id = :user_id
+            ");
+            $statement->execute(['user_id' => $user_id]);
+            return $statement->fetchColumn();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
     // Assign or update role
     public function assignRole($user_id, $role_id) {
         // Check if user already has a role
@@ -190,6 +206,19 @@ class UsersTable{
             return $closureDate;
         } catch (PDOException $e) {
             die("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function selectFinalClosureDate(){
+        try{
+            $statement = $this->db->prepare("
+            SELECT final_closure_date FROM settings ORDER BY created_at DESC LIMIT 1
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        }catch(PDOException $e) {
+            echo $e->getMessage();
+            exit();
         }
     }
 

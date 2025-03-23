@@ -69,7 +69,7 @@
 </head>
 <body>
     <!-- Header -->
-    <?php include "headermm.html"; ?>
+    <?php include "headermm.php"; ?>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
@@ -203,6 +203,6 @@
     </main>
 
     <!-- Footer -->
-    <?php include "footer.html"; ?>
+    <?php include "footer.php"; ?>
 </body>
 </html>

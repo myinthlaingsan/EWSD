@@ -112,4 +112,25 @@ class ArticleTable
             exit();
         }
     }
+
+    //get select contribution for article download
+    public function getSelectedArticles(){
+        try{
+            $statement = $this->db->prepare("
+                SELECT a.article_id,a.title,d.docfile,i.imagefile,u.name,f.faculty_name
+                FROM articles a
+                LEFT JOIN doc_attachment d ON a.article_id = d.article_id
+                LEFT JOIN img_attachment i ON a.article_id = i.article_id
+                LEFT JOIN users u ON a.user_id = u.id
+                LEFT JOIN faculties f on u.faculty_id = f.id
+                WHERE a.status = 'selected'
+                ORDER BY a.created_at DESC
+            ");
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
 }
