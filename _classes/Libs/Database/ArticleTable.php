@@ -133,4 +133,28 @@ class ArticleTable
             exit();
         }
     }
+    //get articles by each faculty
+    public function getFacultyArticles($faculty_id) {
+        try {
+            $statement = $this->db->prepare("
+                SELECT a.article_id, a.title, a.status, a.created_at, 
+                       d.docfile, i.imagefile, 
+                       u.name AS student_name, f.faculty_name
+                FROM articles a
+                LEFT JOIN doc_attachment d ON a.article_id = d.article_id
+                LEFT JOIN img_attachment i ON a.article_id = i.article_id
+                LEFT JOIN users u ON a.user_id = u.id  -- Get student
+                LEFT JOIN faculties f ON u.faculty_id = f.id  -- Get faculty
+                WHERE a.status = 'selected' 
+                  AND u.faculty_id = :faculty_id
+                ORDER BY a.created_at DESC
+            ");
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
+    
 }
