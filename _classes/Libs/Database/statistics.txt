@@ -2,7 +2,6 @@
 ## Student
 
 // 1. Status of submitted articles (e.g., pending review, selected, rejected)
-
 SELECT status, COUNT(*) AS count
 FROM articles
 WHERE user_id = 
