@@ -10,5 +10,11 @@ $table->insertComment([
     "article_id" => $_POST['article_id'],
     "comment_text" => $_POST['comment_text'],
 ]);
-HTTP::redirect("/src/Students/design/view_articles.php");
+$comments = $table->getCommnetbyarticleid($facultyArticle['article_id']);
+if($comments['role_name'] === "Student"){
+    HTTP::redirect("/src/Students/design/view_articles.php");
+}else{
+    HTTP::redirect("/src/Coordinator/design/viewarticlebyfaculty.php");
+}
+
 ?>

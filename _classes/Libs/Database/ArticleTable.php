@@ -145,8 +145,7 @@ class ArticleTable
                 LEFT JOIN img_attachment i ON a.article_id = i.article_id
                 LEFT JOIN users u ON a.user_id = u.id  -- Get student
                 LEFT JOIN faculties f ON u.faculty_id = f.id  -- Get faculty
-                WHERE a.status = 'selected' 
-                  AND u.faculty_id = :faculty_id
+                WHERE u.faculty_id = :faculty_id
                 ORDER BY a.created_at DESC
             ");
             $statement->execute(['faculty_id' => $faculty_id]);
