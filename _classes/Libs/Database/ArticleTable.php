@@ -117,7 +117,7 @@ class ArticleTable
     public function getSelectedArticles(){
         try{
             $statement = $this->db->prepare("
-                SELECT a.article_id,a.title,d.docfile,i.imagefile,u.name,f.faculty_name
+                SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
                 FROM articles a
                 LEFT JOIN doc_attachment d ON a.article_id = d.article_id
                 LEFT JOIN img_attachment i ON a.article_id = i.article_id

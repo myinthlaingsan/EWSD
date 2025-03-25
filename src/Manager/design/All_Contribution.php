@@ -1,60 +1,118 @@
 <?php
 include("../../../vendor/autoload.php");
 use Helpers\Auth;
-use Libs\Database\ArticleTable;
+use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
+use Libs\Database\ArticleTable;
 
 $auth = Auth::check();
 $user_id = $auth->id;
 $table = new UsersTable(new MySQL);
 $articleTable = new ArticleTable(new MySQL);
-
-$userRole = $table->getUserRoleName($user_id);
-if($userRole != 'Manager'){
-    die("You are not authorized to download this file.");
-    // die("$auth->id");
+// check if download was requested
+if (isset($_GET['download_all']) || isset($_GET['download_single'])){
+    handleDownload($table,$articleTable,$user_id);
 }
-
-//check final closure date
+//Get data for display
+$userRole = $table->getUserRoleName($user_id);
 $finalclosuredate = $table->selectFinalClosureDate();
-// if (strtotime($finalclosuredate) > time()) {
-//     die("Download is not allowed before the final closure date.");
-// }
-
-// Fetch selected contributions
+$currentDate = date('Y-m-d');
 $selectedArticles = $articleTable->getSelectedArticles();
-// if (empty($contributions)) {
-//     die("No selected contributions found.");
-// }
 
-//create ZIp Archive
-$zip = new ZipArchive();
-$zipFileName = "selected_contributions.zip";
-$zipFilePath = __DIR__ . "/upload/" . $zipFileName;
+function handleDownload($table,$articleTable,$user_id) {
+    $userRole = $table->getUserRoleName($user_id);
+    if($userRole != 'Manager'){
+        die("You are not authorized to download this file.");
+    }
 
-// if($zip->open($zipFilePath,ZipArchive::CREATE) === TRUE) {
-//     foreach ($selectedArticles as $selectedArticle){
-//         // add document file
-//         if(!empty($selectedArticle['docfile'])){
-//             $docPath = __DIR__ . "/uploads/documents/" . $selectedArticle['docfile'];
-//             if(file_exists($docPath)){
-//                 $zip->addFile($docPath,"documents/" . $selectedArticle['docfile']);
-//             }
-//         }
+    // Closure date check
+    $finalclosuredate = $table->selectFinalClosureDate();
+    $currentDate = date('Y-m-d');
+    // if (strtotime($currentDate) < strtotime($finalClosureDate)) {
+    //     die("Download is only allowed after the final closure date ($finalClosureDate)");
+    // }
 
-//         //add image file
-//         if(!empty($selectedArticle['imagefile'])){
-//             $imgPath = __DIR__ . "/uploads/images/" . $selectedArticle['imagefile'];
-//             if(file_exists($imgPath)){
-//                 $zip->addFile($imgPath, "images/" . $selectedArticle['imagefile']);
-//             }
-//         }
-//     }
-//     $zip->close();
-// }else{
-//     die("failed to create ZIP file.");
-// }
+    //get selected articles
+    $selectedArticles = $articleTable->getSelectedArticles();
+    if (empty($selectedArticles)) {
+        die("No selected contributions found.");
+    }
+
+    //prepare Zip file
+    $filesToZip = [];
+    $baseUploadPath = __DIR__ . "/../../../uploads/";
+    if(isset($_GET['download_all'])){
+        //All selected articles
+        foreach($selectedArticles as $selectedArticle){
+            addFilesToZip($selectedArticle,$baseUploadPath,$filesToZip);
+        }
+        $zipFileName = "All selected_articles_" . date('Y-m-d') . ".zip";
+    }
+    elseif(isset($_GET['download_single'])){
+        //single article download
+        $articleId = (int)$_GET['download_single'];
+        $article = null;
+
+        //find the request article
+        foreach($selectedArticles as $a){
+            if($a['article_id'] == $articleId){
+                $article = $a;
+                break;
+            }
+        }
+        if(!$article){
+            die("Article not found or not selected");
+        }
+        addFilesToZip($article,$baseUploadPath,$filesToZip); // in this $article is from $article = $a 
+        $zipFileName = "selected_articles_" . "(" . $a['title'] . ")" . date('Y-m-d') . ".zip";
+    }
+    $zipDir = $baseUploadPath . "zips/";
+    if(!file_exists($zipDir)){
+        mkdir($zipDir, 0777, true);
+    }
+    
+    $zipFilePath = $zipDir . $zipFileName;
+
+    //Create ZIP
+    $zip = new ZipArchive();
+    if($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE){
+        die ("Failed to create ZIP file. Check directory permissions.");
+    }
+
+    //Add files to ZIP
+    foreach($filesToZip as $file){
+        if(file_exists($file['path'])){
+            $zip->addFile($file['path'], $file['type'] . "s/" . basename($file['name']));
+        }
+    }
+    $zip->close();
+
+    // Download the file
+    header("Content-type: application/zip");
+    header("Content-Disposition: attachment; filename=$zipFileName");
+    header("Content-length: " . filesize($zipFilePath));
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    readfile($zipFilePath);
+    exit;
+}
+function addFilesToZip($selectedArticle,$basePath , &$filesArray){
+    if(!empty($selectedArticle['docfile'])) {
+        $filesArray[] = [
+            'type' => 'document',
+            'path' => $basePath . "documents/" . $selectedArticle['docfile'],
+            'name' => $selectedArticle['docfile']
+        ];
+    }
+    if(!empty($selectedArticle['imagefile'])) {
+        $filesArray[] = [
+            'type' => 'image',
+            'path' => $basePath . "images/" . $selectedArticle['imagefile'],
+            'name' => $selectedArticle['imagefile']
+        ];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,6 +136,9 @@ $zipFilePath = __DIR__ . "/upload/" . $zipFileName;
         body {
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        a{
+            text-decoration: none;
         }
         .container {
             max-width: 1200px;
@@ -131,6 +192,15 @@ $zipFilePath = __DIR__ . "/upload/" . $zipFileName;
     <!-- Main Content -->
     <main class="container py-5">
         <h2 class="section-title mb-4">All Selected Contributions</h2>
+
+        <!-- Download All button -->
+        <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>
+        <div class="mb-4 text-end">
+            <a href="?download_all=1" class="btn btn-primary">
+                <i class="fas fa-file-archive"></i> Download All Selected Articles
+            </a>
+        </div>
+    <?php endif; ?>
         <!-- Contribution Table -->
         <div class="card p-3">
             <div class="table-responsive">
@@ -152,7 +222,18 @@ $zipFilePath = __DIR__ . "/upload/" . $zipFileName;
                                     <td><?=  $selectedArticle['title'] ?></td>
                                     <td><?= $selectedArticle['name'] ?></td>
                                     <td><?= $selectedArticle['faculty_name'] ?></td>
-                                    <td></td>
+                                    <td><?= $selectedArticle['name'] ?></td>
+                                    <td>Final Date</td>
+                                    <td>
+                                    <?php if (strtotime(date('Y-m-d')) < strtotime($finalclosuredate)): ?>
+                                            <h1><?= $finalclosuredate ?></h1>
+                                        <?php else : ?>
+                                        <a href="?download_single=<?= $selectedArticle['article_id'] ?>" class="btn-download">
+                                            <i class="fas fa-arrow-down"></i> Download
+                                        </a>
+                                        <?php endif ?>
+                                    </td>
+                                    
                                 </tr>
                             <?php endforeach ?>
                         <?php else : ?>

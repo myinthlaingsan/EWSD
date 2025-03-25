@@ -22,6 +22,12 @@ if ($user) {
         HTTP::redirect("/src/Students/design/dashboard.php");
     } elseif ($user->role_name === "Manager") {
         HTTP::redirect("/src/Manager/design/index.php");
+    }
+    elseif ($user->role_name === "Manager") {
+        HTTP::redirect("/src/Manager/design/dashboard.php");
+    }
+    elseif ($user->role_name === "Guest") {
+        HTTP::redirect("/src/Guest/design/dashboard.php");
     }else {
         HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");
     }
