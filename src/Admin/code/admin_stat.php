@@ -47,3 +47,36 @@ $total_managers_q = "SELECT COUNT(users.id) AS total_managers
 $total_managers_res = $con->query($total_managers_q);
 $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
 // echo "Total Managers = ", $total_managers_count;
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <select id="selectFaculty" name="faculty_no" class="form-select">
+        <option>Faculties</option>
+        <?php
+        $facu_q = "SELECT * FROM `faculties`";
+        $facu_res = $con->query($facu_q);
+
+        while ($row = mysqli_fetch_assoc($facu_res)) {
+        ?>
+            <option value="<?php echo $faculty_no; ?>">
+                <?php echo $row['faculty_name']; ?>
+            </option>";
+        <?php
+        }
+        ?>
+    </select>
+</body>
+
+</html>
