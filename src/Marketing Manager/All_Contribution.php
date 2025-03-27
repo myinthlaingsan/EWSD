@@ -72,20 +72,23 @@
 
     <!-- Main Content -->
     <main class="container py-5">
-        <h2 class="section-title mb-4">All Selected Contributions</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title">All Selected Articles</h2>
+            <button class="btn-download"><i class="fas fa-arrow-down me-1"></i> Download All Articles</button>
+        </div>
         
-        <!-- Contribution Table -->
+        <!-- Article Table -->
         <div class="card p-3">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="text-center">
                         <tr>
-                            <th>Contribution Name</th>
+                            <th>Article Name</th>
                             <th>Student Name</th>
                             <th>Faculty</th>
                             <th>Marketing Coordinator</th>
                             <th>Final Closure Date</th>
-                            <th>Action</th>
+                            <th>Download</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,14 +99,14 @@
                             ["name" => "Market Trends", "student" => "Jane", "faculty" => "Business", "coordinator" => "Emma", "closureDate" => "2025-08-15"],
                             ["name" => "Cultural Study", "student" => "Michale", "faculty" => "Arts & Humanities", "coordinator" => "Liam", "closureDate" => "2025-10-01"]
                         ];
-                        foreach ($contributions as $contribution) {
+                        foreach ($contributions as $index => $contribution) {
                             echo "<tr class='text-center'>";
                             echo "<td>{$contribution['name']}</td>";
                             echo "<td>{$contribution['student']}</td>";
                             echo "<td>{$contribution['faculty']}</td>";
                             echo "<td>{$contribution['coordinator']}</td>";
                             echo "<td>{$contribution['closureDate']}</td>";
-                            echo "<td><button class='btn-download'><i class='fas fa-arrow-down'></i> Download</button></td>";
+                            echo "<td><button class='btn-download' data-index='{$index}'><i class='fas fa-arrow-down me-1'></i> Download</button></td>";
                             echo "</tr>";
                         }
                         ?>

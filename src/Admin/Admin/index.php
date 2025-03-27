@@ -42,9 +42,32 @@
         }
 
         .stat-card {
-            background: var(--card-bg);
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 150px; /* Fixed minimum height */
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .stat-card .card-body {
             padding: 1.5rem;
-            border-left: 4px solid var(--primary-light);
+        }
+        .text-primary-custom {
+            color: var(--primary-dark); /* Dark blue */
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center icon and text */
+        }
+        .fs-2 {
+            font-size: 2.5rem !important; /* Large number size */
+        }
+        .text-secondary {
+            color: var(--secondary); /* Muted gray */
         }
 
         .main-content {
@@ -70,7 +93,7 @@
             letter-spacing: 0.5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            text-decoration: none; /* Remove underline */
+            text-decoration: none;
         }
 
         .btn-custom:hover {
@@ -78,7 +101,7 @@
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-decoration: none; /* Ensure no underline on hover */
+            text-decoration: none;
         }
 
         .btn-custom:active {
@@ -94,7 +117,7 @@
 </head>
 <body>
     
-    <!-- header -->
+    <!-- Header -->
     <?php include "headeradm.html"; ?>
 
     <!-- Main Content Wrapper -->
@@ -129,35 +152,34 @@
             <!-- Statistics Grid -->
             <div class="row text-center g-4">
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-file-alt me-2"></i> Total Contribution</h3>
-                            <p class="fs-2 fw-bold text-secondary">15</p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-file-alt me-2"></i> Total Contributions</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">15</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-user-graduate me-2"></i> Total Student</h3>
-                            <p class="fs-2 fw-bold text-secondary">150</p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-user-graduate me-2"></i> Total Students</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">150</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-building me-2"></i> Total Faculty</h3>
-                            <p class="fs-2 fw-bold text-secondary">13</p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-building me-2"></i> Total Faculties</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
                         </div>
                     </div>
                 </div>
-                <!-- Delete or Stay -->
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-user-tie me-2"></i> Total Marketing Coordinator</h3>
-                            <p class="fs-2 fw-bold text-secondary">13</p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-user-tie me-2"></i> Total Coordinators</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
                         </div>
                     </div>
                 </div>
@@ -165,7 +187,7 @@
         </div>
     </div>
 
-    <!-- footer -->
+    <!-- Footer -->
     <?php include "footer.html"; ?>
     
 </body>
