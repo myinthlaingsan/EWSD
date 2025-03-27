@@ -208,7 +208,7 @@ class UsersTable{
             die("Database error: " . $e->getMessage());
         }
     }
-
+    // select final closure Date
     public function selectFinalClosureDate(){
         try{
             $statement = $this->db->prepare("
@@ -230,6 +230,22 @@ class UsersTable{
             );
             $statement->execute($data);
             return $this->db;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    // get Marketing Coordinator Email
+    public function getCoorEmail(){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT u.id,u.email FROM users u
+                JOIN role_user ru ON u.id = ru.user_id
+                JOIN roles r ON ru.role_id = r.id
+                WHERE r.role_name = 'Coordinator'"
+            );
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_OBJ);
         }catch(PDOException $e){
             echo $e->getMessage();
             exit();

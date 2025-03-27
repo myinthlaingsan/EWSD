@@ -191,7 +191,7 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
 
     <!-- Main Content -->
     <main class="container py-5">
-        <h2 class="section-title mb-4">All Selected Contributions</h2>
+        <h2 class="section-title mb-4">All Selected Articles</h2>
 
         <!-- Download All button -->
         <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>

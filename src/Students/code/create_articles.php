@@ -90,7 +90,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    
+    if ($article_id) {
+        // Get all marketing coordinators
+        $coordinators = $table2->getCoorEmail();
+        
+        // Create notification for each coordinator
+        foreach ($coordinators as $coordinator) {
+            $deadline = date('Y-m-d', strtotime('+14 days'));
+            
+            $table->insertNotification([
+                "article_id" => $article_id,
+                "user_id" => $coordinator->id,
+                "message" => "New article submitted: '$title' requires your review",
+                "deadline_date" => $deadline
+            ]);
+            
+            // Send email notification
+            // $this->sendEmailNotification(
+            //     $coordinator->email,
+            //     "New Article Submission",
+            //     "A new article '$title' has been submitted for your review. Please provide comments by $deadline.",
+            //     HTTP::redirect('/coordinator/review.php?id='.$article_id)
+            // );
+        }
+         // Rest of your success handling...
+    }
     HTTP::redirect('/src/Students/design/create_articles.php');
 }
 ?>

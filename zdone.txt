@@ -3,7 +3,30 @@ login
 role
 assignrole
 select user
+users (students)
+- register
+- login
+- logout
+- add articles
+- comments
+- update articles(not done)
 
+Admin
+- settings
+- assignrole
+- create faculty
+- assign faculty (not done)
+- 
+
+Manager
+- vew selected article
+- download all selected articles
+- download slected article
+
+coordinaotr
+- comments
+- can selected article
+- update articles(not done)
 
 test link
 http://localhost/ewsd../src/Auth/design/login.php

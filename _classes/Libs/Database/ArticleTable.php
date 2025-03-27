@@ -155,5 +155,49 @@ class ArticleTable
             exit();
         }
     }
+
+    // insert notifications
+    public function insertNotification(array $data): bool {
+        try{
+            $statement = $this->db->prepare(
+                "INSERT INTO notifications (article_id,user_id,message,deadline_date) VALUES (:article_id,:user_id,:message,:deadline_date)"
+            );
+            return $statement->execute($data);
+        }catch (PDOException $e){
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
+
+    //get article with deadline
+    public function getArticleWithDeadline($article_id){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT a.*, n.deadline_date
+                FROM articles a
+                LEFT JOIN notifications n ON a.article_id = n.article_id
+                WHERE a.article_id = :article_id
+                LIMIT 1"
+            );
+            $statement->execute(['article_id' => $article_id]);
+            return $statement->fetchColumn(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
+    //update status
+    public function updateArticleStatus($article_id){
+        try{
+            $statement = $this->db->prepare(
+                "UPDATE articles SET status = 'selected' WHERE article_id = :article_id"
+            );
+            $statement->execute(['article_id' => $article_id]);
+            return true;
+        }catch (PDOException $e){
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
     
 }

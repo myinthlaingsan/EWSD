@@ -1,8 +1,8 @@
 <?php 
 include("../../../vendor/autoload.php");
 use Helpers\Auth;
-use Libs\Database\ArticleTable;
 use Libs\Database\MySQL;
+use Libs\Database\ArticleTable;
 
 $auth=Auth::check();
 $faculty_id = $auth->faculty_id;
@@ -118,7 +118,7 @@ $facultyArticles = $table->getFacultyArticles($faculty_id);
                         <h5><strong>Article Title:</strong> <?= htmlspecialchars($facultyArticle['title']) ?></h5>
                         <p><strong>Status:</strong> <?= ucfirst($facultyArticle['status']) ?></p>
                         <p><small>Created on: <?= date('F j, Y', strtotime($facultyArticle['created_at'])) ?></small></p>
-
+                        <p><small>Created on: <?= $facultyArticle['faculty_name']?></small></p>
                         <!-- Document Attachments -->
                         <?php if ($facultyArticle['docfile']) : ?>
                             <p><strong>Documents:</strong></p>
@@ -178,13 +178,21 @@ $facultyArticles = $table->getFacultyArticles($faculty_id);
 
                         <!-- Comment Form -->
                         <form action="../../Students/code/comments.php" method="post" class="mt-3">
-                            <input type="hidden" name="article_id" value="<?= $facultyArticle['article_id'] ?>">
+                            <input type="text" name="article_id" value="<?= $facultyArticle['article_id'] ?>">
                             <input type="text" name="user_id" value="<?= $user_id ?>">
                             <div class="mb-3">
                                 <label for="comment_text" class="form-label">Add a Comment:</label>
                                 <textarea name="comment_text" class="form-control" rows="3" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Add Comment</button>
+                        </form>
+                        <form action="../code//updatestatus.php" method="post" class="mt-3">
+                            <input type="hidden" name="article_id" value="<?= $facultyArticle['article_id'] ?>">
+                            <?php if($facultyArticle['status'] == 'selected') : ?>
+                              <h3>Article has been selected</h3>
+                            <?php else: ?>
+                              <button type="submit" class="btn btn-primary">Selected</button>
+                            <?php endif ?>
                         </form>
                     </div>
                 </div>
