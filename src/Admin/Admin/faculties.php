@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +33,8 @@
 </head>
 <body>
     <!-- Header Section -->
-    <?php include "headeradm.html";
+    <?php 
+        include "headeradm.html"; 
     ?>
 
     <!-- Main Content -->

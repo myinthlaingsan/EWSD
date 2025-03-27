@@ -45,17 +45,19 @@
             font-size: 1rem;
         }
         .member-icon {
-            font-size: 3rem;
+            font-size: 2rem; /* Adjusted for letter size */
             width: 5rem;
             height: 5rem;
             color: var(--primary-light);
-            background-color:rgb(255, 255, 255);
+            background-color: var(--card-bg);
             border-radius: 50%;
             display: flex;
             align-items: center;
-            border: 1px solid #000000;
             justify-content: center;
-            flex-shrink-0;
+            flex-shrink: 0;
+            border: 1px solid #000000;
+            font-weight: 700; /* Bold letter */
+            text-transform: uppercase; /* Ensure uppercase letter */
         }
         .member-name {
             color: var(--primary-dark);
@@ -97,61 +99,29 @@
         <section class="mb-5">
             <h2 class="section-title mb-4">Faculty Members</h2>
             <div class="row row-cols-1 row-cols-md-2 g-4">
-                <!-- Faculty Member 1 -->
+                <?php
+                $members = [
+                    ["name" => "Kelvin", "contributions" => 2, "since" => "2025"],
+                    ["name" => "Sophia", "contributions" => 3, "since" => "2024"],
+                    ["name" => "Michale", "contributions" => 1, "since" => "2024"],
+                    ["name" => "Jane", "contributions" => 5, "since" => "2025"]
+                ];
+                foreach ($members as $member) {
+                    $firstLetter = strtoupper(substr($member['name'], 0, 1)); // Get first letter and uppercase it
+                ?>
                 <div class="col">
                     <div class="member-card p-4">
                         <div class="d-flex align-items-start">
-                            <div class="member-icon"><i class="fas fa-user-graduate"></i></div>
+                            <div class="member-icon"><?php echo $firstLetter; ?></div>
                             <div class="ms-4">
-                                <h3 class="member-name">Name: Kelvin</h3>
-                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: 2</p>
-                                <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: 2025</p>
+                                <h3 class="member-name">Name: <?php echo $member['name']; ?></h3>
+                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: <?php echo $member['contributions']; ?></p>
+                                <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: <?php echo $member['since']; ?></p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Faculty Member 2 -->
-                <div class="col">
-                    <div class="member-card p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="member-icon"><i class="fas fa-user-graduate"></i></div>
-                            <div class="ms-4">
-                                <h3 class="member-name">Name: Sophia</h3>
-                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: 3</p>
-                                <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: 2024</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Faculty Member 3 -->
-                <div class="col">
-                    <div class="member-card p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="member-icon"><i class="fas fa-user-graduate"></i></div>
-                            <div class="ms-4">
-                                <h3 class="member-name">Name: Michale</h3>
-                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: 1</p>
-                                <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: 2024</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Faculty Member 4 -->
-                <div class="col">
-                    <div class="member-card p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="member-icon"><i class="fas fa-user-graduate"></i></div>
-                            <div class="ms-4">
-                                <h3 class="member-name">Name: Jane</h3>
-                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: 5</p>
-                                <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: 2025</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
         </section>
     </main>

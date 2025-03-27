@@ -1,58 +1,5 @@
-<?php
-session_start();
-
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$db = 'ewsd';
-$port = '3306';
-
-$con = new mysqli($host, $username, $password, $db, $port);
-if ($con->connect_errno) {
-    echo "Connection Failed";
-}
-
-// Total Student
-//Total number of students in the entire university
-
-$total_students_q = "SELECT COUNT(users.id) AS total_students
-                    FROM users
-                    JOIN role_user ON users.id = role_user.user_id
-                    WHERE role_user.role_id = 2;";
-$total_students_res = $con->query($total_students_q);
-$total_students_count = $total_students_res->fetch_assoc()['total_students'];
-// echo "Total Students = ",$total_students_count;
-
-// Total Contribution
-$total_articles_q = "SELECT COUNT(*) AS total_articles
-                     FROM articles a
-                     JOIN users u ON a.user_id = u.id
-                     JOIN faculties f ON u.faculty_id = f.id";
-$total_articles_res = $con->query($total_articles_q);
-$total_articles_count = $total_articles_res->fetch_assoc()['total_articles'];
-// echo "Total Articles = ",$total_articles_count;
-
-// Total Faculty
-$total_faculties_q = "SELECT COUNT(*) AS total_faculties
-                    FROM faculties;";
-$total_faculties_res = $con->query($total_faculties_q);
-$total_faculties_count = $total_faculties_res->fetch_assoc()['total_faculties'];
-// echo "Total Faculties in Riverstone University = ", $total_faculties_count;
-
-// Total Marketing Coordinator
-$total_managers_q = "SELECT COUNT(users.id) AS total_managers
-                    FROM users
-                    JOIN role_user ON users.id = role_user.user_id
-                    WHERE role_user.role_id = 3;";
-$total_managers_res = $con->query($total_managers_q);
-$total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
-// echo "Total Managers = ", $total_managers_count;
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,9 +42,32 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
         }
 
         .stat-card {
-            background: var(--card-bg);
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 150px; /* Fixed minimum height */
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .stat-card .card-body {
             padding: 1.5rem;
-            border-left: 4px solid var(--primary-light);
+        }
+        .text-primary-custom {
+            color: var(--primary-dark); /* Dark blue */
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center icon and text */
+        }
+        .fs-2 {
+            font-size: 2.5rem !important; /* Large number size */
+        }
+        .text-secondary {
+            color: var(--secondary); /* Muted gray */
         }
 
         .main-content {
@@ -124,7 +94,6 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
-            /* Remove underline */
         }
 
         .btn-custom:hover {
@@ -133,7 +102,6 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-decoration: none;
-            /* Ensure no underline on hover */
         }
 
         .btn-custom:active {
@@ -147,10 +115,9 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
         }
     </style>
 </head>
-
 <body>
-
-    <!-- header -->
+    
+    <!-- Header -->
     <?php include "headeradm.html"; ?>
 
     <!-- Main Content Wrapper -->
@@ -185,35 +152,34 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
             <!-- Statistics Grid -->
             <div class="row text-center g-4">
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-file-alt me-2"></i> Total Contribution</h3>
-                            <p class="fs-2 fw-bold text-secondary"><?php echo $total_articles_count; ; ?></p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-file-alt me-2"></i> Total Contributions</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">15</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-user-graduate me-2"></i> Total Student</h3>
-                            <p class="fs-2 fw-bold text-secondary"><?php echo $total_students_count; ; ?></p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-user-graduate me-2"></i> Total Students</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">150</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-building me-2"></i> Total Faculty</h3>
-                            <p class="fs-2 fw-bold text-secondary"><?php echo $total_faculties_count; ; ?></p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-building me-2"></i> Total Faculties</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
                         </div>
                     </div>
                 </div>
-                <!-- Delete or Stay -->
                 <div class="col-md-3">
-                    <div class="card stat-card shadow">
-                        <div class="card-body">
-                            <h3 class="text-primary-custom"><i class="fas fa-user-tie me-2"></i> Total Marketing Coordinator</h3>
-                            <p class="fs-2 fw-bold text-secondary"><?php echo $total_managers_count; ; ?></p>
+                    <div class="card stat-card shadow h-100">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            <h3 class="text-primary-custom mb-3"><i class="fas fa-user-tie me-2"></i> Total Coordinators</h3>
+                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
                         </div>
                     </div>
                 </div>
@@ -221,9 +187,8 @@ $total_managers_count = $total_managers_res->fetch_assoc()['total_managers'];
         </div>
     </div>
 
-    <!-- footer -->
+    <!-- Footer -->
     <?php include "footer.html"; ?>
-
+    
 </body>
-
 </html>
