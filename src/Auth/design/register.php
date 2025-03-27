@@ -18,7 +18,7 @@
 
             <button class="btn btn-primary w-180">Register</button>
         </form>
-        <a href="index.php">Login</a>
+        <a href="login.php">Login</a>
     </div>
 </body>
 </html>

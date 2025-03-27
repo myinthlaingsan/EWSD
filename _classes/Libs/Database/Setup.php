@@ -73,7 +73,62 @@ try {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ");
-    
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS articles (
+            article_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            status VARCHAR(30),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS doc_attachment (
+            doc_attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT NOT NULL,
+            docfile VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (article_id) REFERENCES articles(article_id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS img_attachment (
+            img_attachment_id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT NOT NULL,
+            imagefile VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (article_id) REFERENCES articles(article_id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS comments(
+            comment_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            article_id INT NOT NULL,
+            comment_text TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (article_id) REFERENCES articles(article_id)
+        );
+    ");
+    $db->exec("
+        CREATE TABLE IF NOT EXISTS notifications(
+            notification_id INT AUTO_INCREMENT PRIMARY KEY,
+            article_id INT NOT NULL,
+            user_id INT NOT NULL,
+            message TEXT NOT NULL,
+            is_read BOOLEAN DEFAULT FALSE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            deadline_date DATE NOT NULL,
+            FOREIGN KEY (article_id) REFERENCES articles(article_id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        );
+    ");
     echo "Database setup completed successfully!";
 } catch (PDOException $e) {
     echo "Error setting up the database: " . $e->getMessage();
