@@ -155,7 +155,38 @@ class ArticleTable
             exit();
         }
     }
-
+    //select faculty name
+    public function getfacultyname($faculty_id){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT faculty_name FROM faculties WHERE id = :faculty_id"
+            );
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchColumn();
+        }catch (PDOException $e){
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
+    //get article faculty detail
+    public function articlebyfacultydetail($article_id){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
+                FROM articles a
+                LEFT JOIN doc_attachment d ON a.article_id = d.article_id
+                LEFT JOIN img_attachment i ON a.article_id = i.article_id
+                LEFT JOIN users u ON a.user_id = u.id
+                LEFT JOIN faculties f on u.faculty_id = f.id
+                WHERE a.article_id = :article_id"
+            );
+            $statement->execute(['article_id' => $article_id]);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
     // insert notifications
     public function insertNotification(array $data): bool {
         try{

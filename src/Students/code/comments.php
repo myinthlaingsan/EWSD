@@ -14,7 +14,7 @@ $comments = $table->getCommnetbyarticleid($facultyArticle['article_id']);
 if($comments['role_name'] === "Student"){
     HTTP::redirect("/src/Students/design/view_articles.php");
 }else{
-    HTTP::redirect("/src/Coordinator/design/viewarticlebyfaculty.php");
+    HTTP::redirect("/src/Coordinator/design/viewdetail.php");
 }
 
 ?>
