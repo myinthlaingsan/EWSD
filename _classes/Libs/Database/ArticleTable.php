@@ -64,7 +64,8 @@ class ArticleTable
     {
         try {
             $statement = $this->db->prepare("
-                SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile from articles a
+                SELECT a.article_id,a.title,a.status,a.created_at,u.name,d.docfile,i.imagefile from articles a
+                LEFT JOIN users u on a.user_id = u.id
                 LEFT JOIN doc_attachment d on a.article_id = d.article_id
                 LEFT JOIN img_attachment i on a.article_id = i.article_id
                 WHERE a.user_id = :user_id
@@ -114,8 +115,9 @@ class ArticleTable
     }
 
     //get select contribution for article download
-    public function getSelectedArticles(){
-        try{
+    public function getSelectedArticles()
+    {
+        try {
             $statement = $this->db->prepare("
                 SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
                 FROM articles a
@@ -134,7 +136,8 @@ class ArticleTable
         }
     }
     //get articles by each faculty
-    public function getFacultyArticles($faculty_id) {
+    public function getFacultyArticles($faculty_id)
+    {
         try {
             $statement = $this->db->prepare("
                 SELECT a.article_id, a.title, a.status, a.created_at, 
@@ -156,21 +159,23 @@ class ArticleTable
         }
     }
     //select faculty name
-    public function getfacultyname($faculty_id){
-        try{
+    public function getfacultyname($faculty_id)
+    {
+        try {
             $statement = $this->db->prepare(
                 "SELECT faculty_name FROM faculties WHERE id = :faculty_id"
             );
             $statement->execute(['faculty_id' => $faculty_id]);
             return $statement->fetchColumn();
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
             exit();
         }
     }
     //get article faculty detail
-    public function articlebyfacultydetail($article_id){
-        try{
+    public function articlebyfacultydetail($article_id)
+    {
+        try {
             $statement = $this->db->prepare(
                 "SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
                 FROM articles a
@@ -182,27 +187,59 @@ class ArticleTable
             );
             $statement->execute(['article_id' => $article_id]);
             return $statement->fetch(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
             exit();
         }
     }
     // insert notifications
-    public function insertNotification(array $data): bool {
-        try{
+    public function insertNotification(array $data): bool
+    {
+        try {
             $statement = $this->db->prepare(
                 "INSERT INTO notifications (article_id,user_id,message,deadline_date) VALUES (:article_id,:user_id,:message,:deadline_date)"
             );
             return $statement->execute($data);
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             exit();
         }
     }
-
+    //get notifications by user_id
+    // public function getNotiByuserId($article_id){
+    //     try{
+    //         $statement = $this->db->prepare(
+    //             "SELECT * From notifications WHERE article_id = :article_id"
+    //         );
+    //         $statement->execute(['article_id' => $article_id]);
+    //         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    //     }catch(PDOException $e){
+    //         echo "Error:" . $e->getMessage();
+    //         exit();
+    //     }
+    // }
+    public function getCoordinatorNotifications($faculty_id)
+    {
+        try {
+            $statement = $this->db->prepare("
+            SELECT n.* 
+            FROM notifications n
+            JOIN users u ON n.user_id = u.id
+            JOIN role_user ru ON u.id = ru.user_id
+            JOIN roles r ON ru.role_id = r.id
+            WHERE u.faculty_id = :faculty_id AND r.role_name = 'Coordinator'
+        ");
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
     //get article with deadline
-    public function getArticleWithDeadline($article_id){
-        try{
+    public function getArticleWithDeadline($article_id)
+    {
+        try {
             $statement = $this->db->prepare(
                 "SELECT a.*, n.deadline_date
                 FROM articles a
@@ -212,21 +249,60 @@ class ArticleTable
             );
             $statement->execute(['article_id' => $article_id]);
             return $statement->fetchColumn(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
             exit();
         }
     }
     //update status
-    public function updateArticleStatus($article_id){
-        try{
+    public function updateArticleStatus($article_id)
+    {
+        try {
             $statement = $this->db->prepare(
                 "UPDATE articles SET status = 'selected' WHERE article_id = :article_id"
             );
             $statement->execute(['article_id' => $article_id]);
             return true;
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
+
+    public function updateArticle($data)
+    {
+        try {
+            $statement = $this->db->prepare(
+                "UPDATE articles SET title = :title, status = :status, updated_at = NOW() WHERE article_id = :article_id"
+            );
+            $statement->execute($data);
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
+    public function deleteArticleDocs($article_id)
+    {
+        try {
+            $statement = $this->db->prepare("DELETE FROM doc_attachment WHERE article_id = :article_id");
+            $statement->execute(["article_id" => $article_id]);
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
+    public function deleteArticleImages($article_id)
+    {
+        try {
+            $statement = $this->db->prepare("DELETE FROM img_attachment WHERE article_id = :article_id");
+            $statement->execute(["article_id" => $article_id]);
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
             exit();
         }
     }

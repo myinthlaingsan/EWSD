@@ -24,7 +24,7 @@ if ($user) {
         HTTP::redirect("/src/Manager/design/index.php");
     }
     elseif ($user->role_name === "Coordinator") {
-        HTTP::redirect("/src/Coordinator/design/dashboard.php");
+        HTTP::redirect("/src/Coordinator/design/index.php");
     }
     elseif ($user->role_name === "Guest") {
         HTTP::redirect("/src/Guest/design/dashboard.php");

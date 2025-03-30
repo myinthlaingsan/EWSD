@@ -1,40 +1,34 @@
-<?php 
-include("../../../vendor/autoload.php");
+<?php
+include('../../../vendor/autoload.php');
 use Helpers\Auth;
-use Libs\Database\ArticleTable;
-use Libs\Database\UsersTable;
 use Libs\Database\MySQL;
+use Libs\Database\UsersTable;
 
-$auth=Auth::check();
+$auth = Auth::check();
+$user_id = $auth->id;
 $faculty_id = $auth->faculty_id;
-$username = $auth->name;
-$table = new ArticleTable(new MySQL);
-$usertable = new UsersTable(new MySQL);
-$facultyname = $table->getfacultyname($faculty_id);
-$settings = $usertable->selectSetting();
+$table = new UsersTable(new MySQL);
+$students = $table->getStudentRolesByFaculty($faculty_id);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Coordinator Contributions</title>
-    <meta name="description" content="Contributions managed by Marketing Coordinator">
+    <title>Students</title>
+    <meta name="description" content="List of students managed by Marketing Coordinator">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-dark: #1e3a8a; /* Dark blue */
-            --primary-light: #3b82f6; /* Light blue */
-            --accent: #facc15; /* Yellow */
-            --light-bg: #f8fafc; /* Light gray */
+            --primary-dark: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #facc15;
+            --light-bg: #f8fafc;
             --card-bg: #ffffff;
             --text-muted: #64748b;
-            --contributors-color: #2ecc71; /* Green for Total Contributors */
-            --closure-date-color: #e74c3c; /* Red for Closure Date */
-            --final-closure-color: #8e44ad; /* Purple for Final Closure Date */
+            --contributors-color: rgb(12, 0, 117);
         }
         body {
             background-color: var(--light-bg);
@@ -74,34 +68,31 @@ $settings = $usertable->selectSetting();
             color: var(--text-muted);
             font-size: 0.875rem;
         }
-        .detail-value-contributors {
+        .detail-value {
             color: var(--contributors-color);
             font-size: 0.875rem;
             font-weight: 500;
             margin-left: 0.5rem;
         }
-        .detail-value-closure {
-            color: var(--closure-date-color);
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-left: 0.5rem;
+        .faculty-icon {
+            color: var(--primary-light);
+            margin-right: 0.5rem;
         }
-        .detail-value-final-closure {
-            color: var(--final-closure-color);
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-left: 0.5rem;
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .btn-search {
-            background-color: var(--primary-light);
-            border: none;
-            font-weight: 500;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .btn-search:hover {
-            background-color: var(--primary-dark);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        .student-icon {
+            width: 3rem;
+            height: 3rem;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--text-muted);
         }
         .btn-notification {
             position: fixed;
@@ -126,15 +117,6 @@ $settings = $usertable->selectSetting();
             transform: scale(1.1);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        .faculty-icon {
-            color: var(--primary-light);
-            margin-right: 0.5rem;
-        }
-        .detail-row {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
     </style>
 </head>
 <body>
@@ -147,54 +129,61 @@ $settings = $usertable->selectSetting();
             <!-- Faculty Header with Search -->
             <div class="p-4 border-bottom border-gray-200 d-flex justify-content-between align-items-center flex-wrap">
                 <div>
-                    <h2 class="faculty-header d-flex align-items-center"><i class="fa-solid fa-microchip faculty-icon"></i>
+                    <h2 class="faculty-header d-flex align-items-center">
+                        <i class="fa-solid fa-microchip faculty-icon"></i>
                         Faculty of Information & Technology
                     </h2>
                     <div class="mt-2 text-sm text-muted">
-                        <span>Marketing Coordinator - <?= $username ?></span>
-                    </div>
-                    <div class="mt-2 text-sm text-muted">
-                        <span>Total Students - 15</span>
+                        <span>Total Students - <?php echo count($students); ?></span>
                     </div>
                 </div>
                 <div class="mt-3 mt-md-0 col-md-6 d-flex align-items-end">
-                    <input type="text" id="search" class="form-control search-input me-2" placeholder="Search contributions...">
-                    <button class="btn-search px-4 py-2 rounded-pill shadow-sm d-flex align-items-center">
+                    <input type="text" id="search" class="form-control search-input me-2" placeholder="Search students...">
+                    <button class="btn btn-primary px-4 py-2 rounded-pill shadow-sm d-flex align-items-center">
                         <i class="fas fa-search me-2"></i> Search
                     </button>
                 </div>
             </div>
 
-            <!-- Contribution Cards -->
+            <!-- Student Cards -->
             <div class="p-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-4"><i class="fa-solid fa-users p-3"></i>Student Lists</h3>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 g-4">
+                    <?php foreach ($students as $student) : ?>
                     <div class="col">
                         <div class="card p-4">
-                            <h3 class="text-center text-lg font-medium text-gray-900"><?php echo $facultyname; ?></h3>
-                            <div class="mt-4 space-y-3">
-                                <!-- <div class="detail-row">
-                                    <span class="detail-label">Total Contributors:</span>
-                                    <span class="detail-value-contributors"><?php echo $contribution['contributors']; ?></span>
-                                </div> -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="student-icon me-3">
+                                    <?php echo substr($student['name'], 0, 1); ?>
+                                </div>
+                                <h4 class="text-lg font-medium text-gray-900 mb-0"><?php echo $student['name']; ?></h4>
+                            </div>
+                            <div class="mt-3 space-y-3">
                                 <div class="detail-row">
-                                    <span class="detail-label">Closure Date:</span>
-                                    <span class="detail-value-closure"><?php echo $settings['closure_date']; ?></span>
+                                    <span class="detail-label">Join Date:</span>
+                                    <span class="detail-value"><?php echo $student['created_at']; ?></span>
                                 </div>
                                 <div class="detail-row">
-                                    <span class="detail-label">Final Closure Date:</span>
-                                    <span class="detail-value-final-closure"><?php echo $settings['final_closure_date']; ?></span>
+                                    <span class="detail-label">Phone:</span>
+                                    <span class="detail-value"><?php echo $student['phone']; ?></span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Email:</span>
+                                    <span class="detail-value"><?php echo $student['email']; ?></span>
                                 </div>
                             </div>
                             <div class="mt-5 text-center">
-                                <a href="viewarticlebyfaculty1.php" class="btn btn-outline-primary">View Details</a>
+                                <a href="Student_Details.php?id=<?= $student['id'] ?>" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm d-flex align-items-center justify-content-center mx-auto">
+                                    <i class="fas fa-eye me-2"></i> View Details
+                                </a>
                             </div>
                         </div>
                     </div>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>
     </main>
-
     <!-- Notification Button -->
     <button class="btn-notification" data-bs-toggle="modal" data-bs-target="#notificationModal">
         <i class="fas fa-bell"></i>
@@ -202,7 +191,7 @@ $settings = $usertable->selectSetting();
 
     <!-- Include Notification Modal -->
     <?php include "notifications.php"; ?>
-
+    
     <!-- Footer -->
     <?php include "footer.php"; ?>
 </body>

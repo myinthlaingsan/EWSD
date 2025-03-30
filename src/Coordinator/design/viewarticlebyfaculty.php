@@ -186,7 +186,7 @@ $facultyArticles = $table->getFacultyArticles($faculty_id);
                             </div>
                             <button type="submit" class="btn btn-primary">Add Comment</button>
                         </form>
-                        <form action="../code//updatestatus.php" method="post" class="mt-3">
+                        <form action="../code/updatestatus.php" method="post" class="mt-3">
                             <input type="hidden" name="article_id" value="<?= $facultyArticle['article_id'] ?>">
                             <?php if($facultyArticle['status'] == 'selected') : ?>
                               <h3>Article has been selected</h3>

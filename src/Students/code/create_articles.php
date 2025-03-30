@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $table->insertNotification([
                 "article_id" => $article_id,
                 "user_id" => $coordinator->id,
-                "message" => "New article submitted: '$title' requires your review",
+                "message" => "New article submitted: '$title' requires your review within 14 days.",
                 "deadline_date" => $deadline
             ]);
             

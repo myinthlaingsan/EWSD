@@ -1,10 +1,11 @@
 <?php
 include("../../../vendor/autoload.php");
+
 use Helpers\Auth;
 use Libs\Database\MySQL;
 use Libs\Database\ArticleTable;
 
-$auth=Auth::check();
+$auth = Auth::check();
 $faculty_id = $auth->faculty_id;
 $user_id = $auth->id;
 $table = new ArticleTable(new MySQL);
@@ -13,6 +14,7 @@ $details = $table->articlebyfacultydetail($article_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,19 +31,23 @@ $details = $table->articlebyfacultydetail($article_id);
             --card-bg: #ffffff;
             --text-muted: #64748b;
         }
+
         body {
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .container {
             max-width: 1200px;
         }
+
         .card {
             background: var(--card-bg);
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
+
         .contributor-icon {
             width: 2.5rem;
             height: 2.5rem;
@@ -52,6 +58,7 @@ $details = $table->articlebyfacultydetail($article_id);
             justify-content: center;
             font-size: 0.875rem;
         }
+
         .submission-image {
             width: 100%;
             height: 12rem;
@@ -60,19 +67,23 @@ $details = $table->articlebyfacultydetail($article_id);
             cursor: pointer;
             transition: transform 0.2s ease;
         }
+
         .submission-image:hover {
             transform: scale(1.05);
         }
+
         .modal-fullscreen .modal-content {
             background-color: rgba(0, 0, 0, 0.9);
             border: none;
         }
+
         .modal-fullscreen img {
             max-width: 90%;
             max-height: 90vh;
             margin: auto;
             display: block;
         }
+
         .pdf-link-btn {
             background-color: var(--primary-light);
             color: #ffffff;
@@ -87,24 +98,29 @@ $details = $table->articlebyfacultydetail($article_id);
             gap: 0.5rem;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
+
         .pdf-link-btn:hover {
             background-color: var(--primary-dark);
             color: #ffffff;
             transform: translateY(-2px);
         }
+
         .pdf-link-btn i {
             font-size: 1.1rem;
         }
+
         .comment-section {
             max-height: 300px;
             overflow-y: auto;
         }
+
         .comment-card {
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             padding: 1rem;
             margin-bottom: 1rem;
         }
+
         .btn-submit-comment {
             background-color: var(--primary-light);
             color: #ffffff;
@@ -117,12 +133,15 @@ $details = $table->articlebyfacultydetail($article_id);
             gap: 0.5rem;
             transition: background-color 0.2s ease;
         }
+
         .btn-submit-comment:hover {
             background-color: var(--primary-dark);
         }
+
         .btn-submit-comment i {
             font-size: 1rem;
         }
+
         .btn-selection {
             background-color: var(--primary-light);
             color: #ffffff;
@@ -135,13 +154,16 @@ $details = $table->articlebyfacultydetail($article_id);
             gap: 0.5rem;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
+
         .btn-selection:hover {
             background-color: var(--primary-dark);
             transform: translateY(-2px);
         }
+
         .btn-selection i {
             font-size: 1rem;
         }
+
         .btn-notification {
             position: fixed;
             bottom: 20px;
@@ -160,6 +182,7 @@ $details = $table->articlebyfacultydetail($article_id);
             transition: all 0.3s ease;
             z-index: 1000;
         }
+
         .btn-notification:hover {
             background-color: var(--primary-dark);
             transform: scale(1.1);
@@ -167,6 +190,7 @@ $details = $table->articlebyfacultydetail($article_id);
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
@@ -183,9 +207,22 @@ $details = $table->articlebyfacultydetail($article_id);
                     <span class="font-medium text-gray-900"><?php echo $details['name']; ?></span>
                     <div class="text-sm text-muted">Upload Time: <?php echo $details['created_at']; ?></div>
                 </div>
-                <button class="btn-selection ms-auto">
-                    <i class="fas fa-star"></i> Selection
-                </button>
+                <form action="../code/updatestatus.php" method="post" class="ms-auto">
+                    <input type="hidden" name="article_id" value="<?= $article_id ?>">
+                    <?php if ($details['status'] == "selected") : ?>
+                        <h3>Article has been selected</h3>
+                        <!-- <button class="btn-selection ms-auto"><i class="fas fa-star"></i> Selection</button> -->
+                    <?php else: ?>
+                        <button class="btn-selection ms-auto"><i class="fas fa-star"></i> Selection</button>
+                    <?php endif ?>
+                </form>
+                <!-- Update Button -->
+                <!-- <form action="../../Students/code/update_article.php" method="get" class="ms-3">
+                    <input type="hidden" name="article_id" value="<?= $article_id ?>">
+                    <button class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Update
+                    </button>
+                </form> -->
             </div>
 
             <!-- Image Section -->
@@ -193,11 +230,11 @@ $details = $table->articlebyfacultydetail($article_id);
                 <h4 class="text-md font-medium text-gray-900 mb-2">Images</h4>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <img 
-                            src="../../../uploads/images/<?php echo $details['imagefile']; ?>" 
-                            alt="<?php echo $details['name']; ?>'s image" 
-                            class="submission-image" 
-                            data-bs-toggle="modal" 
+                        <img
+                            src="../../../uploads/images/<?php echo $details['imagefile']; ?>"
+                            alt="<?php echo $details['name']; ?>'s image"
+                            class="submission-image"
+                            data-bs-toggle="modal"
                             data-bs-target="#imageModal<?php echo $details['imagefile']; ?>">
                     </div>
                     <!-- Modal for Fullscreen Image -->
@@ -216,16 +253,16 @@ $details = $table->articlebyfacultydetail($article_id);
 
             <!-- PDF Link -->
             <div class="mb-4">
-                <h4 class="text-md font-medium text-gray-900 mb-2">PDF Document</h4>
+                <h4 class="text-md font-medium text-gray-900 mb-2">Document File</h4>
                 <a href="../../../uploads/documents/<?php echo $details['docfile']; ?>" target="_blank" class="pdf-link-btn">
-                    <i class="fas fa-file-pdf"></i> View PDF File
+                    <i class="fas fa-file-pdf"></i> <?php echo $details['docfile']; ?>
                 </a>
             </div>
 
             <!-- Comments Section -->
-             <!-- Fetch and Display Comments for This Article -->
+            <!-- Fetch and Display Comments for This Article -->
             <?php
-                $comments = $table->getCommnetbyarticleid($article_id);
+            $comments = $table->getCommnetbyarticleid($article_id);
             ?>
             <div class="mb-4">
                 <h4 class="text-md font-medium text-gray-900 mb-2">Comments</h4>
@@ -234,20 +271,20 @@ $details = $table->articlebyfacultydetail($article_id);
                         <p class="text-muted">No comments yet.</p>
                     <?php } else { ?>
                         <?php foreach ($comments as $comment) { ?>
-                        <div class="comment-card">
-                            <div class="d-flex justify-content-between">
-                                <span class="font-medium text-gray-900"><?php echo $comment['role_name']; ?></span>
-                                <span class="text-sm text-muted"><?php echo $comment['created_at']; ?></span>
+                            <div class="comment-card">
+                                <div class="d-flex justify-content-between">
+                                    <span class="font-medium text-gray-900"><?php echo $comment['role_name']; ?></span>
+                                    <span class="text-sm text-muted"><?php echo $comment['created_at']; ?></span>
+                                </div>
+                                <p class="text-sm text-gray-700 mt-1"><?php echo $comment['comment_text']; ?></p>
                             </div>
-                            <p class="text-sm text-gray-700 mt-1"><?php echo $comment['comment_text']; ?></p>
-                        </div>
                         <?php } ?>
                     <?php } ?>
                 </div>
                 <!-- Comment Form -->
                 <form action="../../Students/code/comments.php" method="POST" class="mt-3">
-                <input type="hidden" name="article_id" value="<?= $article_id ?>">
-                <input type="hidden" name="user_id" value="<?= $user_id ?>">
+                    <input type="hidden" name="article_id" value="<?= $article_id ?>">
+                    <input type="hidden" name="user_id" value="<?= $user_id ?>">
                     <div class="mb-2">
                         <textarea class="form-control" name="comment_text" rows="3" placeholder="Add a comment..." required></textarea>
                     </div>
@@ -255,11 +292,18 @@ $details = $table->articlebyfacultydetail($article_id);
                         Post Comment <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
+                <!-- update -->
+
             </div>
 
-            <!-- Back Button -->
-            <div class="mt-2">
-                <a href="viewarticlebyfaculty1.php" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-left p-2"></i>Back</a>
+            <!-- Action Buttons -->
+            <div class="mt-2 d-flex gap-2">
+                <a href="update_article.php?id=<?= $article_id ?>" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Update
+                </a>
+                <a href="viewarticlebyfaculty1.php" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-arrow-left p-2"></i> Back
+                </a>
             </div>
         </div>
     </main>
@@ -270,8 +314,9 @@ $details = $table->articlebyfacultydetail($article_id);
 
     <!-- Include Notification Modal -->
     <?php include "notifications.php"; ?>
-    
+
     <!-- Footer -->
     <?php include "footer.php"; ?>
 </body>
+
 </html>

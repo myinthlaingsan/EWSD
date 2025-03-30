@@ -183,12 +183,13 @@ class UsersTable{
         return $this->db;
     }
     //select setting
-    // public function selectSetting(){
-    //     $statement = $this->db->prepare("
-    //         SELECT * FROM settings
-    //     ");
-    //     return $statement->fetchAll();
-    // }
+    public function selectSetting(){
+        $statement = $this->db->prepare("
+            SELECT * FROM settings
+        ");
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 
     //select setting by id
     // public function getsettingby($settingid){
@@ -251,6 +252,24 @@ class UsersTable{
             exit();
         }
     }
+    // for coordinator student list get student by each faculty
+    public function getStudentRolesByFaculty($faculty_id) {
+        try {
+            $statement = $this->db->prepare("
+                SELECT u. * , r.role_name 
+                FROM users u
+                JOIN role_user ru ON u.id = ru.user_id
+                JOIN roles r ON ru.role_id = r.id
+                WHERE u.faculty_id = :faculty_id AND r.role_name = 'Student'
+            ");
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            exit();
+        }
+    }
+    
     //login
     public function find($email,$password){
         try{
