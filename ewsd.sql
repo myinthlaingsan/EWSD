@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 23, 2025 at 02:19 PM
+-- Generation Time: Mar 30, 2025 at 05:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,9 +41,12 @@ CREATE TABLE `articles` (
 --
 
 INSERT INTO `articles` (`article_id`, `user_id`, `title`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'testing', 'submitted', '2025-03-20 14:54:48', '2025-03-20 14:54:48'),
+(1, 2, 'testing', 'selected', '2025-03-20 14:54:48', '2025-03-30 13:41:12'),
 (2, 2, 'Test2', 'submitted', '2025-03-21 08:36:56', '2025-03-21 08:36:56'),
-(3, 2, 'test', 'submitted', '2025-03-21 14:43:11', '2025-03-21 14:43:11');
+(3, 2, 'test', 'selected', '2025-03-21 14:43:11', '2025-03-25 15:28:51'),
+(4, 10, 'Computing', 'selected', '2025-03-27 15:12:11', '2025-03-29 13:42:07'),
+(9, 10, 'Computing', 'selected', '2025-03-27 15:30:46', '2025-03-29 13:40:16'),
+(10, 10, 'Science', 'selected', '2025-03-27 15:34:56', '2025-03-29 13:46:33');
 
 -- --------------------------------------------------------
 
@@ -67,7 +70,9 @@ CREATE TABLE `comments` (
 INSERT INTO `comments` (`comment_id`, `user_id`, `article_id`, `comment_text`, `created_at`, `updated_at`) VALUES
 (1, 2, 1, 'best content', '2025-03-22 08:34:10', '2025-03-22 08:34:10'),
 (2, 2, 2, 'Re-write Content', '2025-03-22 12:41:44', '2025-03-22 12:41:44'),
-(3, 2, 2, 'ok i will re-write this', '2025-03-22 13:17:51', '2025-03-22 13:17:51');
+(3, 2, 2, 'ok i will re-write this', '2025-03-22 13:17:51', '2025-03-22 13:17:51'),
+(4, 8, 1, 'Test Comment', '2025-03-25 18:02:39', '2025-03-25 18:02:39'),
+(5, 8, 2, 'i already update my content', '2025-03-29 05:53:34', '2025-03-29 05:53:34');
 
 -- --------------------------------------------------------
 
@@ -88,9 +93,12 @@ CREATE TABLE `doc_attachment` (
 --
 
 INSERT INTO `doc_attachment` (`doc_attachment_id`, `article_id`, `docfile`, `created_at`, `updated_at`) VALUES
-(1, 1, '1742482488_zdone.txt', '2025-03-20 14:54:48', '2025-03-20 14:54:48'),
 (2, 2, '1742546216_MyintHlaingSan(NS&C)Question.docx', '2025-03-21 08:36:56', '2025-03-21 08:36:56'),
-(3, 3, '1742568191_MyintHlaingSan(NS&C)Question7.docx', '2025-03-21 14:43:11', '2025-03-21 14:43:11');
+(3, 3, '1742568191_MyintHlaingSan(NS&C)Question7.docx', '2025-03-21 14:43:11', '2025-03-21 14:43:11'),
+(4, 4, '1743088331_Topic2NSC.docx', '2025-03-27 15:12:11', '2025-03-27 15:12:11'),
+(9, 9, '1743089446_testing(6,7).docx', '2025-03-27 15:30:46', '2025-03-27 15:30:46'),
+(10, 10, '1743089696_Topic6NSC.docx', '2025-03-27 15:34:56', '2025-03-27 15:34:56'),
+(12, 1, '1743342072_Topic9NSC.docx', '2025-03-30 13:41:12', '2025-03-30 13:41:12');
 
 -- --------------------------------------------------------
 
@@ -131,9 +139,35 @@ CREATE TABLE `img_attachment` (
 --
 
 INSERT INTO `img_attachment` (`img_attachment_id`, `article_id`, `imagefile`, `created_at`, `updated_at`) VALUES
-(1, 1, '1742482488_erd.drawio.png', '2025-03-20 14:54:48', '2025-03-20 14:54:48'),
 (2, 2, '1742546216_course1.jpg', '2025-03-21 08:36:56', '2025-03-21 08:36:56'),
-(3, 3, '1742568191_erd.drawio.png', '2025-03-21 14:43:11', '2025-03-21 14:43:11');
+(3, 3, '1742568191_erd.drawio.png', '2025-03-21 14:43:11', '2025-03-21 14:43:11'),
+(4, 4, '1743088332_course1.jpg', '2025-03-27 15:12:12', '2025-03-27 15:12:12'),
+(9, 9, '1743089446_course2.jpg', '2025-03-27 15:30:46', '2025-03-27 15:30:46'),
+(10, 10, '1743089696_course6.jpg', '2025-03-27 15:34:56', '2025-03-27 15:34:56'),
+(12, 1, '1743342072_04_CSS_Design.png', '2025-03-30 13:41:12', '2025-03-30 13:41:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL,
+  `article_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deadline_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`notification_id`, `article_id`, `user_id`, `message`, `is_read`, `created_at`, `deadline_date`) VALUES
+(1, 10, 8, 'New article submitted: \'Science\' requires your review within 14 days.', 0, '2025-03-27 15:34:56', '2025-04-10');
 
 -- --------------------------------------------------------
 
@@ -251,7 +285,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `academicyear`, `closure_date`, `final_closure_date`, `created_at`, `updated_at`) VALUES
-(1, '2025', '2025-03-17', '2025-04-17', '2025-03-17 15:53:47', '2025-03-17 15:53:47');
+(1, '2025', '2025-03-17', '2025-03-24', '2025-03-17 15:53:47', '2025-03-17 15:53:47');
 
 -- --------------------------------------------------------
 
@@ -277,7 +311,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `address`, `phone`, `password`, `faculty_id`, `created_at`) VALUES
 (1, 'admin', 'admin@gmail.com', 'YGN', '123456789', '$2y$10$WET/HwHei98Soh/Dgrb2set9ixZWftfL.VKzGRdm8o4aY5BIXrKHi', NULL, '2025-03-06 14:48:05'),
 (2, 'student', 'student@gmail.com', 'YGN', '123456789', '$2y$10$1.J7v2cnTfgi1OHlfqICQuOs7v5WzbsINOk/uvN34N4Auijr6B7TK', 1, '2025-03-06 16:48:33'),
-(3, 'Manager', 'manager@gmail.com', 'YGN', '123456789', '$2y$10$SvNuvluOeklk1Mar325aYOOcC9g05kDzawcinaMtIFPkKh6Y30l7i', NULL, '2025-03-15 15:37:31'),
+(3, 'Manager', 'manager@gmail.com', 'YGN', '123456789', '$2y$10$WET/HwHei98Soh/Dgrb2set9ixZWftfL.VKzGRdm8o4aY5BIXrKHi', NULL, '2025-03-15 15:37:31'),
 (8, 'Coordinator', 'coor@gmail.com', 'YGN', '123456789', '$2y$10$Pv1RKaAPY9ZkWA.MA0pJPu7WWP4JcVIzplEGXrOeQSsbv1E3yCEQi', 1, '2025-03-16 04:05:03'),
 (9, 'Guest', 'guest@gmail.com', 'YGN', '123456789', '$2y$10$e.TisYIrLegn7rACQAtIke3iC0lG5R/9DtZyWiHp8I2lEPJLrHpEe', NULL, '2025-03-16 04:05:55'),
 (10, 'Student2', 'student2@gmail.com', 'YGN', '123456789', '$2y$10$MC7heVk6s3mMQZvG4KFUeOcR1sYwq/UodyIY601rLDXiolKamOaGa', 2, '2025-03-22 05:12:33'),
@@ -321,6 +355,14 @@ ALTER TABLE `faculties`
 ALTER TABLE `img_attachment`
   ADD PRIMARY KEY (`img_attachment_id`),
   ADD KEY `article_id` (`article_id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `article_id` (`article_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `permissions`
@@ -373,19 +415,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `doc_attachment`
 --
 ALTER TABLE `doc_attachment`
-  MODIFY `doc_attachment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `doc_attachment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `faculties`
@@ -397,7 +439,13 @@ ALTER TABLE `faculties`
 -- AUTO_INCREMENT for table `img_attachment`
 --
 ALTER TABLE `img_attachment`
-  MODIFY `img_attachment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `img_attachment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -451,6 +499,13 @@ ALTER TABLE `doc_attachment`
 --
 ALTER TABLE `img_attachment`
   ADD CONSTRAINT `img_attachment_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`);
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`article_id`) REFERENCES `articles` (`article_id`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `role_permission`

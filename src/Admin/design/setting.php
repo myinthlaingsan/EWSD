@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
+<?php include "header.php"; ?>
     <h1>Settings</h1>
     <div class="container text-center" style="max-width: 680px">
         <form action="../code/setting.php" method="post" class="mb-2">
@@ -17,7 +18,9 @@
             <input type="date" class="form-control mb-2" name="finalclosuredate" placeholder="Final Closure Date" required>
             <button class="btn btn-primary w-100">Set Settings</button>
         </form>
-        <a href="register.php">Register</a>
     </div>
+    <!-- Footer -->
+    <?php include "footer.php"; ?>
 </body>
+<script src="../../../js/bootstrap.bundle.min.js"></script>
 </html>

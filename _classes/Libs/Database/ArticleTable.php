@@ -158,6 +158,20 @@ class ArticleTable
             exit();
         }
     }
+    // get faculty student
+    // public function getfacultyStudent($faculty_id){
+    //     try{
+    //         $statement-> = $this->db->prepare(
+    //             "SELECT u.*, r.role_name from users u
+    //             LEFT JOIN roles r ON u.id = r.user_id
+    //             LEFT JOIN role_user ru u.id = ru.user_id
+    //             WHERE r.role_name = 'Student'"
+    //         );
+    //     }catch(PDOException $e){
+    //         echo "Error:" . $e->getMessage();
+    //         exit();
+    //     }
+    // }
     //select faculty name
     public function getfacultyname($faculty_id)
     {

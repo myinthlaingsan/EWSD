@@ -67,9 +67,10 @@ class UsersTable{
     //select users with rolename
     public function allusers(){
         $statement = $this->db->query(
-            "SELECT users.*, roles.role_name from users
+            "SELECT users.*, roles.role_name, faculties.faculty_name from users
             LEFT JOIN role_user on users.id = role_user.user_id
-            LEFT JOIN roles on role_user.role_id = roles.id"
+            LEFT JOIN roles on role_user.role_id = roles.id
+            LEFT JOIN faculties on faculties.id = users.faculty_id"
         );
         return $statement->fetchAll();
     }
@@ -231,6 +232,18 @@ class UsersTable{
             );
             $statement->execute($data);
             return $this->db;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    public function getAllFaculty(){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT * FROM faculties"
+            );
+            $statement->execute();
+            return $statement->fetchAll();
         }catch(PDOException $e){
             echo $e->getMessage();
             exit();
