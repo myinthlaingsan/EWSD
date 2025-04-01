@@ -58,7 +58,7 @@ $student_dataPoints = [
             padding: 0;
         }
 
-        .charts-container {
+        .chart-containers {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -66,10 +66,20 @@ $student_dataPoints = [
         }
 
         .chart-container {
-            width: 100%;
+            flex: 1 1 45%;
+            /* Allow two charts per row on large screens */
             max-width: 600px;
-            height: auto;
-            padding: 2px;
+            /* Prevent excessive stretching */
+            min-width: 300px;
+            /* Prevent charts from getting too small */
+            height: 400px;
+            /* Set a fixed height */
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                flex: 1 1 100%;
+            }
         }
 
         .canvasjs-chart-credit {
@@ -77,68 +87,74 @@ $student_dataPoints = [
         }
     </style>
 
-    <script>
-        // Faculty Contribution Percentage
-        window.onload = function() {
-
-            // Faculty contribution chart
-            var facultyChart = new CanvasJS.Chart("facultyChartContainer", {
-                animationEnabled: true,
-                exportEnabled: true,
-                credit: false, // Disable the credit link
-                title: {
-                    text: "Faculty Article Contribution Percentage (2025)"
-                },
-                data: [{
-                    type: "pie",
-                    showInLegend: "true",
-                    legendText: "{label}",
-                    indexLabelFontSize: 14,
-                    indexLabel: "{label} - #percent%",
-                    yValueFormatString: "#,##0.##%",
-                    dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-
-            // Student submission chart
-            var studentChart = new CanvasJS.Chart("studentChartContainer", {
-                animationEnabled: true,
-                exportEnabled: true,
-                credit: false, // Disable the credit link
-                title: {
-                    text: "Student Article Submission Percentage"
-                },
-                data: [{
-                    type: "pie",
-                    showInLegend: "true",
-                    legendText: "{label}",
-                    indexLabelFontSize: 14,
-                    indexLabel: "{label} - #percent%",
-                    yValueFormatString: "#,##0.##%",
-                    dataPoints: <?php echo json_encode($student_dataPoints, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-
-            // Make the charts responsive
-            function resizeCharts() {
-                facultyChart.render();
-                studentChart.render();
-            }
-
-            window.addEventListener("resize", resizeCharts);
-            facultyChart.render();
-            studentChart.render();
-
-        }
-    </script>
 </head>
 
 <body>
-    <div class="charts-container">
+    <div class="chart-containers">
         <div id="facultyChartContainer" class="chart-container"></div>
         <div id="studentChartContainer" class="chart-container"></div>
     </div>
     <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 </body>
+<script>
+    // Faculty Contribution Percentage
+    window.onload = function() {
+
+        // Faculty contribution chart
+        var facultyChart = new CanvasJS.Chart("facultyChartContainer", {
+            animationEnabled: true,
+            exportEnabled: true,
+            credit: false, // Disable the credit link
+            title: {
+                text: "Faculty Article Contribution Percentage (2025)"
+            },
+            data: [{
+                type: "pie",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 14,
+                indexLabel: "{label} - #percent%",
+                yValueFormatString: "#,##0.##%",
+                dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
+            }]
+        });
+
+        // Student submission chart
+        var studentChart = new CanvasJS.Chart("studentChartContainer", {
+            animationEnabled: true,
+            exportEnabled: true,
+            credit: false, // Disable the credit link
+            title: {
+                text: "Student Article Submission Percentage"
+            },
+            data: [{
+                type: "pie",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 14,
+                indexLabel: "{label} - #percent%",
+                yValueFormatString: "#,##0.##%",
+                dataPoints: <?php echo json_encode($student_dataPoints, JSON_NUMERIC_CHECK); ?>
+            }]
+        });
+
+        // Make the charts responsive
+        function resizeCharts() {
+            facultyChart.options.width = document.getElementById("facultyChartContainer").clientWidth;
+            facultyChart.options.height = document.getElementById("facultyChartContainer").clientHeight;
+            facultyChart.render();
+
+            studentChart.options.width = document.getElementById("studentChartContainer").clientWidth;
+            studentChart.options.height = document.getElementById("studentChartContainer").clientHeight;
+            studentChart.render();
+        }
+
+
+        window.addEventListener("resize", resizeCharts);
+        facultyChart.render();
+        studentChart.render();
+
+    }
+</script>
 
 </html>
