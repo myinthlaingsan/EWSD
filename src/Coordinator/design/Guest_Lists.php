@@ -10,7 +10,7 @@ $faculty_id = $auth->faculty_id;
 $table = new UsersTable(new MySQL);
 $articleTable = new ArticleTable(new MySQL);
 $facultyname = $articleTable->getfacultyname($faculty_id);
-$students = $table->getStudentRolesByFaculty($faculty_id);
+$guests = $table->getGuestRolesByFaculty($faculty_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +136,7 @@ $students = $table->getStudentRolesByFaculty($faculty_id);
                         Faculty of <?= $facultyname ?>
                     </h2>
                     <div class="mt-2 text-sm text-muted">
-                        <span>Total Students - <?php echo count($students); ?></span>
+                        <span>Total Students - <?php echo count($guests); ?></span>
                     </div>
                 </div>
                 <div class="mt-3 mt-md-0 col-md-6 d-flex align-items-end">
@@ -149,36 +149,36 @@ $students = $table->getStudentRolesByFaculty($faculty_id);
 
             <!-- Student Cards -->
             <div class="p-4">
-                <h3 class="text-lg font-medium text-gray-900 mb-4"><i class="fa-solid fa-users p-3"></i>Student Lists</h3>
+                <h3 class="text-lg font-medium text-gray-900 mb-4"><i class="fa-solid fa-users p-3"></i>Guest Lists</h3>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 g-4">
-                    <?php foreach ($students as $student) : ?>
+                    <?php foreach ($guests as $guest) : ?>
                     <div class="col">
                         <div class="card p-4">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="student-icon me-3">
-                                    <?php echo substr($student['name'], 0, 1); ?>
+                                    <?php echo substr($guest['name'], 0, 1); ?>
                                 </div>
-                                <h4 class="text-lg font-medium text-gray-900 mb-0"><?php echo $student['name']; ?></h4>
+                                <h4 class="text-lg font-medium text-gray-900 mb-0"><?php echo $guest['name']; ?></h4>
                             </div>
                             <div class="mt-3 space-y-3">
                                 <div class="detail-row">
                                     <span class="detail-label">Join Date:</span>
-                                    <span class="detail-value"><?php echo $student['created_at']; ?></span>
+                                    <span class="detail-value"><?php echo $guest['created_at']; ?></span>
                                 </div>
                                 <div class="detail-row">
                                     <span class="detail-label">Phone:</span>
-                                    <span class="detail-value"><?php echo $student['phone']; ?></span>
+                                    <span class="detail-value"><?php echo $guest['phone']; ?></span>
                                 </div>
                                 <div class="detail-row">
                                     <span class="detail-label">Email:</span>
-                                    <span class="detail-value"><?php echo $student['email']; ?></span>
+                                    <span class="detail-value"><?php echo $guest['email']; ?></span>
                                 </div>
                             </div>
-                            <div class="mt-5 text-center">
-                                <a href="Student_Details.php?id=<?= $student['id'] ?>" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm d-flex align-items-center justify-content-center mx-auto">
+                            <!-- <div class="mt-5 text-center">
+                                <a href="Student_Details.php?id=<?= $guest['id'] ?>" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm d-flex align-items-center justify-content-center mx-auto">
                                     <i class="fas fa-eye me-2"></i> View Details
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <?php endforeach ?>

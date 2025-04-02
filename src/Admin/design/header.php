@@ -121,7 +121,12 @@
         </ul>
     </div>
     <div class="backdrop" id="backdrop"></div>
-    
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

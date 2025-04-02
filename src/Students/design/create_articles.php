@@ -108,7 +108,12 @@ $user = $table->getuserbyId($auth->id);
       </div>
     </nav>
     <!-- Nav bar end -->
-
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <!-- Form start -->
     <div class="registerform container my-5 text-black pt-4 pb-3 w-75">
       <h1 class="article_header">Riverstone University</h1>

@@ -12,6 +12,7 @@ $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $facultyname = $table->getfacultyname($faculty_id);
 $settings = $usertable->selectSetting();
+$usercreatedarticle = $table->articlesCreateUser();
 ?>
 
 <!DOCTYPE html>
@@ -140,7 +141,6 @@ $settings = $usertable->selectSetting();
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
-
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <div class="card">
@@ -148,13 +148,13 @@ $settings = $usertable->selectSetting();
             <div class="p-4 border-bottom border-gray-200 d-flex justify-content-between align-items-center flex-wrap">
                 <div>
                     <h2 class="faculty-header d-flex align-items-center"><i class="fa-solid fa-microchip faculty-icon"></i>
-                        Faculty of Information & Technology
+                        Faculty of <?= $facultyname ?>
                     </h2>
                     <div class="mt-2 text-sm text-muted">
                         <span>Marketing Coordinator - <?= $username ?></span>
                     </div>
                     <div class="mt-2 text-sm text-muted">
-                        <span>Total Students - 15</span>
+                        <span>Total Students - <?= $usercreatedarticle ?></span>
                     </div>
                 </div>
                 <div class="mt-3 mt-md-0 col-md-6 d-flex align-items-end">

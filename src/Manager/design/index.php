@@ -1,3 +1,20 @@
+<?php
+include('../../../vendor/autoload.php');
+
+use Helpers\Auth;
+use Libs\Database\ArticleTable;
+use Libs\Database\UsersTable;
+use Libs\Database\MySQL;
+
+$auth = Auth::check();
+$table = new ArticleTable(new MySQL);
+$usertable = new UsersTable(new MySQL);
+$finalclosuredate = $usertable->selectFinalClosureDate();
+$selected = $table->getSelectedArticles();
+$countarticle = $table->countArticles();
+$usercreatearticle = $table->articlesCreateUser();
+$countfaculty = $table->countFaculties();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,22 +110,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $contributions = [
-                                ["id" => 1, "title" => "AI Innovations", "faculty" => "Information Technology", "student" => "Kelvin", "final" => "2025-04-01"],
-                                ["id" => 2, "title" => "Bridge Design", "faculty" => "Engineering", "student" => "Sophia", "final" => "2025-06-01"],
-                                ["id" => 3, "title" => "Market Trends", "faculty" => "Business", "student" => "Jane", "final" => "2025-08-15"]
-                            ];
-                            foreach ($contributions as $contribution) {
-                                echo "<tr>";
-                                echo "<td>{$contribution['id']}</td>";
-                                echo "<td>{$contribution['title']}</td>";
-                                echo "<td>{$contribution['faculty']}</td>";
-                                echo "<td>{$contribution['student']}</td>";
-                                echo "<td>{$contribution['final']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
+                            
+                            <?php foreach($selected as $selectedArticle) : ?>
+                                <tr>
+                                    <td><?= $selectedArticle['article_id'] ?></td>
+                                    <td><?= $selectedArticle['title'] ?></td>
+                                    <td><?= $selectedArticle['faculty_name'] ?></td>
+                                    <td><?= $selectedArticle['name'] ?></td>
+                                    <td><?= $finalclosuredate ?></td>
+                                </tr>
+                            <?php endforeach ?>
                         </tbody>
                     </table>
                 </div>
@@ -121,13 +132,13 @@
                 <h2 class="fs-4 fw-bold text-primary-dark mb-4">Statistics (2025 Academic Year)</h2>
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <p>Total Contributions: <span class="stat-value">45</span></p>
+                        <p>Total Articles: <span class="stat-value"><?= $countarticle ?></span></p>
                     </div>
                     <div class="col-md-4">
-                        <p>Total Contributors: <span class="stat-value">30</span></p>
+                        <p>Total Contributors: <span class="stat-value"><?= $usercreatearticle ?></span></p>
                     </div>
                     <div class="col-md-4">
-                        <p>Faculties Represented: <span class="stat-value">8</span></p>
+                        <p>Faculties Represented: <span class="stat-value"><?= $countfaculty ?></span></p>
                     </div>
                 </div>
                 <div class="table-responsive mt-4">

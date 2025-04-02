@@ -21,9 +21,10 @@ try {
             address VARCHAR(50),
             phone VARCHAR(50),
             password VARCHAR(255) NOT NULL, -- Hashed passwords
-            faculty_id INT,
+            faculty_id INT NULL,
             FOREIGN KEY (faculty_id) REFERENCES faculties(id) ON DELETE CASCADE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            last_login TIMESTAMP NULL DEFAULT NULL
         )
     ");
     // Create roles table

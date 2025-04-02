@@ -28,6 +28,8 @@ $users=$table->allusers();
     <a href="./assignpermission.php">Assign Permission</a>|
     <a href="../../Auth/code/logout.php">Logout</a>|
     <a href="./setting.php">Settings</a>| -->
+    <!-- Add this section for login message -->
+    
     <div class="container mt-5" >
         <table class="table table-striped table-bordered">
             <tr>

@@ -14,5 +14,6 @@ $table->insert([
     "address" => $_POST['address'],
     'phone' => $_POST['phone'],
     "password" => $_POST['password'],
+    'faculty_id' => $_POST['faculty_id'],
 ]);
 HTTP::redirect("/src/Auth/design/login.php", "register=success");

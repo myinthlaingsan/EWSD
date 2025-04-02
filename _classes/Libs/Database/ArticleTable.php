@@ -115,7 +115,7 @@ class ArticleTable
     }
 
     //get select contribution for article download
-    public function getSelectedArticles()
+    public function getSelectedArticles($faculty_id)
     {
         try {
             $statement = $this->db->prepare("
@@ -126,9 +126,10 @@ class ArticleTable
                 LEFT JOIN users u ON a.user_id = u.id
                 LEFT JOIN faculties f on u.faculty_id = f.id
                 WHERE a.status = 'selected'
+                AND u.faculty_id = :faculty_id
                 ORDER BY a.created_at DESC
             ");
-            $statement->execute();
+            $statement->execute(['faculty_id' => $faculty_id]);
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
@@ -282,7 +283,7 @@ class ArticleTable
             exit();
         }
     }
-
+    //update article
     public function updateArticle($data)
     {
         try {
@@ -320,5 +321,79 @@ class ArticleTable
             exit();
         }
     }
-    
+    // articles without a comment
+    public function getArticlesWithoutComment(){
+        try{
+            $statement = $this->db->prepare("
+                SELECT a. * , f.faculty_name,u.name as student_name FROM articles a
+                LEFT JOIN users u ON a.user_id = u.id
+                LEFT JOIN faculties f ON u.faculty_id = f.id
+                LEFT JOIN comments c ON a.article_id = c.article_id
+                WHERE c.article_id IS NULL
+            ");
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
+    // articles without a comment
+    public function getArticlesWithoutComment14days(){
+        try{
+            $statement = $this->db->prepare("
+                SELECT a. * , f.faculty_name,u.name as student_name FROM articles a
+                LEFT JOIN users u ON a.user_id = u.id
+                LEFT JOIN faculties f ON u.faculty_id = f.id
+                LEFT JOIN comments c ON a.article_id = c.article_id
+                WHERE c.article_id IS NULL
+                AND DATEDIFF(NOW(), a.created_at) > 14
+            ");
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch (PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    //coutn articles
+    public function countArticles(){
+        try{
+            $statement = $this->db->prepare("
+                SELECT COUNT(*) as total FROM articles
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        }catch (PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    //count acricles created user
+    public function articlesCreateUser(){
+        try{
+            $statement = $this->db->prepare("
+            SELECT COUNT(DISTINCT user_id) AS total_users FROM articles;
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    //count faculties
+    public function countFaculties(){
+        try{
+            $statement = $this->db->prepare("
+                SELECT COUNT(*) as total FROM faculties
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        }catch (PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
 }

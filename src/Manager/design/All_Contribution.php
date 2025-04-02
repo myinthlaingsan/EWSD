@@ -1,5 +1,6 @@
 <?php
 include("../../../vendor/autoload.php");
+
 use Helpers\Auth;
 use Helpers\HTTP;
 use Libs\Database\MySQL;
@@ -11,8 +12,8 @@ $user_id = $auth->id;
 $table = new UsersTable(new MySQL);
 $articleTable = new ArticleTable(new MySQL);
 // check if download was requested
-if (isset($_GET['download_all']) || isset($_GET['download_single'])){
-    handleDownload($table,$articleTable,$user_id);
+if (isset($_GET['download_all']) || isset($_GET['download_single'])) {
+    handleDownload($table, $articleTable, $user_id);
 }
 //Get data for display
 $userRole = $table->getUserRoleName($user_id);
@@ -20,9 +21,10 @@ $finalclosuredate = $table->selectFinalClosureDate();
 $currentDate = date('Y-m-d');
 $selectedArticles = $articleTable->getSelectedArticles();
 
-function handleDownload($table,$articleTable,$user_id) {
+function handleDownload($table, $articleTable, $user_id)
+{
     $userRole = $table->getUserRoleName($user_id);
-    if($userRole != 'Manager'){
+    if ($userRole != 'Manager') {
         die("You are not authorized to download this file.");
     }
 
@@ -42,47 +44,46 @@ function handleDownload($table,$articleTable,$user_id) {
     //prepare Zip file
     $filesToZip = [];
     $baseUploadPath = __DIR__ . "/../../../uploads/";
-    if(isset($_GET['download_all'])){
+    if (isset($_GET['download_all'])) {
         //All selected articles
-        foreach($selectedArticles as $selectedArticle){
-            addFilesToZip($selectedArticle,$baseUploadPath,$filesToZip);
+        foreach ($selectedArticles as $selectedArticle) {
+            addFilesToZip($selectedArticle, $baseUploadPath, $filesToZip);
         }
         $zipFileName = "All selected_articles_" . date('Y-m-d') . ".zip";
-    }
-    elseif(isset($_GET['download_single'])){
+    } elseif (isset($_GET['download_single'])) {
         //single article download
         $articleId = (int)$_GET['download_single'];
         $article = null;
 
         //find the request article
-        foreach($selectedArticles as $a){
-            if($a['article_id'] == $articleId){
+        foreach ($selectedArticles as $a) {
+            if ($a['article_id'] == $articleId) {
                 $article = $a;
                 break;
             }
         }
-        if(!$article){
+        if (!$article) {
             die("Article not found or not selected");
         }
-        addFilesToZip($article,$baseUploadPath,$filesToZip); // in this $article is from $article = $a 
+        addFilesToZip($article, $baseUploadPath, $filesToZip); // in this $article is from $article = $a 
         $zipFileName = "selected_articles_" . "(" . $a['title'] . ")" . date('Y-m-d') . ".zip";
     }
     $zipDir = $baseUploadPath . "zips/";
-    if(!file_exists($zipDir)){
+    if (!file_exists($zipDir)) {
         mkdir($zipDir, 0777, true);
     }
-    
+
     $zipFilePath = $zipDir . $zipFileName;
 
     //Create ZIP
     $zip = new ZipArchive();
-    if($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE){
-        die ("Failed to create ZIP file. Check directory permissions.");
+    if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+        die("Failed to create ZIP file. Check directory permissions.");
     }
 
     //Add files to ZIP
-    foreach($filesToZip as $file){
-        if(file_exists($file['path'])){
+    foreach ($filesToZip as $file) {
+        if (file_exists($file['path'])) {
             $zip->addFile($file['path'], $file['type'] . "s/" . basename($file['name']));
         }
     }
@@ -97,15 +98,16 @@ function handleDownload($table,$articleTable,$user_id) {
     readfile($zipFilePath);
     exit;
 }
-function addFilesToZip($selectedArticle,$basePath , &$filesArray){
-    if(!empty($selectedArticle['docfile'])) {
+function addFilesToZip($selectedArticle, $basePath, &$filesArray)
+{
+    if (!empty($selectedArticle['docfile'])) {
         $filesArray[] = [
             'type' => 'document',
             'path' => $basePath . "documents/" . $selectedArticle['docfile'],
             'name' => $selectedArticle['docfile']
         ];
     }
-    if(!empty($selectedArticle['imagefile'])) {
+    if (!empty($selectedArticle['imagefile'])) {
         $filesArray[] = [
             'type' => 'image',
             'path' => $basePath . "images/" . $selectedArticle['imagefile'],
@@ -116,6 +118,7 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,21 +136,26 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
             --card-bg: #ffffff;
             --text-muted: #64748b;
         }
+
         body {
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        a{
+
+        a {
             text-decoration: none;
         }
+
         .container {
             max-width: 1200px;
         }
+
         .section-title {
             color: var(--primary-dark);
             font-size: 1.5rem;
             font-weight: 600;
         }
+
         .card {
             background: var(--card-bg);
             border: none;
@@ -155,22 +163,27 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+
         .table thead {
             background: var(--primary-dark);
             color: white;
         }
+
         .table th {
             font-size: 0.85rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+
         .table tbody tr {
             transition: background-color 0.2s ease-in-out;
         }
+
         .table tbody tr:hover {
             background-color: #f1f5f9;
         }
+
         .btn-download {
             background: var(--primary-light);
             border: none;
@@ -179,28 +192,39 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
             padding: 0.4rem 0.8rem;
             border-radius: 6px;
             transition: background-color 0.2s ease;
+            text-decoration: none;
         }
+
         .btn-download:hover {
             background: var(--primary-dark);
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <?php include "headermm.php"; ?>
 
     <!-- Main Content -->
     <main class="container py-5">
-        <h2 class="section-title mb-4">All Selected Articles</h2>
-
-        <!-- Download All button -->
-        <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>
-        <div class="mb-4 text-end">
-            <a href="?download_all=1" class="btn btn-primary">
-                <i class="fas fa-file-archive"></i> Download All Selected Articles
-            </a>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title">All Selected Articles</h2>
+            <!-- Download All button -->
+            <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>
+                
+                <a href="?download_all=1" class="btn-download">
+                    <i class="fas fa-arrow-down me-1"></i> Download All Selected Articles
+                </a>
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
+        <!-- Download All button -->
+        <!-- <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>
+            <div class="mb-4 text-end">
+                <a href="?download_all=1" class="btn btn-primary">
+                    <i class="fas fa-file-archive"></i> Download All Selected Articles
+                </a>
+            </div>
+        <?php endif; ?> -->
         <!-- Contribution Table -->
         <div class="card p-3">
             <div class="table-responsive">
@@ -219,21 +243,21 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
                         <?php if (!empty($selectedArticles)): ?>
                             <?php foreach ($selectedArticles as $selectedArticle) : ?>
                                 <tr class="text-center">
-                                    <td><?=  $selectedArticle['title'] ?></td>
+                                    <td><?= $selectedArticle['title'] ?></td>
                                     <td><?= $selectedArticle['name'] ?></td>
                                     <td><?= $selectedArticle['faculty_name'] ?></td>
                                     <td><?= $selectedArticle['name'] ?></td>
                                     <td>Final Date</td>
                                     <td>
-                                    <?php if (strtotime(date('Y-m-d')) < strtotime($finalclosuredate)): ?>
+                                        <?php if (strtotime(date('Y-m-d')) < strtotime($finalclosuredate)): ?>
                                             <h1><?= $finalclosuredate ?></h1>
                                         <?php else : ?>
-                                        <a href="?download_single=<?= $selectedArticle['article_id'] ?>" class="btn-download">
-                                            <i class="fas fa-arrow-down"></i> Download
-                                        </a>
+                                            <a href="?download_single=<?= $selectedArticle['article_id'] ?>" class="btn-download">
+                                                <i class="fas fa-arrow-down"></i> Download
+                                            </a>
                                         <?php endif ?>
                                     </td>
-                                    
+
                                 </tr>
                             <?php endforeach ?>
                         <?php else : ?>
@@ -248,4 +272,5 @@ function addFilesToZip($selectedArticle,$basePath , &$filesArray){
     <!-- Footer -->
     <?php include "footer.php"; ?>
 </body>
+
 </html>

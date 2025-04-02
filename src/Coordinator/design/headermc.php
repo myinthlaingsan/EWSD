@@ -96,7 +96,8 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="Student_Lists.php"><i class="fa-solid fa-users"></i> Students</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="faculties.php"><i class="fas fa-building"></i> Faculties</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="Guest_Lists.php"><i class="fa-solid fa-users"></i> Guests</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="viewarticlebyfaculty1.php"><i class="fas fa-building"></i> Faculties</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -110,14 +111,20 @@
         <ul class="navbar-nav text-white mt-4">
             <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="Student_Lists.php"><i class="fa-solid fa-users"></i> Students</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="faculties.php"><i class="fas fa-building"></i> Faculties</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="Guest_Lists.php"><i class="fa-solid fa-users"></i> Guests</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="viewarticlebyfaculty1.php"><i class="fas fa-building"></i> Faculties</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="backdrop" id="backdrop"></div>
-
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

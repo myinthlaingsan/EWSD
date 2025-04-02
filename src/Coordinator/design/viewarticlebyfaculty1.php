@@ -3,13 +3,17 @@ include("../../../vendor/autoload.php");
 use Helpers\Auth;
 use Libs\Database\MySQL;
 use Libs\Database\ArticleTable;
+use Libs\Database\UsersTable;
 
 $auth=Auth::check();
 $faculty_id = $auth->faculty_id;
 $user_id = $auth->id;
 $table = new ArticleTable(new MySQL);
+$usertable = new UsersTable(new MySQL);
 $facultyArticles = $table->getFacultyArticles($faculty_id);
 $facultyname = $table->getFacultyName($faculty_id);
+$usercreatedarticle = $table->articlesCreateUser();
+$finalclosuredate = $usertable->selectFinalClosureDate();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -131,12 +135,12 @@ $facultyname = $table->getFacultyName($faculty_id);
                     <div class="mb-3">
                         <span class="text-muted font-medium">Total Contributors</span>
                         <span class="mx-2">-</span>
-                        <span class="text-gray-900"><?php echo 2; ?></span>
+                        <span class="text-gray-900"><?= $usercreatedarticle ?></span>
                     </div>
                     <div class="mb-3">
                         <span class="text-muted font-medium">Final Closure Date</span>
                         <span class="mx-2">-</span>
-                        <span class="text-gray-900"><?php echo 2; ?></span>
+                        <span class="text-gray-900"><?= $finalclosuredate ?></span>
                     </div>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-start">

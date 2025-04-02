@@ -1,3 +1,8 @@
+<?php 
+include ('../../../vendor/autoload.php');
+use Helpers\Auth;
+$auth = Auth::check();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -95,7 +100,12 @@
       </div>
     </nav>
     <!-- Nav bar end -->
-
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <!-- Home Page start -->
     <header>
       <div class="container-fluid">

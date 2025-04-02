@@ -85,20 +85,20 @@
 
     <!-- Form start -->
     <div class="container stulogin my-5 pt-4 pb-3 text-dark" style="max-width: 900px">
-     <form>
+     <form action="../code/login.php" method="post">
         <h1>Riverstone University</h1>
         <h5>Please Login!</h5>
         <hr />
         <div class="mb-3 row">
             <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-              <input type="text"  class="form-control" id="staticEmail" placeholder="emailexample@.com">
+              <input type="text" name="email" class="form-control" id="staticEmail" placeholder="emailexample@.com" required>
             </div>
           </div>
           <div class="mb-3 row">
             <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control" id="inputPassword">
+              <input type="password" name="password" class="form-control" id="inputPassword" required>
             </div>
           </div>
           <div class="col-auto mb-3">
