@@ -19,7 +19,7 @@ if (isset($_GET['download_all']) || isset($_GET['download_single'])) {
 $userRole = $table->getUserRoleName($user_id);
 $finalclosuredate = $table->selectFinalClosureDate();
 $currentDate = date('Y-m-d');
-$selectedArticles = $articleTable->getSelectedArticles();
+$selectedArticles = $articleTable->getAllSelectedArticles();
 
 function handleDownload($table, $articleTable, $user_id)
 {
@@ -36,7 +36,7 @@ function handleDownload($table, $articleTable, $user_id)
     // }
 
     //get selected articles
-    $selectedArticles = $articleTable->getSelectedArticles();
+    $selectedArticles = $articleTable->getAllSelectedArticles();
     if (empty($selectedArticles)) {
         die("No selected contributions found.");
     }

@@ -89,10 +89,16 @@ $articles = $table->getSelectedArticles($faculty_id);
           <li class="nav-item me-5">
             <a class="nav-link" href="#contactpage">Contact Us</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="../../Auth/design/register.php"><i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>Sign
               In</a>
-          </li>
+          </li> -->
+          <li class="nav-item">
+                <a class="nav-link" href="../../Auth/code/logout.php">
+                    <i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>
+                    Logout
+                </a>
+            </li>
         </div>
       </div>
     </div>

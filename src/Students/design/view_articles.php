@@ -17,7 +17,7 @@ $articles = $table->getArticlesByUserId($user_id);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>My Articles</title>
   <!-- Font Awesome Link -->
   <link
     rel="stylesheet"
@@ -80,23 +80,23 @@ $articles = $table->getArticlesByUserId($user_id);
             <a class="nav-link" aria-current="page" href="create_articles.php">Add Article</a>
           </li>
           <li class="nav-item me-5">
-            <a class="nav-link" aria-current="page" href="view_articles.php">View Article</a>
+            <a class="nav-link active" aria-current="page" href="view_articles.php">View Article</a>
           </li>
           <li class="nav-item me-5">
-            <a class="nav-link" aria-current="page" href="#aboutus">Aboout</a>
+            <a class="nav-link" aria-current="page" href="#aboutus">About</a>
           </li>
           <li class="nav-item me-5">
             <a class="nav-link" href="#contactpage">Contact Us</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../Auth/design/register.php"><i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>Sign
-              In</a>
+            <a class="nav-link" href="../../Auth/code/logout.php"><i class="fa-solid me-2 fa-arrow-right-from-bracket"></i>Logout</a>
           </li>
         </div>
       </div>
     </div>
   </nav>
   <!-- Nav bar end -->
+
   <div class="container mt-4">
     <h2>My Articles</h2>
     <?php if (!empty($articles)) : ?>
@@ -104,44 +104,73 @@ $articles = $table->getArticlesByUserId($user_id);
         <div class="card mb-4">
           <div class="card-body">
             <h5><strong>Article Title:</strong> <?= htmlspecialchars($article['title']) ?></h5>
-            <p><strong>Status:</strong> <?= ucfirst($article['status']) ?></p>
-            <p><small>Created on: <?= date('F j, Y', strtotime($article['created_at'])) ?></small></p>
+            <p><strong>Status:</strong> <span class="badge bg-<?= $article['status'] === 'selected' ? 'success' : ($article['status'] === 'pending' ? 'warning' : 'secondary') ?>"><?= ucfirst($article['status']) ?></span></p>
+            <p><small>Created on: <?= date('F j, Y, g:i a', strtotime($article['created_at'])) ?></small></p>
 
             <!-- Document Attachments -->
-            <?php if ($article['docfile']) : ?>
+            <?php if (!empty($article['docfiles'])) : ?>
               <p><strong>Documents:</strong></p>
-              <ul>
+              <ul class="list-group mb-3">
                 <?php
-                $filePath = "../../../uploads/documents/" . htmlspecialchars($article['docfile']);
-                $fileExt = pathinfo($article['docfile'], PATHINFO_EXTENSION);
+                $documents = explode('|||', $article['docfiles']);
+                foreach ($documents as $docfile) {
+                  if (empty($docfile)) continue;
+
+                  $filePath = "../../../uploads/documents/" . htmlspecialchars($docfile);
+                  $fileExt = pathinfo($docfile, PATHINFO_EXTENSION);
                 ?>
 
-                <?php if ($fileExt === 'txt'): ?>
-                  <!-- Open TXT directly -->
-                  <li><a href="<?= $filePath ?>" target="_blank"><?= htmlspecialchars($article['docfile']) ?></a></li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <?php if ($fileExt === 'txt' || $fileExt === 'pdf'): ?>
+                      <!-- Open TXT and PDF directly -->
+                      <a href="<?= $filePath ?>" target="_blank">
+                        <i class="fas fa-file-<?= $fileExt === 'pdf' ? 'pdf' : 'alt' ?> me-2"></i>
+                        <?= htmlspecialchars($docfile) ?>
+                      </a>
 
-                <?php elseif ($fileExt === 'pdf'): ?>
-                  <!-- Open PDF directly -->
-                  <li><a href="<?= $filePath ?>" target="_blank"><?= htmlspecialchars($article['docfile']) ?></a></li>
+                    <?php elseif ($fileExt === 'doc' || $fileExt === 'docx'): ?>
+                      <!-- Use Google Docs Viewer for DOC and DOCX -->
+                      <a href="https://docs.google.com/gview?url=<?= urlencode('http://' . $_SERVER['HTTP_HOST'] . '/uploads/documents/' . $docfile) ?>&embedded=true" target="_blank">
+                        <i class="fas fa-file-word me-2"></i>
+                        <?= htmlspecialchars($docfile) ?>
+                      </a>
 
-                <?php elseif ($fileExt === 'doc' || $fileExt === 'docx'): ?>
-                  <!-- Use Google Docs Viewer for DOC and DOCX -->
-                  <li>
-                    <a href="https://docs.google.com/gview?url=<?= urlencode('http://yourwebsite.com/uploads/documents/' . $article['docfile']) ?>&embedded=true" target="_blank">
-                      View <?= htmlspecialchars($article['docfile']) ?> Online
-                    </a>
+                    <?php else: ?>
+                      <!-- For unsupported files, provide download link -->
+                      <a href="<?= $filePath ?>" download>
+                        <i class="fas fa-file-download me-2"></i>
+                        <?= htmlspecialchars($docfile) ?>
+                      </a>
+                    <?php endif; ?>
+
+                    <span class="badge bg-primary rounded-pill"><?= strtoupper($fileExt) ?></span>
                   </li>
-                <?php else: ?>
-                  <!-- For unsupported files, just provide a download link -->
-                  <li><a href="<?= $filePath ?>" download>Download <?= htmlspecialchars($article['docfile']) ?></a></li>
-                <?php endif; ?>
+                <?php } ?>
               </ul>
             <?php endif; ?>
 
             <!-- Image Attachments -->
-            <?php if ($article['imagefile']) : ?>
+            <?php if (!empty($article['imagefiles'])) : ?>
               <p><strong>Images:</strong></p>
-              <img src="../../../uploads/images/<?= htmlspecialchars($article['imagefile']) ?>" alt="Image" class="img-fluid rounded shadow" style="max-width: 200px;">
+              <div class="d-flex flex-wrap gap-3 mb-3">
+                <?php
+                $images = explode('|||', $article['imagefiles']);
+                foreach ($images as $imagefile) {
+                  if (empty($imagefile)) continue;
+                ?>
+                  <div class="position-relative">
+                    <img src="../../../uploads/images/<?= htmlspecialchars($imagefile) ?>"
+                      alt="Article Image"
+                      class="img-thumbnail"
+                      style="max-width: 200px; height: auto;">
+                    <a href="../../../uploads/images/<?= htmlspecialchars($imagefile) ?>"
+                      target="_blank"
+                      class="position-absolute top-0 end-0 m-1 bg-white rounded-circle p-1">
+                      <i class="fas fa-expand"></i>
+                    </a>
+                  </div>
+                <?php } ?>
+              </div>
             <?php endif; ?>
 
             <!-- Fetch and Display Comments for This Article -->
@@ -151,16 +180,25 @@ $articles = $table->getArticlesByUserId($user_id);
             <div class="mt-3">
               <h6>Comments:</h6>
               <?php if (!empty($comments)) : ?>
-                <ul class="list-group">
+                <ul class="list-group mb-3">
                   <?php foreach ($comments as $comment) : ?>
                     <li class="list-group-item">
-                      <?= htmlspecialchars($comment['comment_text']) ?>
-                      <small class="text-muted">(ROLE: <?= $comment['role_name'] ?>)</small>
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <?= htmlspecialchars($comment['comment_text']) ?>
+                        </div>
+                        <div>
+                          <small class="text-muted"><?= date('M j, g:i a', strtotime($comment['created_at'])) ?></small>
+                          <span class="badge bg-<?= $comment['role_name'] === 'Coordinator' ? 'danger' : 'info' ?> ms-2">
+                            <?= ucfirst($comment['role_name']) ?>
+                          </span>
+                        </div>
+                      </div>
                     </li>
                   <?php endforeach ?>
                 </ul>
               <?php else : ?>
-                <p class="text-muted">No comments found for this article.</p>
+                <div class="alert alert-info">No comments yet.</div>
               <?php endif ?>
             </div>
 
@@ -170,17 +208,31 @@ $articles = $table->getArticlesByUserId($user_id);
               <input type="hidden" name="user_id" value="<?= $user_id ?>">
               <div class="mb-3">
                 <label for="comment_text" class="form-label">Add a Comment:</label>
-                <textarea name="comment_text" class="form-control" rows="3" required></textarea>
+                <textarea name="comment_text" class="form-control" rows="3" required placeholder="Write your comment here..."></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Add Comment</button>
-              <!-- Update Button (Link to Update Page) -->
-              <a href="update_articles.php?id=<?= $article['article_id'] ?>" class="btn btn-warning">Update</a>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-comment me-1"></i> Add Comment
+                </button>
+                <!-- Update Button (Link to Update Page) -->
+                <a href="update_articles.php?id=<?= $article['article_id'] ?>" class="btn btn-warning">
+                  <i class="fas fa-edit me-1"></i> Edit Article
+                </a>
+                <?php if ($article['status'] !== 'selected') : ?>
+                  <a href="../code/delete_article.php?id=<?= $article['article_id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')">
+                    <i class="fas fa-trash me-1"></i> Delete
+                  </a>
+                <?php endif; ?>
+              </div>
             </form>
           </div>
         </div>
       <?php endforeach; ?>
     <?php else : ?>
-      <p class="text-muted">No articles found.</p>
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i> You haven't submitted any articles yet.
+        <a href="create_articles.php" class="alert-link">Create your first article</a>
+      </div>
     <?php endif; ?>
   </div>
 

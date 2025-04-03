@@ -3,7 +3,7 @@
         'name' => 'rh_computer/ewsd',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8a27113f18c2411ce16fbb8c2037052d94505e07',
+        'reference' => 'a46c6d821a6c243573612fbd04496961d2200e3b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -19,6 +19,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.9.3',
+            'version' => '6.9.3.0',
+            'reference' => '2f5c94fe7493efc213f643c23b1b1c249d40f47e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'psr/container' => array(
             'pretty_version' => '2.0.2',
             'version' => '2.0.2.0',
@@ -31,7 +40,7 @@
         'rh_computer/ewsd' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8a27113f18c2411ce16fbb8c2037052d94505e07',
+            'reference' => 'a46c6d821a6c243573612fbd04496961d2200e3b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

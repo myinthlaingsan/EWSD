@@ -1,5 +1,5 @@
 <?php
-<<<<<<< HEAD
+
 include('../../../vendor/autoload.php');
 
 use Helpers\Auth;
@@ -11,12 +11,13 @@ $auth = Auth::check();
 $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $finalclosuredate = $usertable->selectFinalClosureDate();
-$selected = $table->getSelectedArticles();
+$selected = $table->getAllSelectedArticles();
 $countarticle = $table->countArticles();
 $usercreatearticle = $table->articlesCreateUser();
 $countfaculty = $table->countFaculties();
+
 ?>
-=======
+<?php
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -49,9 +50,6 @@ while ($row = $fac_cont_perc_res->fetch_assoc()) {
 echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON_NUMERIC_CHECK) . ");</script>";
 ?>
 
-
-
->>>>>>> origin/main
 <!DOCTYPE html>
 <html lang="en">
 

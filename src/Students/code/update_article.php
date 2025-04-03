@@ -68,10 +68,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $comments = $table->getCommnetbyarticleid($facultyArticle['article_id']);
-    if ($comments['role_name'] === "Student") {
-        HTTP::redirect('/src/Coordinator/design/view_detail.php?id=' . $article_id);
+    $lastComment = end($comments);
+
+    if (!empty($lastComment['role_name'])) {
+        switch ($lastComment['role_name']) {
+            case "Student":
+                HTTP::redirect("/src/Students/design/view_articles.php");
+                break;
+            case "Coordinator":
+                HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id);
+                break;
+            default:
+                HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");
+        }
     } else {
-        HTTP::redirect('/src/Coordinator/design/view_detail.php?id=' . $article_id);
+        // If no role_name found, redirect to login
+        HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");
     }
     //HTTP::redirect('/src/Coordinator/design/view_detail.php?id=' . $article_id);
 }

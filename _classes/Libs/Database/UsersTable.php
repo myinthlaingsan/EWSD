@@ -273,16 +273,17 @@ class UsersTable
         }
     }
     // get Marketing Coordinator Email
-    public function getCoorEmail()
+    public function getCoorEmail($faculty_id)
     {
         try {
             $statement = $this->db->prepare(
                 "SELECT u.id,u.email FROM users u
                 JOIN role_user ru ON u.id = ru.user_id
                 JOIN roles r ON ru.role_id = r.id
-                WHERE r.role_name = 'Coordinator'"
+                WHERE r.role_name = 'Coordinator'
+                AND u.faculty_id = :faculty_id"
             );
-            $statement->execute();
+            $statement->execute(['faculty_id' => $faculty_id]);
             return $statement->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             echo $e->getMessage();

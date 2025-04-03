@@ -211,56 +211,78 @@ $details = $table->articlebyfacultydetail($article_id);
                     <input type="hidden" name="article_id" value="<?= $article_id ?>">
                     <?php if ($details['status'] == "selected") : ?>
                         <h3>Article has been selected</h3>
-                        <!-- <button class="btn-selection ms-auto"><i class="fas fa-star"></i> Selection</button> -->
                     <?php else: ?>
                         <button class="btn-selection ms-auto"><i class="fas fa-star"></i> Selection</button>
                     <?php endif ?>
                 </form>
-                <!-- Update Button -->
-                <!-- <form action="../../Students/code/update_article.php" method="get" class="ms-3">
-                    <input type="hidden" name="article_id" value="<?= $article_id ?>">
-                    <button class="btn btn-warning">
-                        <i class="fas fa-edit"></i> Update
-                    </button>
-                </form> -->
             </div>
 
             <!-- Image Section -->
             <div class="mb-4">
                 <h4 class="text-md font-medium text-gray-900 mb-2">Images</h4>
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <img
-                            src="../../../uploads/images/<?php echo $details['imagefile']; ?>"
-                            alt="<?php echo $details['name']; ?>'s image"
-                            class="submission-image"
-                            data-bs-toggle="modal"
-                            data-bs-target="#imageModal<?php echo $details['imagefile']; ?>">
-                    </div>
-                    <!-- Modal for Fullscreen Image -->
-                    <div class="modal fade modal-fullscreen" id="imageModal<?php echo $details['imagefile']; ?>" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-body p-0">
-                                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    <img src="../../../uploads/images/<?php echo $details['imagefile']; ?>" alt="<?php echo $details['name']; ?>'s full image">
+                    <?php
+                    if (!empty($details['images'])) {
+                        $images = explode(',', $details['images']);
+                        foreach ($images as $image) {
+                            $image = trim($image);
+                            if (!empty($image)) {
+                    ?>
+                                <div class="col-md-4">
+                                    <img
+                                        src="../../../uploads/images/<?php echo htmlspecialchars($image); ?>"
+                                        alt="<?php echo htmlspecialchars($details['name']); ?>'s image"
+                                        class="submission-image"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#imageModal<?php echo md5($image); ?>">
+
+                                    <!-- Modal for Fullscreen Image -->
+                                    <div class="modal fade modal-fullscreen" id="imageModal<?php echo md5($image); ?>" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-body p-0">
+                                                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <img src="../../../uploads/images/<?php echo htmlspecialchars($image); ?>" alt="<?php echo htmlspecialchars($details['name']); ?>'s full image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                            }
+                        }
+                    } else {
+                        echo '<p class="text-muted">No images available</p>';
+                    }
+                    ?>
                 </div>
             </div>
 
             <!-- PDF Link -->
             <div class="mb-4">
-                <h4 class="text-md font-medium text-gray-900 mb-2">Document File</h4>
-                <a href="../../../uploads/documents/<?php echo $details['docfile']; ?>" target="_blank" class="pdf-link-btn">
-                    <i class="fas fa-file-pdf"></i> <?php echo $details['docfile']; ?>
-                </a>
+                <h4 class="text-md font-medium text-gray-900 mb-2">Document Files</h4>
+                <?php
+                if (!empty($details['documents'])) {
+                    $documents = explode(',', $details['documents']);
+                    foreach ($documents as $doc) {
+                        $doc = trim($doc);
+                        if (!empty($doc)) {
+                ?>
+                            <div class="mb-2">
+                                <a href="../../../uploads/documents/<?php echo htmlspecialchars($doc); ?>" target="_blank" class="pdf-link-btn">
+                                    <i class="fas fa-file-pdf"></i> <?php echo htmlspecialchars($doc); ?>
+                                </a>
+                            </div>
+                <?php
+                        }
+                    }
+                } else {
+                    echo '<p class="text-muted">No documents available</p>';
+                }
+                ?>
             </div>
 
             <!-- Comments Section -->
-            <!-- Fetch and Display Comments for This Article -->
             <?php
             $comments = $table->getCommnetbyarticleid($article_id);
             ?>
@@ -273,11 +295,15 @@ $details = $table->articlebyfacultydetail($article_id);
                         <?php foreach ($comments as $comment) { ?>
                             <div class="comment-card">
                                 <div class="d-flex justify-content-between">
-                                    <span class="font-medium text-gray-900"><?php echo $comment['role_name']; ?></span>
+                                    <!-- <span class="font-medium text-gray-900"><?php echo $comment['role_name']; ?></span> -->
+                                    <span class="badge bg-<?= $comment['role_name'] === 'Coordinator' ? 'danger' : 'info' ?> ms-2">
+                                        <?= ucfirst($comment['role_name']) ?>
+                                    </span>
                                     <span class="text-sm text-muted"><?php echo $comment['created_at']; ?></span>
                                 </div>
-                                <p class="text-sm text-gray-700 mt-1"><?php echo $comment['comment_text']; ?></p>
+                                <p class="text-sm text-gray-700 mt-1 mx-3"><?php echo $comment['comment_text']; ?></p>
                             </div>
+
                         <?php } ?>
                     <?php } ?>
                 </div>
@@ -292,8 +318,6 @@ $details = $table->articlebyfacultydetail($article_id);
                         Post Comment <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
-                <!-- update -->
-
             </div>
 
             <!-- Action Buttons -->
