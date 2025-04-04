@@ -14,8 +14,8 @@ use Libs\Database\UsersTable;
 $mailer = new Mailer();
 $mailer->sendEmail($coordinator->email, $subject, $message);
 $table = new ArticleTable(new MySQL);
-$table2 = new UsersTable(new MySQL);
-$closuredate = $table2->selectClosureDate();
+$usertable = new UsersTable(new MySQL);
+$closuredate = $usertable->selectClosureDate();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST['agree'])) {
         die("You must agree to the Terms and Conditions.");
@@ -94,10 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($article_id) {
-        $user = $table2->getuserbyId($id);
+        $user = $usertable->getuserbyId($id);
         $facultyName = $table->getfacultyname($user->id);
         // Get all marketing coordinators
-        $coordinators = $table2->getCoorEmail($user->faculty_id);
+        $coordinators = $usertable->getCoorEmail($user->faculty_id);
         
         // Create notification for each coordinator
         foreach ($coordinators as $coordinator) {
@@ -119,7 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p><strong>Submitted by:</strong> $user->name ($user->email)</p>
                 <p><strong>Deadline for review:</strong> $deadline</p>
                 
-                <p>Please review this article within the next 14 days.</p>;
+                <p>Please review this article within the next 14 days.</p>
+                <a href='".HTTP::$base."/src/Coordinator/design/viewdetail.php?id=$article_id'>Review Article</a>
                 ";
 
             $mailer->sendEmail(

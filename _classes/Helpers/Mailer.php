@@ -42,4 +42,6 @@ class Mailer {
             return false;
         }
     }
+
+    
 }

@@ -39,7 +39,8 @@ class UsersTable
             ]);
             // Commit the transaction
             $this->db->commit();
-            return $this->db;
+            // return $this->db;
+            return $user_id;
         } catch (PDOException $e) {
             echo $e->getMessage();
             exit();

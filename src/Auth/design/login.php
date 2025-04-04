@@ -52,7 +52,7 @@
             </div>
           </div>
           <div class="form-text text-dark mb-2">
-            If you don't have an account, click <a href="studentregister.html">here!</a>
+            If you don't have an account, click <a href="register.php">here!</a>
           </div>
           <div class="col-12">
             <button type="submit" class="btn btn-primary">Login</button>

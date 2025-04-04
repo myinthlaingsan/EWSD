@@ -2,13 +2,32 @@
 include("../../../vendor/autoload.php");
 
 use Helpers\Auth;
+use Helpers\BrowserHelper;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
+use Libs\Database\ActivityLogsTable;
 
 $auth = Auth::check();
+
+$userId = $auth->id ?? null;
+$activityLogTable = new ActivityLogsTable(new MySQL);
+
 $table = new UsersTable(new MySQL);
 $users=$table->allusers();
+// Log the page visit
+$activityLogTable->logPageView(
+    $userId,
+    $_SERVER['REQUEST_URI'],
+    $_SERVER['HTTP_USER_AGENT'],
+    $_SERVER['REMOTE_ADDR']
+);
 
+// Get reports
+$mostViewedPages = $activityLogTable->getMostViewedPages();
+$mostActiveUsers = $activityLogTable->getMostActiveUsers();
+$mostUsedBrowsers = $activityLogTable->getMostUsedBrowsers();
+$BrowserName = new BrowserHelper();
+$getShortBrowserName = $BrowserName->getShortBrowserName($_SERVER['HTTP_USER_AGENT']);
 ?>
 
 <!DOCTYPE html>
@@ -20,16 +39,7 @@ $users=$table->allusers();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
-    <?php include "header.php"; ?>
-    <!-- <h1>HELLO ADMIN</h1>
-    <a href="./role.php">Create Role</a>|
-    <a href="./faculty.php">Faculty</a>|
-    <a href="./permissions.php">Create Permission</a>|
-    <a href="./assignpermission.php">Assign Permission</a>|
-    <a href="../../Auth/code/logout.php">Logout</a>|
-    <a href="./setting.php">Settings</a>| -->
-    <!-- Add this section for login message -->
-    
+    <?php include "header.php"; ?>   
     <div class="container mt-5" >
         <table class="table table-striped table-bordered">
             <tr>
