@@ -14,7 +14,7 @@ class ActivityLogsTable
     }
 
     // Log User Activity (Insert or Update)
-    public function logPageView($userId, $pageUrl, $browser, $ipAddress)
+    public function logPageView($user_id, $pageUrl, $browser, $ipAddress)
     {
         try {
             // Check if this page is already logged
@@ -22,7 +22,7 @@ class ActivityLogsTable
                 "SELECT active_id FROM activity_logs WHERE user_id = :user_id AND page_url = :page_url AND browser = :browser"
             );
             $statement->execute([
-                'user_id' => $userId,
+                'user_id' => $user_id,
                 'page_url' => $pageUrl,
                 'browser' => $browser
             ]);
@@ -41,7 +41,7 @@ class ActivityLogsTable
                     VALUES (:user_id, :page_url, :browser, :ip_address, 1, NOW())"
                 );
                 $statement->execute([
-                    'user_id' => $userId,
+                    'user_id' => $user_id,
                     'page_url' => $pageUrl,
                     'browser' => $browser,
                     'ip_address' => $ipAddress

@@ -9,16 +9,16 @@ use Helpers\Auth;
 $auth = Auth::check();
 $userId = $auth->id ?? null; // Get logged-in user ID
 
+
 // Create database connection
 $activityLogTable = new ActivityLogsTable(new MySQL);
-
 // Log the page visit
-$activityLogTable->logPageView(
-    $userId,
-    $_SERVER['REQUEST_URI'],
-    $_SERVER['HTTP_USER_AGENT'],
-    $_SERVER['REMOTE_ADDR']
-);
+// $activityLogTable->logPageView(
+//     $userId,
+//     $_SERVER['REQUEST_URI'],
+//     $_SERVER['HTTP_USER_AGENT'],
+//     $_SERVER['REMOTE_ADDR']
+// );
 
 // Get reports
 $mostViewedPages = $activityLogTable->getMostViewedPages();
@@ -36,6 +36,7 @@ $BrowserName = new BrowserHelper();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
+    
     <div class="container mt-5">
         <h2 class="text-center">System Usage Reports</h2>
         

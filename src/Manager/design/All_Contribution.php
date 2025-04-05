@@ -50,6 +50,7 @@ function handleDownload($table, $articleTable, $user_id)
             addFilesToZip($selectedArticle, $baseUploadPath, $filesToZip);
         }
         $zipFileName = "All selected_articles_" . date('Y-m-d') . ".zip";
+        
     } elseif (isset($_GET['download_single'])) {
         //single article download
         $articleId = (int)$_GET['download_single'];
@@ -211,7 +212,7 @@ function addFilesToZip($selectedArticle, $basePath, &$filesArray)
             <h2 class="section-title">All Selected Articles</h2>
             <!-- Download All button -->
             <?php if (!empty($selectedArticles) && strtotime(date('Y-m-d')) >= strtotime($finalclosuredate)): ?>
-                
+
                 <a href="?download_all=1" class="btn-download">
                     <i class="fas fa-arrow-down me-1"></i> Download All Selected Articles
                 </a>

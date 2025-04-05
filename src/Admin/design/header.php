@@ -1,3 +1,24 @@
+<?php
+include('../../../vendor/autoload.php');
+
+use Helpers\Auth;
+use Libs\Database\MySQL;
+use Libs\Database\ActivityLogsTable;
+
+if (!isset($auth)) {
+    $auth = Auth::check();
+}
+$user_id = $auth->id ?? null;
+$activityLogTable = new ActivityLogsTable(new MySQL);
+
+// Log the page visit
+$activityLogTable->logPageView(
+    $user_id,
+    $_SERVER['REQUEST_URI'],
+    $_SERVER['HTTP_USER_AGENT'],
+    $_SERVER['REMOTE_ADDR']
+);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

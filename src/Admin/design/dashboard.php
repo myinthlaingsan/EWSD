@@ -7,27 +7,25 @@ use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 use Libs\Database\ActivityLogsTable;
 
-$auth = Auth::check();
-
-$userId = $auth->id ?? null;
+// $auth = Auth::check();
+// $userId = $auth->id ?? null;
 $activityLogTable = new ActivityLogsTable(new MySQL);
 
 $table = new UsersTable(new MySQL);
 $users=$table->allusers();
 // Log the page visit
-$activityLogTable->logPageView(
-    $userId,
-    $_SERVER['REQUEST_URI'],
-    $_SERVER['HTTP_USER_AGENT'],
-    $_SERVER['REMOTE_ADDR']
-);
+// $activityLogTable->logPageView(
+//     $userId,
+//     $_SERVER['REQUEST_URI'],
+//     $_SERVER['HTTP_USER_AGENT'],
+//     $_SERVER['REMOTE_ADDR']
+// );
 
 // Get reports
 $mostViewedPages = $activityLogTable->getMostViewedPages();
 $mostActiveUsers = $activityLogTable->getMostActiveUsers();
 $mostUsedBrowsers = $activityLogTable->getMostUsedBrowsers();
 $BrowserName = new BrowserHelper();
-$getShortBrowserName = $BrowserName->getShortBrowserName($_SERVER['HTTP_USER_AGENT']);
 ?>
 
 <!DOCTYPE html>
