@@ -19,6 +19,7 @@ $users=$table->allusers();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
+    <?php include "header.php"; ?>
     <h1>HELLO ADMIN</h1>
     <a href="./role.php">Create Role</a>|
     <a href="./faculty.php">Faculty</a>|

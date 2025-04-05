@@ -20,7 +20,15 @@ if ($user) {
         HTTP::redirect("/src/Admin/design/dashboard.php");
     } elseif ($user->role_name === "Student") {
         HTTP::redirect("/src/Students/design/dashboard.php");
-    } else {
+    } elseif ($user->role_name === "Manager") {
+        HTTP::redirect("/src/Manager/design/index.php");
+    }
+    elseif ($user->role_name === "Coordinator") {
+        HTTP::redirect("/src/Coordinator/design/dashboard.php");
+    }
+    elseif ($user->role_name === "Guest") {
+        HTTP::redirect("/src/Guest/design/dashboard.php");
+    }else {
         HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");
     }
 } else {

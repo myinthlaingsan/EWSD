@@ -98,6 +98,22 @@ class UsersTable{
         return $statement->fetch(PDO::FETCH_OBJ);
     }
 
+    // for check if the user is the marketing manager
+    public function getUserRoleName($user_id){
+        try{
+            $statement = $this->db->prepare("
+                SELECT roles.role_name FROM role_user
+                JOIN roles ON role_user.role_id = roles.id
+                WHERE role_user.user_id = :user_id
+            ");
+            $statement->execute(['user_id' => $user_id]);
+            return $statement->fetchColumn();
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
     // Assign or update role
     public function assignRole($user_id, $role_id) {
         // Check if user already has a role
@@ -167,19 +183,43 @@ class UsersTable{
         return $this->db;
     }
     //select setting
-    public function selectSetting(){
-        $statement = $this->db->prepare("
-            SELECT * FROM settings
-        ");
-        return $statement->fetchAll();
-    }
+    // public function selectSetting(){
+    //     $statement = $this->db->prepare("
+    //         SELECT * FROM settings
+    //     ");
+    //     return $statement->fetchAll();
+    // }
 
     //select setting by id
-    public function getsettingby($settingid){
-        $statement = $this->db->prepare("SELECT * FROM settings WHERE setting_id = :settingid");
-        // $statement->execute([$id]);
-        $statement->execute(['settingid' => $settingid]);
-        return $statement->fetch(PDO::FETCH_OBJ);
+    // public function getsettingby($settingid){
+    //     $statement = $this->db->prepare("SELECT * FROM settings WHERE setting_id = :settingid");
+    //     // $statement->execute([$id]);
+    //     $statement->execute(['settingid' => $settingid]);
+    //     return $statement->fetch(PDO::FETCH_OBJ);
+    // }
+    public function selectClosureDate(){
+        try {
+            // Prepare the SQL query to fetch the latest closure date
+            $closureQuery = $this->db->prepare("SELECT closure_date FROM settings ORDER BY created_at DESC LIMIT 1");
+            $closureQuery->execute();
+            $closureDate = $closureQuery->fetchColumn();
+            return $closureDate;
+        } catch (PDOException $e) {
+            die("Database error: " . $e->getMessage());
+        }
+    }
+    // select final closure Date
+    public function selectFinalClosureDate(){
+        try{
+            $statement = $this->db->prepare("
+            SELECT final_closure_date FROM settings ORDER BY created_at DESC LIMIT 1
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        }catch(PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
     }
 
     //insert faculty
@@ -190,6 +230,22 @@ class UsersTable{
             );
             $statement->execute($data);
             return $this->db;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+            exit();
+        }
+    }
+    // get Marketing Coordinator Email
+    public function getCoorEmail(){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT u.id,u.email FROM users u
+                JOIN role_user ru ON u.id = ru.user_id
+                JOIN roles r ON ru.role_id = r.id
+                WHERE r.role_name = 'Coordinator'"
+            );
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_OBJ);
         }catch(PDOException $e){
             echo $e->getMessage();
             exit();
