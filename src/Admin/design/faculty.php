@@ -3,7 +3,7 @@ include('../../../vendor/autoload.php');
 use Helpers\Auth;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
-$auth = Auth::check();
+// $auth = Auth::check();
 $table = new UsersTable(new MySQL);
 $faculties = $table->getAllFaculty();
 

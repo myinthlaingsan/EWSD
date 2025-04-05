@@ -2,6 +2,23 @@
 include("../../../vendor/autoload.php");
 use Helpers\Auth;
 Auth::check();
+use Libs\Database\ActivityLogsTable;
+use Libs\Database\MySQL;
+
+$user_id = $auth->id ?? null;
+$activityLogTable = new ActivityLogsTable(new MySQL);
+// Extract file name from the request URI
+$requestUri = $_SERVER['REQUEST_URI'];
+$fileName = basename($requestUri);
+
+// Log the page visit
+$activityLogTable->logPageView(
+    $user_id,
+    $_SERVER['REQUEST_URI'],
+    $_SERVER['HTTP_USER_AGENT'],
+    $_SERVER['REMOTE_ADDR'],
+    $fileName
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">

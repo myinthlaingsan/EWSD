@@ -4,11 +4,26 @@ include("../../../vendor/autoload.php");
 use Helpers\Auth;
 use Libs\Database\ArticleTable;
 use Libs\Database\MySQL;
+use Libs\Database\ActivityLogsTable;
 
 $auth = Auth::check();
-$user_id = $auth->id;
+$user_id = $auth->id ?? null;
 $table = new ArticleTable(new MySQL);
 $articles = $table->getArticlesByUserId($user_id);
+
+$activityLogTable = new ActivityLogsTable(new MySQL);
+// Extract file name from the request URI
+$requestUri = $_SERVER['REQUEST_URI'];
+$fileName = basename($requestUri);
+
+// Log the page visit
+$activityLogTable->logPageView(
+    $user_id,
+    $_SERVER['REQUEST_URI'],
+    $_SERVER['HTTP_USER_AGENT'],
+    $_SERVER['REMOTE_ADDR'],
+    $fileName
+);
 ?>
 
 <!DOCTYPE html>
