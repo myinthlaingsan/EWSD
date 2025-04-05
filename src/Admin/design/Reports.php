@@ -1,3 +1,32 @@
+<?php
+include("../../../vendor/autoload.php");
+
+use Helpers\BrowserHelper;
+use Libs\Database\MySQL;
+use Libs\Database\ActivityLogsTable;
+use Helpers\Auth;
+
+$auth = Auth::check();
+$userId = $auth->id ?? null; // Get logged-in user ID
+
+// Create database connection
+$activityLogTable = new ActivityLogsTable(new MySQL);
+
+// Get reports
+$mostViewedPages = $activityLogTable->getMostViewedPages();
+$mostActiveUsers = $activityLogTable->getMostActiveUsers();
+$browsers = $activityLogTable->getMostUsedBrowsers();
+
+// Calculate total usage
+$totalUsage = array_sum(array_column($browsers, 'total_usage'));
+
+// Calculate percentages and prepare data for view
+$mostUsedBrowsers = array_map(function($browser) use ($totalUsage) {
+    $browser->percentage = $totalUsage > 0 ? round(($browser->total_usage / $totalUsage) * 100, 1) : 0;
+    return $browser;
+}, $browsers);
+$BrowserName = new BrowserHelper();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,7 +112,7 @@
 
 <body>
     <!-- Header -->
-    <?php include "headeradm.html"; ?>
+    <?php include "header.php"; ?>
 
     <!-- Main Content -->
     <main class="container py-5">
@@ -103,22 +132,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $pages = [
-                                ["name" => "Dashboard", "url" => "/Admin/index.php", "views" => 1200],
-                                ["name" => "Contributions", "url" => "/Admin/All_Contribution.php", "views" => 950],
-                                ["name" => "Reports", "url" => "/Admin/All_Reports.php", "views" => 780],
-                                ["name" => "Statistics", "url" => "/Admin/Statistics.php", "views" => 620],
-                                ["name" => "Profile", "url" => "/profile.php", "views" => 450]
-                            ];
-                            foreach ($pages as $page) {
-                                echo "<tr class='text-center'>";
-                                echo "<td>{$page['name']}</td>";
-                                echo "<td>{$page['url']}</td>";
-                                echo "<td>{$page['views']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
+                            <?php foreach ($mostViewedPages as $page): ?>
+                                <!-- <li class="list-group-item">
+                                    <?= htmlspecialchars($page->page_url) ?>
+                                    <span class="badge bg-primary"><?= $page->total_views ?> views</span>
+                                </li> -->
+                                <tr class="text-center">
+                                    <td><?= $page->file_name ?></td>
+                                    <td><?= $page->page_url ?></td>
+                                    <td><?= $page->total_views ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -139,22 +163,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $users = [
-                                ["username" => "admin_kelvin", "role" => "Admin", "activity" => 320],
-                                ["username" => "coord_sophia", "role" => "Marketing Coordinator", "activity" => 280],
-                                ["username" => "mgr_jane", "role" => "Marketing Manager", "activity" => 250],
-                                ["username" => "user_michale", "role" => "Admin", "activity" => 190],
-                                ["username" => "coord_emma", "role" => "Marketing Coordinator", "activity" => 150]
-                            ];
-                            foreach ($users as $user) {
-                                echo "<tr class='text-center'>";
-                                echo "<td>{$user['username']}</td>";
-                                echo "<td>{$user['role']}</td>";
-                                echo "<td>{$user['activity']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
+                            <?php foreach ($mostActiveUsers as $user): ?>
+                                <tr class="text-center">
+                                    <td><?= $user->name ?></td>
+                                    <td><?= $user->role_name ?></td>
+                                    <td><?= $user->total_activity ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -175,22 +190,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $browsers = [
-                                ["browser" => "Chrome", "count" => 1800, "percentage" => 60],
-                                ["browser" => "Firefox", "count" => 600, "percentage" => 20],
-                                ["browser" => "Safari", "count" => 300, "percentage" => 10],
-                                ["browser" => "Edge", "count" => 240, "percentage" => 8],
-                                ["browser" => "Other", "count" => 60, "percentage" => 2]
-                            ];
-                            foreach ($browsers as $index => $browser) {
-                                echo "<tr class='text-center'>";
-                                echo "<td>{$browser['browser']}</td>";
-                                echo "<td>{$browser['count']}</td>";
-                                echo "<td><canvas id='browserChart{$index}' class='chart-container'></canvas></td>";
-                                echo "</tr>";
-                            }
+                            <?php foreach ($mostUsedBrowsers as $index => $browser):
+                                $shortBrowserName = $BrowserName->getShortBrowserName($browser->browser);
                             ?>
+                                <tr class="text-center">
+                                    <td><?= htmlspecialchars($shortBrowserName) ?></td>
+                                    <td><?= $browser->total_usage ?></td>
+                                    <td><canvas id='browserChart<?= $index ?>' class='chart-container'></canvas></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -199,48 +207,40 @@
     </main>
 
     <!-- Footer -->
-    <?php include "footer.html"; ?>
+    <?php include "footer.php"; ?>
 
     <!-- JavaScript for Pie Charts -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            <?php
-            foreach ($browsers as $index => $browser) {
-                $percentage = $browser['percentage'];
-                $remaining = 100 - $percentage;
-                echo "
-                new Chart(document.getElementById('browserChart{$index}'), {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                            data: [{$percentage}, {$remaining}],
-                            backgroundColor: ['var(--primary-light)', '#e5e7eb'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%', // Thin ring
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                enabled: true,
-                                callbacks: {
-                                    label: function(context) {
-                                        return context.parsed + '%';
-                                    }
+    document.addEventListener('DOMContentLoaded', () => {
+        <?php foreach ($mostUsedBrowsers as $index => $browser): ?>
+            new Chart(document.getElementById('browserChart<?= $index ?>'), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [<?= $browser->percentage ?>, <?= 100 - $browser->percentage ?>],
+                        backgroundColor: ['var(--primary-light)', '#e5e7eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed + '%';
                                 }
                             }
-                        },
-                        animation: { animateScale: true }
+                        }
                     }
-                });
-                ";
-            }
-            ?>
-        });
-    </script>
+                }
+            });
+        <?php endforeach; ?>
+    });
+</script>
 </body>
 
 </html>

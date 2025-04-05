@@ -14,7 +14,7 @@ class ActivityLogsTable
     }
 
     // Log User Activity (Insert or Update)
-    public function logPageView($user_id, $pageUrl, $browser, $ipAddress)
+    public function logPageView($user_id, $pageUrl, $browser, $ipAddress,$fileName)
     {
         try {
             // Check if this page is already logged
@@ -37,12 +37,13 @@ class ActivityLogsTable
             } else {
                 // Insert a new log
                 $statement = $this->db->prepare(
-                    "INSERT INTO activity_logs (user_id, page_url, browser, ip_address, view_count, last_viewed_at) 
-                    VALUES (:user_id, :page_url, :browser, :ip_address, 1, NOW())"
+                    "INSERT INTO activity_logs (user_id, page_url, file_name, browser, ip_address, view_count, last_viewed_at) 
+                    VALUES (:user_id, :page_url, :file_name, :browser, :ip_address, 1, NOW())"
                 );
                 $statement->execute([
                     'user_id' => $user_id,
                     'page_url' => $pageUrl,
+                    'file_name' => $fileName,
                     'browser' => $browser,
                     'ip_address' => $ipAddress
                 ]);
@@ -56,7 +57,7 @@ class ActivityLogsTable
     public function getMostViewedPages()
     {
         $statement = $this->db->query(
-            "SELECT page_url, SUM(view_count) as total_views 
+            "SELECT page_url,file_name, SUM(view_count) as total_views 
              FROM activity_logs 
              GROUP BY page_url 
              ORDER BY total_views DESC 
@@ -69,27 +70,44 @@ class ActivityLogsTable
     public function getMostActiveUsers()
     {
         $statement = $this->db->query(
-            "SELECT users.name, COUNT(activity_logs.active_id) as total_activity 
+            "SELECT users.name, roles.role_name, COUNT(activity_logs.active_id) as total_activity 
              FROM activity_logs 
              JOIN users ON activity_logs.user_id = users.id 
+             JOIN role_user ON users.id = role_user.user_id
+             JOIN roles ON role_user.role_id = roles.id 
              GROUP BY activity_logs.user_id 
              ORDER BY total_activity DESC 
              LIMIT 5"
         );
         return $statement->fetchAll(PDO::FETCH_OBJ);
     }
-
     // Get Most Used Browsers
-    public function getMostUsedBrowsers()
-    {
-        $statement = $this->db->query(
-            "SELECT browser, COUNT(browser) as total_usage 
-             FROM activity_logs 
-             GROUP BY browser 
-             ORDER BY total_usage DESC 
-             LIMIT 5"
-        );
-        return $statement->fetchAll(PDO::FETCH_OBJ);
-    }
+    // public function getMostUsedBrowsers($limit = 5)
+    // {
+    //     $statement = $this->db->query(
+    //         "SELECT browser, COUNT(browser) as total_usage 
+    //          FROM activity_logs 
+    //          GROUP BY browser 
+    //          ORDER BY total_usage DESC 
+    //          LIMIT :limit"
+    //     );
+    //     $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+    //     $statement->execute();
+    //     return $statement->fetchAll(PDO::FETCH_OBJ);
+    // }
+
+    public function getMostUsedBrowsers($limit = 5)
+{
+    $statement = $this->db->prepare(
+        "SELECT browser, COUNT(*) as total_usage 
+         FROM activity_logs 
+         GROUP BY browser 
+         ORDER BY total_usage DESC 
+         LIMIT :limit"
+    );
+    $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_OBJ);
+}
 }
 ?>

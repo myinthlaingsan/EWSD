@@ -6,7 +6,7 @@ class BrowserHelper{
             return 'Chrome';
         }
         if (strpos($userAgent, 'Edg') !== false) {
-            return 'Edge';
+            return 'Microsoft Edge';
         }
         if (strpos($userAgent, 'Firefox') !== false) {
             return 'Firefox';
