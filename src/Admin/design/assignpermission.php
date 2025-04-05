@@ -24,9 +24,9 @@ $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Assign Permission</h1>
+<?php include "header.php"; ?>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <h2>Assign Permission to <?= $roles->role_name ?></h2>
 
         <form method="POST" action="../code/assignpermission.php">
@@ -51,5 +51,6 @@ $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
             <a href="role.php" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
+    <?php include "header.php"; ?>
 </body>
 </html>

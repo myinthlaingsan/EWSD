@@ -95,11 +95,11 @@
             <div class="collapse navbar-collapse" id="desktopNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fa-solid fa-file-lines"></i> Contribution</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fa-solid fa-file-lines"></i> Articles</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fa-solid fa-folder-open"></i> Reports</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="Statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -109,15 +109,20 @@
         <span class="close-btn" id="closeMenu">&times;</span>
         <ul class="navbar-nav text-white mt-4">
             <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fas fa-calendar-alt"></i> Contribution</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fas fa-calendar-alt"></i> Articles</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fas fa-building"></i> Reports</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="Statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../../index.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="backdrop" id="backdrop"></div>
-
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

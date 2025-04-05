@@ -1,7 +1,6 @@
 <?php
 include("../../../vendor/autoload.php");
 use Helpers\Auth;
-
 Auth::check();
 ?>
 <!DOCTYPE html>
@@ -85,16 +84,16 @@ Auth::check();
             <li class="nav-item me-5">
               <a class="nav-link" href="#contactpage">Contact Us</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="../../Auth/design/register.php">
                     <i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>
                     SignIn
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
-                <a class="nav-link text-danger" href="../../Auth/code/logout.php">
+                <a class="nav-link" href="../../Auth/code/logout.php">
                     <i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>
-                    LogOut
+                    Logout
                 </a>
             </li>
           </div>
@@ -102,7 +101,12 @@ Auth::check();
       </div>
     </nav>
     <!-- Nav bar end -->
-
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <!-- Home Page start -->
     <header>
       <div class="container-fluid">

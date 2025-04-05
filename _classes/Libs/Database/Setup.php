@@ -1,5 +1,6 @@
 <?php
 include("../../../vendor/autoload.php");
+
 use Libs\Database\MySQL;
 
 $db = (new MySQL())->connect();
@@ -21,9 +22,10 @@ try {
             address VARCHAR(50),
             phone VARCHAR(50),
             password VARCHAR(255) NOT NULL, -- Hashed passwords
-            faculty_id INT,
+            faculty_id INT NULL,
             FOREIGN KEY (faculty_id) REFERENCES faculties(id) ON DELETE CASCADE,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            last_login TIMESTAMP NULL DEFAULT NULL
         )
     ");
     // Create roles table
@@ -129,6 +131,19 @@ try {
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     ");
+    $db->exec("
+        CREATE TABLE activity_logs (
+            active_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NULL,
+            page_url VARCHAR(255) NOT NULL,
+            browser VARCHAR(255) NOT NULL,
+            ip_address VARCHAR(50) NOT NULL,
+            view_count INT DEFAULT 1,
+            last_viewed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+        );
+    ");
+
     echo "Database setup completed successfully!";
 } catch (PDOException $e) {
     echo "Error setting up the database: " . $e->getMessage();
