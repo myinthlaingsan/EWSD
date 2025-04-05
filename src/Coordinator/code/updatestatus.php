@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['article_id'])) {
     $table = new ArticleTable(new MySQL);
     $table->updateArticleStatus($article_id); // Pass only the ID, not an array
 
-    HTTP::redirect('/src/Coordinator/design/viewarticlebyfaculty.php');
+    HTTP::redirect('/src/Coordinator/design/viewdetail.php?id='. $article_id);
 } else {
     echo "Invalid request.";
 }

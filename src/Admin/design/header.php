@@ -6,7 +6,6 @@
     <title>Responsive Admin Header</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
     <script src="../../../js/bootstrap.bundle.min.js"></script>
-    <!-- <link rel="stylesheet" href="../../../css/all.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -95,12 +94,15 @@
             </button>
             <div class="collapse navbar-collapse" id="desktopNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="Manage_Contribution.php"><i class="fas fa-calendar-alt"></i> Manage Contribution Date</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="faculties.php"><i class="fas fa-building"></i> Faculties</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="./dashboard.php"><i class="fas fa-home"></i> Home</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link text-white" href="../design/setting.php"><i class="fas fa-calendar-alt"></i> Manage Contribution Date</a></li> -->
+                    <li class="nav-item"><a class="nav-link text-white" href="./role.php"><i class="fas fa-calendar-alt"></i> Create Role</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="./permissions.php"><i class="fas fa-calendar-alt"></i> Create Permission</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i>Add Faculties</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="./setting.php"><i class="fa-solid fa-gear"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -109,16 +111,22 @@
     <div class="sidebar" id="sidebarMenu">
         <span class="close-btn" id="closeMenu">&times;</span>
         <ul class="navbar-nav text-white mt-4">
-            <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./dashboard.php"><i class="fas fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="Manage_Contribution.php"><i class="fas fa-calendar-alt"></i> Manage Contribution Date</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="faculties.php"><i class="fas fa-building"></i> Faculties</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../../index.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./setting.php"><i class="fa-solid fa-gear"></i></a></li>
         </ul>
     </div>
     <div class="backdrop" id="backdrop"></div>
-    
+    <?php if (isset($_SESSION['login_message'])): ?>
+        <div class="alert alert-info">
+            <?= $_SESSION['login_message'] ?>
+        </div>
+        <?php unset($_SESSION['login_message']); ?>
+    <?php endif; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

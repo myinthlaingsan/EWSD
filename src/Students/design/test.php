@@ -2,17 +2,13 @@
 include("../../../vendor/autoload.php");
 
 use Helpers\Auth;
-use Libs\Database\ArticleTable;
 use Libs\Database\MySQL;
+use Libs\Database\ArticleTable;
 
-$auth = AUTH::check();
-$user_id = $auth->id;
+$auth = Auth::check();
 $table = new ArticleTable(new MySQL);
-$articles = $table->getArticlesByUserId($user_id);
-foreach ($articles as $article) {
-    $article_id = $article['article_id'];
-}
-$comments = $table->getCommnetbyarticleid($article_id);
+$article_id = $_GET['id'];
+$article = $table->articlebyfacultydetail($article_id);
 ?>
 
 <!DOCTYPE html>
@@ -21,115 +17,154 @@ $comments = $table->getCommnetbyarticleid($article_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Articles</title>
+    <title>Update Article</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .current-files {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .file-item img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 15px;
+        }
+        .file-actions {
+            margin-left: auto;
+        }
+        .preview-image {
+            max-width: 150px;
+            max-height: 150px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h2>My Articles</h2>
-        <?php if (!empty($articles)) : ?>
-            <?php foreach ($articles as $article) : ?>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5><strong>Article Title:</strong> <?= htmlspecialchars($article['title']) ?></h5>
-                        <p><strong>Status:</strong> <?= ucfirst($article['status']) ?></p>
-                        <p><small>Created on: <?= date('F j, Y', strtotime($article['created_at'])) ?></small></p>
+    <div class="container mt-5">
+        <h2 class="mb-4">Update Article</h2>
 
-                        <!-- Document Attachments -->
-                        <!-- <?php if ($article['docfile']) : ?>
-                            <p><strong>Documents:</strong></p>
-                            <ul>
-                                <li><a href="../../../uploads/documents/<?= htmlspecialchars($article['docfile']) ?>" target="_blank"><?= htmlspecialchars($article['docfile']) ?></a></li>
-                            </ul>
-                        <?php endif; ?> -->
+        <form action="../code/update_article.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="article_id" value="<?= htmlspecialchars($article['article_id']) ?>">
 
-                        <!-- Document Attachments -->
-                        <?php if ($article['docfile']) : ?>
-                            <p><strong>Documents:</strong></p>
-                            <ul>
-                                <?php
-                                $filePath = "../../../uploads/documents/" . htmlspecialchars($article['docfile']);
-                                $fileExt = pathinfo($article['docfile'], PATHINFO_EXTENSION);
-                                ?>
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" value="<?= htmlspecialchars($article['title']) ?>" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <input type="text" class="form-control" name="status" value="<?= $article['status'] ?>" required>
+            </div>
+            <!-- Current Images -->
+            <div class="mb-3 current-files">
+                <label class="form-label">Current Images</label>
+                <?php if (!empty($article['images'])): 
+                    $images = explode(',', $article['images']);
+                    foreach ($images as $image): 
+                        $image = trim($image);
+                        if (!empty($image)): ?>
+                            <div class="file-item">
+                                <img src="../../../uploads/images/<?= htmlspecialchars($image) ?>" alt="Article Image" class="img-thumbnail">
+                                <span><?= htmlspecialchars($image) ?></span>
+                                
+                            </div>
+                        <?php endif; 
+                    endforeach; 
+                else: ?>
+                    <p class="text-muted">No images uploaded</p>
+                <?php endif; ?>
+            </div>
 
-                                <?php if ($fileExt === 'txt'): ?>
-                                    <!-- Open TXT directly -->
-                                    <li><a href="<?= $filePath ?>" target="_blank"><?= htmlspecialchars($article['docfile']) ?></a></li>
+            <!-- New Images -->
+            <div class="mb-3">
+                <label class="form-label">Upload New Images (Optional)</label>
+                <input type="file" class="form-control" name="imagefile[]" accept="image/*" multiple>
+                <small class="text-muted">You can select multiple images</small>
+                <div id="imagePreview" class="mt-2 d-flex flex-wrap"></div>
+            </div>
 
-                                <?php elseif ($fileExt === 'pdf'): ?>
-                                    <!-- Open PDF directly -->
-                                    <li><a href="<?= $filePath ?>" target="_blank"><?= htmlspecialchars($article['docfile']) ?></a></li>
+            <!-- Current Documents -->
+            <div class="mb-3 current-files">
+                <label class="form-label">Current Documents</label>
+                <?php if (!empty($article['documents'])): 
+                    $documents = explode(',', $article['documents']);
+                    foreach ($documents as $doc): 
+                        $doc = trim($doc);
+                        if (!empty($doc)): ?>
+                            <div class="file-item">
+                                <i class="fas fa-file-pdf fa-2x text-danger me-3"></i>
+                                <span><?= htmlspecialchars($doc) ?></span>
+                            </div>
+                        <?php endif; 
+                    endforeach; 
+                else: ?>
+                    <p class="text-muted">No documents uploaded</p>
+                <?php endif; ?>
+            </div>
 
-                                <?php elseif ($fileExt === 'doc' || $fileExt === 'docx'): ?>
-                                    <!-- Use Google Docs Viewer for DOC and DOCX -->
-                                    <li>
-                                        <a href="https://docs.google.com/gview?url=<?= urlencode('http://yourwebsite.com/uploads/documents/' . $article['docfile']) ?>&embedded=true" target="_blank">
-                                            View <?= htmlspecialchars($article['docfile']) ?> Online
-                                        </a>
-                                    </li>
-                                <?php else: ?>
-                                    <!-- For unsupported files, just provide a download link -->
-                                    <li><a href="<?= $filePath ?>" download>Download <?= htmlspecialchars($article['docfile']) ?></a></li>
-                                <?php endif; ?>
-                            </ul>
-                        <?php endif; ?>
+            <!-- New Documents -->
+            <div class="mb-3">
+                <label class="form-label">Upload New Documents (Optional)</label>
+                <input type="file" class="form-control" name="docfile[]" accept=".pdf,.doc,.docx,.txt" multiple>
+                <small class="text-muted">You can select multiple documents (PDF, Word, TXT)</small>
+            </div>
 
-
-                        <!-- Image Attachments -->
-                        <?php if ($article['imagefile']) : ?>
-                            <p><strong>Images:</strong></p>
-                            <img src="../../../uploads/images/<?= htmlspecialchars($article['imagefile']) ?>" alt="Image" class="img-fluid rounded shadow" style="max-width: 200px;">
-                        <?php endif; ?>
-                        <form action="../code/comments.php" method="post">
-                            <br>
-
-                            <label>articleID</label><br>
-                            <input type="text" name="article_id" value="<?= $article['article_id'] ?>"><br>
-                            <label>userID</label><br>
-                            <input type="text" name="user_id" value="<?= $user_id ?>"><br>
-                            <label>Commnets</label><br>
-                            <input type="text" name="comment_text">
-                            <input type="submit" value="Add commnet">
-
-                            <!-- <?php if ($article_id == $article['article_id']) : ?>
-                                <?php foreach ($comments as $comment) : ?>
-                                    <h1><?= $comment['comment_text'] ?></h1>
-                                <?php endforeach ?>
-                            <?php else : ?>
-                                <h1>No comment found for articlecID<?= $article['article_id'] ?></h1>
-                            <?php endif ?> -->
-
-                            <!-- <?php if (!empty($articles)) : ?>
-                                <?php foreach ($articles as $article) : ?>
-                                    <?php
-                                    // Fetch comments for this specific article
-                                    $comments = $table->getCommnetbyarticleid($article['article_id']);
-                                    ?>
-
-                                    <?php if (!empty($comments)) : ?>
-                                        <?php foreach ($comments as $comment) : ?>
-                                            <h1><?= htmlspecialchars($comment['comment_text']) ?></h1>
-                                        <?php endforeach ?>
-                                    <?php else : ?>
-                                        <h1>No comment found for Article ID <?= htmlspecialchars($article['article_id']) ?></h1>
-                                    <?php endif ?>
-                                <?php endforeach ?>
-                            <?php else : ?>
-                                <h1>No articles found</h1>
-                            <?php endif ?> -->
-
-
-                        </form>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <p class="text-muted">No articles found.</p>
-        <?php endif; ?>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update Article
+            </button>
+            <a href="viewarticlebyfaculty1.php" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+        // Image preview functionality
+        document.querySelector('input[name="imagefile[]"]').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+            
+            for (let i = 0; i < this.files.length; i++) {
+                const file = this.files[i];
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'preview-image img-thumbnail';
+                        previewContainer.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
 
+        function confirmDeleteImage(filename) {
+            if (confirm('Are you sure you want to delete this image?')) {
+                window.location.href = `../code/delete_file.php?article_id=<?= $article['article_id'] ?>&type=image&filename=${filename}`;
+            }
+        }
+
+        function confirmDeleteDoc(filename) {
+            if (confirm('Are you sure you want to delete this document?')) {
+                window.location.href = `../code/delete_file.php?article_id=<?= $article['article_id'] ?>&type=doc&filename=${filename}`;
+            }
+        }
+    </script>
+</body>
 </html>

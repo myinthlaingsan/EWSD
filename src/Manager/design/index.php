@@ -1,33 +1,95 @@
+<?php
+
+include('../../../vendor/autoload.php');
+
+use Helpers\Auth;
+use Libs\Database\ArticleTable;
+use Libs\Database\UsersTable;
+use Libs\Database\MySQL;
+
+$auth = Auth::check();
+$table = new ArticleTable(new MySQL);
+$usertable = new UsersTable(new MySQL);
+$finalclosuredate = $usertable->selectFinalClosureDate();
+$selected = $table->getAllSelectedArticles();
+$countarticle = $table->countArticles();
+$usercreatearticle = $table->articlesCreateUser();
+$countfaculty = $table->countFaculties();
+
+?>
+<?php
+$host = "localhost";
+$username = "root";
+$password = "";
+$db = "ewsd";
+$port = "3306";
+
+$con = new mysqli($host, $username, $password, $db, $port);
+if ($con->connect_errno) {
+    echo "Connection Failed";
+}
+
+// Faculty Contribution Percentage Query
+$fac_cont_perc_q = "SELECT
+                        f.faculty_name,
+                        (COUNT(a.article_id) * 100.0 / (SELECT COUNT(*) FROM articles WHERE YEAR(created_at) = 2025)) AS contribution_percentage
+                    FROM articles a
+                    JOIN users u ON a.user_id = u.id
+                    JOIN faculties f ON u.faculty_id = f.id
+                    WHERE YEAR(a.created_at) = 2025
+                    GROUP BY f.faculty_name;";
+
+$fac_cont_perc_res = $con->query($fac_cont_perc_q);
+
+// Prepare data points for faculty contribution chart
+$fac_dataPoints = [];
+while ($row = $fac_cont_perc_res->fetch_assoc()) {
+    $fac_dataPoints[] = array("label" => $row['faculty_name'], "y" => (float)$row['contribution_percentage']);
+}
+
+echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON_NUMERIC_CHECK) . ");</script>";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script><!-- Chart Display -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-dark: #1e3a8a; /* Dark blue */
-            --primary-light: #3b82f6; /* Light blue */
-            --accent: #facc15; /* Yellow */
-            --light-bg: #f8fafc; /* Light gray */
+            --primary-dark: #1e3a8a;
+            /* Dark blue */
+            --primary-light: #3b82f6;
+            /* Light blue */
+            --accent: #facc15;
+            /* Yellow */
+            --light-bg: #f8fafc;
+            /* Light gray */
             --card-bg: #ffffff;
             --text-muted: #64748b;
         }
+
         body {
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .container {
             max-width: 1200px;
         }
+
         .header-title {
             color: var(--primary-dark);
             font-size: 2rem;
             font-weight: 700;
         }
+
         .card {
             background: var(--card-bg);
             border: 1px solid #e5e7eb;
@@ -35,38 +97,75 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
+
         .btn-download {
             background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
             border: none;
             font-weight: 600;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
         .btn-download:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
+
         .btn-download:disabled {
             background: #d1d5db;
             cursor: not-allowed;
         }
+
         .stat-value {
             color: var(--primary-light);
             font-weight: 700;
             font-size: 1.5rem;
         }
+
         .table th {
             background-color: var(--primary-dark);
             color: #ffffff;
         }
+
         .table td {
             color: var(--text-muted);
         }
+
+        /* Pie Chart */
+        .chart-containers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .chart-container {
+            flex: 1 1 45%;
+            /* Allow two charts per row on large screens */
+            max-width: 600px;
+            /* Prevent excessive stretching */
+            min-width: 300px;
+            /* Prevent charts from getting too small */
+            height: 400px;
+            /* Set a fixed height */
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                flex: 1 1 100%;
+            }
+        }
+
+        .canvasjs-chart-credit {
+            display: none !important;
+        }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <?php include "headermm.php"; ?>
@@ -93,22 +192,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $contributions = [
-                                ["id" => 1, "title" => "AI Innovations", "faculty" => "Information Technology", "student" => "Kelvin", "final" => "2025-04-01"],
-                                ["id" => 2, "title" => "Bridge Design", "faculty" => "Engineering", "student" => "Sophia", "final" => "2025-06-01"],
-                                ["id" => 3, "title" => "Market Trends", "faculty" => "Business", "student" => "Jane", "final" => "2025-08-15"]
-                            ];
-                            foreach ($contributions as $contribution) {
-                                echo "<tr>";
-                                echo "<td>{$contribution['id']}</td>";
-                                echo "<td>{$contribution['title']}</td>";
-                                echo "<td>{$contribution['faculty']}</td>";
-                                echo "<td>{$contribution['student']}</td>";
-                                echo "<td>{$contribution['final']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
+                            
+                            <?php foreach($selected as $selectedArticle) : ?>
+                                <tr>
+                                    <td><?= $selectedArticle['article_id'] ?></td>
+                                    <td><?= $selectedArticle['title'] ?></td>
+                                    <td><?= $selectedArticle['faculty_name'] ?></td>
+                                    <td><?= $selectedArticle['name'] ?></td>
+                                    <td><?= $finalclosuredate ?></td>
+                                </tr>
+                            <?php endforeach ?>
                         </tbody>
                     </table>
                 </div>
@@ -121,13 +214,13 @@
                 <h2 class="fs-4 fw-bold text-primary-dark mb-4">Statistics (2025 Academic Year)</h2>
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <p>Total Contributions: <span class="stat-value">45</span></p>
+                        <p>Total Articles: <span class="stat-value"><?= $countarticle ?></span></p>
                     </div>
                     <div class="col-md-4">
-                        <p>Total Contributors: <span class="stat-value">30</span></p>
+                        <p>Total Contributors: <span class="stat-value"><?= $usercreatearticle ?></span></p>
                     </div>
                     <div class="col-md-4">
-                        <p>Faculties Represented: <span class="stat-value">8</span></p>
+                        <p>Faculties Represented: <span class="stat-value"><?= $countfaculty ?></span></p>
                     </div>
                 </div>
                 <div class="table-responsive mt-4">
@@ -160,6 +253,33 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pie Chart Contribution by each facuty  -->
+                <div class="chart-containers">
+                    <div id="facultyChartContainer" class="chart-container"></div>
+                    
+                </div>
+
+                <script>
+                    window.onload = function() {
+                        var facultyChart = new CanvasJS.Chart("facultyChartContainer", {
+                            animationEnabled: true,
+                            title: {
+                                text: "Faculty Article Contribution (2025)"
+                            },
+                            data: [{
+                                type: "pie",
+                                showInLegend: true,
+                                legendText: "{label}",
+                                indexLabel: "{label} - #percent%",
+                                yValueFormatString: "#,##0.##%",
+                                dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
+                            }]
+                        });
+
+                        facultyChart.render();
+                    };
+                </script>
             </div>
         </section>
 
@@ -204,5 +324,8 @@
 
     <!-- Footer -->
     <?php include "footer.php"; ?>
+
+    
 </body>
+
 </html>

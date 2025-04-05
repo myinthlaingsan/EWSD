@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
+<?php include "header.php"; ?>
     <div class="container mt-5">
         <h2>Assign Role to <?= $users->name ?></h2>
 
@@ -65,5 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
+    <?php include "footer.php"; ?>
 </body>
 </html>

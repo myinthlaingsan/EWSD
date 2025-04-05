@@ -1,0 +1,49 @@
+Agile business
+https://www.agilebusiness.org/dsdm-project-framework/choosing-dsdm.html ( Agile Business Consortium Limited)
+
+Airfocus
+https://airfocus.com/glossary/what-is-dynamic-systems-development-method/ (air focus)
+
+DSDM lifecycle
+https://en.wikipedia.org/wiki/Dynamic_systems_development_method
+
+Agile business
+https://www.agilebusiness.org/business-agility/what-is-dsdm.html
+
+Training bytesize
+https://www.trainingbytesize.com/principles-of-agile-business-analysis/
+
+nimble
+https://www.nimblework.com/agile/dynamic-system-development-method-dsdm/
+
+agile business
+https://www.agilebusiness.org/dsdm-project-framework/product.html
+
+Atlassian
+https://www.atlassian.com/agile/project-management/user-stories#:~:text=software%20user's%20perspective.-,A%20user%20story%20is%20an%20informal%2C%20general%20explanation%20of%20a,value%20back%20to%20the%20customer.
+
+mountain goat
+https://www.mountaingoatsoftware.com/agile/user-stories
+
+wrike
+https://www.wrike.com/agile-guide/epics-stories-tasks/
+
+Atlassian
+https://www.atlassian.com/agile/project-management/epics
+
+cloud architectural
+https://cloud-architecture.io/architecture/architectural-spiking/
+
+Tech Target
+https://www.techtarget.com/searchcio/definition/proof-of-concept-POC
+
+clockify
+https://clockify.me/timeboxing#:~:text=Timeboxing%20is%20a%20simple%20time,activity%20within%20that%20time%20frame.
+
+scrum.org
+https://www.scrum.org/resources/what-scrum-module
+
+nimble
+https://www.nimblework.com/agile/scrum-methodology/
+wrike
+https://www.wrike.com/project-management-guide/faq/what-is-scrum-in-project-management/

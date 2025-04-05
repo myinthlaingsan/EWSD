@@ -77,7 +77,6 @@ echo "<hr/>";
 
 
 // Percentage of contributions by each faculty for this academic year
-
 $fac_cont_perc_q = "SELECT
                 f.faculty_name,(COUNT(a.article_id) * 100.0 / (SELECT COUNT(*) FROM articles WHERE YEAR(created_at) = 2025)) AS contribution_percentage
                 FROM articles a

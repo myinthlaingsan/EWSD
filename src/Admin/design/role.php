@@ -16,10 +16,7 @@ $roles=$table->roleall();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
-    <a href="./dashboard.php">Dashboard</a>
-    <a href="./assignrole.php">Assign Role</a>
-    <a href="./permissions.php">Create Permission</a>
-    <a href="./assignpermission.php">Assign Permission</a>
+<?php include "header.php"; ?>
     <div class="container text-center" style="max-width: 680px">
         <form action="../code/role.php" method="post" class="mb-2">
             <input type="text" class="form-control mb-2" name="role_name" placeholder="Role" required>
@@ -48,5 +45,6 @@ $roles=$table->roleall();
             <?php endif; ?>
         </table>
     </div>
+    <?php include "footer.php"; ?>
 </body>
 </html>

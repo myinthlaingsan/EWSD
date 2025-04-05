@@ -6,13 +6,16 @@ ini_set('display_errors', 1);
 include("../../../vendor/autoload.php");
 
 use Helpers\HTTP;
+use Helpers\Mailer;
 use Libs\Database\MySQL;
 use Libs\Database\ArticleTable;
 use Libs\Database\UsersTable;
 // $table = new ArticleTable(new MySQL);
+$mailer = new Mailer();
+$mailer->sendEmail($coordinator->email, $subject, $message);
 $table = new ArticleTable(new MySQL);
-$table2 = new UsersTable(new MySQL);
-$closuredate = $table2->selectClosureDate();
+$usertable = new UsersTable(new MySQL);
+$closuredate = $usertable->selectClosureDate();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST['agree'])) {
         die("You must agree to the Terms and Conditions.");
@@ -91,8 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($article_id) {
+        $user = $usertable->getuserbyId($id);
+        $facultyName = $table->getfacultyname($user->id);
         // Get all marketing coordinators
-        $coordinators = $table2->getCoorEmail();
+        $coordinators = $usertable->getCoorEmail($user->faculty_id);
         
         // Create notification for each coordinator
         foreach ($coordinators as $coordinator) {
@@ -101,19 +106,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $table->insertNotification([
                 "article_id" => $article_id,
                 "user_id" => $coordinator->id,
-                "message" => "New article submitted: '$title' requires your review",
+                "message" => "New article submitted: '$title' requires your review within 14 days.",
                 "deadline_date" => $deadline
             ]);
-            
-            // Send email notification
-            // $this->sendEmailNotification(
-            //     $coordinator->email,
-            //     "New Article Submission",
-            //     "A new article '$title' has been submitted for your review. Please provide comments by $deadline.",
-            //     HTTP::redirect('/coordinator/review.php?id='.$article_id)
-            // );
+
+            // Prepare and send email notification
+            $subject = "New Article Submission - Action Required";
+            $message = "
+                <h2>New Article Submitted</h2>
+                <p><strong>Faculty:</strong> $facultyName</p>
+                <p><strong>Title:</strong> $title</p>
+                <p><strong>Submitted by:</strong> $user->name ($user->email)</p>
+                <p><strong>Deadline for review:</strong> $deadline</p>
+                
+                <p>Please review this article within the next 14 days.</p>
+                <a href='".HTTP::$base."/src/Coordinator/design/viewdetail.php?id=$article_id'>Review Article</a>
+                ";
+
+            $mailer->sendEmail(
+                $coordinator->email,
+                $subject,
+                $message
+            );
+
         }
-         // Rest of your success handling...
     }
     HTTP::redirect('/src/Students/design/create_articles.php');
 }

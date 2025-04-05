@@ -16,11 +16,8 @@ $permissions=$table->allpermissions();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
-    <a href="./dashboard.php">Dashboard</a>
-    <a href="./assignrole.php">Assign Role</a>
-    <a href="./permissions.php">Create Permission</a>
-    <a href="./assignpermission.php">Assign Permission</a>
-    <div class="container text-center" style="max-width: 680px">
+<?php include "header.php"; ?>
+    <div class="container text-center mt-5" style="max-width: 680px">
         <form action="../code/permissions.php" method="post" class="mb-2">
             <input type="text" class="form-control mb-2" name="permission_name" placeholder="Role" required>
             <button class="btn btn-primary w-100">Create</button>
@@ -47,5 +44,6 @@ $permissions=$table->allpermissions();
             <?php endif; ?>
         </table>
     </div>
+    <?php include "footer.php"; ?>
 </body>
 </html>
