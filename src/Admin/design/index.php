@@ -1,3 +1,20 @@
+<?php
+include('../../../vendor/autoload.php');
+use Helpers\Auth;
+use Libs\Database\MySQL;
+use Libs\Database\UsersTable;
+use Libs\Database\ArticleTable;
+
+$auth = Auth::check();
+$username = $auth->name;
+$usertable = new UsersTable(new MySQL);
+$table = new ArticleTable(new MySQL);
+$finalclosuredate = $usertable->selectFinalClosureDate();
+$totalArticles = $table->countArticles();
+$totalFaculties = $table->countFaculties();
+$totalStudents = $table->articlesCreateUser();
+$totalCoordinators = $table->countCoordinators();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,7 +143,7 @@
         <div class="container my-5 welcome-section">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 class="text-primary-custom">Welcome Admin Name</h2>
+                    <h2 class="text-primary-custom">WELCOME <?= $username ?></h2>
                     <h1 class="text-primary-custom">Contribution Management</h1>
                 </div>
                 <a href="ContributionEntry.php" class="btn-custom">Add New Contribution</a>
@@ -138,11 +155,11 @@
                     <h3 class="card-title text-center text-primary-custom mb-3">The Last Contribution Name</h3>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><i class="fas fa-calendar me-2"></i> Last Deadline Date: <span class="deadline-date">20.2.2025</span></p>
+                            <p><i class="fas fa-calendar me-2"></i> Last Deadline Date: <span class="deadline-date"><?= $finalclosuredate ?></span></p>
                             <p><i class="fas fa-university me-2"></i> Faculty: Arts</p>
                         </div>
                         <div class="col-md-6">
-                            <p><i class="fas fa-users me-2"></i> Contribution Total Upload: 12 Students</p>
+                            <p><i class="fas fa-users me-2"></i>Articles Total Upload by<?= $totalStudents ?> Students</p>
                             <p><i class="fas fa-user-tie me-2"></i> Faculty Marketing Coordinator: Mr Kelvin</p>
                         </div>
                     </div>
@@ -155,7 +172,7 @@
                     <div class="card stat-card shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h3 class="text-primary-custom mb-3"><i class="fas fa-file-alt me-2"></i> Total Contributions</h3>
-                            <p class="fs-2 fw-bold text-secondary mb-0">15</p>
+                            <p class="fs-2 fw-bold text-secondary mb-0"><?= $totalArticles ?></p>
                         </div>
                     </div>
                 </div>
@@ -163,7 +180,7 @@
                     <div class="card stat-card shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h3 class="text-primary-custom mb-3"><i class="fas fa-user-graduate me-2"></i> Total Students</h3>
-                            <p class="fs-2 fw-bold text-secondary mb-0">150</p>
+                            <p class="fs-2 fw-bold text-secondary mb-0"><?= $totalStudents ?></p>
                         </div>
                     </div>
                 </div>
@@ -171,7 +188,7 @@
                     <div class="card stat-card shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h3 class="text-primary-custom mb-3"><i class="fas fa-building me-2"></i> Total Faculties</h3>
-                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
+                            <p class="fs-2 fw-bold text-secondary mb-0"><?= $totalFaculties ?></p>
                         </div>
                     </div>
                 </div>
@@ -179,7 +196,7 @@
                     <div class="card stat-card shadow h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             <h3 class="text-primary-custom mb-3"><i class="fas fa-user-tie me-2"></i> Total Coordinators</h3>
-                            <p class="fs-2 fw-bold text-secondary mb-0">13</p>
+                            <p class="fs-2 fw-bold text-secondary mb-0"><?= $totalCoordinators ?></p>
                         </div>
                     </div>
                 </div>

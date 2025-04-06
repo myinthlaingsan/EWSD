@@ -126,38 +126,51 @@ class ArticleTable
 
     //get select contribution for article download
     public function getSelectedArticles($faculty_id)
-    {
-        try {
-            $statement = $this->db->prepare("
-                SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
-                FROM articles a
-                LEFT JOIN doc_attachment d ON a.article_id = d.article_id
-                LEFT JOIN img_attachment i ON a.article_id = i.article_id
-                LEFT JOIN users u ON a.user_id = u.id
-                LEFT JOIN faculties f on u.faculty_id = f.id
-                WHERE a.status = 'selected'
-                AND u.faculty_id = :faculty_id
-                ORDER BY a.created_at DESC
-            ");
-            $statement->execute(['faculty_id' => $faculty_id]);
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error:" . $e->getMessage();
-            exit();
-        }
+{
+    try {
+        $statement = $this->db->prepare("
+            SELECT 
+                a.article_id,
+                a.title,
+                a.status,
+                a.created_at,
+                u.name,
+                f.faculty_name,
+                GROUP_CONCAT(DISTINCT d.docfile SEPARATOR '|||') as docfiles,
+                GROUP_CONCAT(DISTINCT i.imagefile SEPARATOR '|||') as imagefiles
+            FROM articles a
+            LEFT JOIN doc_attachment d ON a.article_id = d.article_id
+            LEFT JOIN img_attachment i ON a.article_id = i.article_id
+            LEFT JOIN users u ON a.user_id = u.id
+            LEFT JOIN faculties f ON u.faculty_id = f.id
+            WHERE a.status = 'selected'
+            AND u.faculty_id = :faculty_id
+            GROUP BY a.article_id, a.title, a.status, a.created_at, u.name, f.faculty_name
+            ORDER BY a.created_at DESC
+        ");
+        $statement->execute(['faculty_id' => $faculty_id]);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Better error handling - log the error and return empty array
+        echo "Error:" . $e->getMessage();
+        exit();
     }
+}
     //get select contribution for article download
     public function getAllSelectedArticles()
     {
         try {
             $statement = $this->db->prepare("
-                SELECT a.article_id,a.title,a.status,a.created_at,d.docfile,i.imagefile,u.name,f.faculty_name
+                SELECT a.article_id,a.title,a.status,a.created_at,u.name,f.faculty_name,
+                GROUP_CONCAT(DISTINCT d.docfile SEPARATOR '|||') as docfiles,
+                GROUP_CONCAT(DISTINCT i.imagefile SEPARATOR '|||') as imagefiles
                 FROM articles a
                 LEFT JOIN doc_attachment d ON a.article_id = d.article_id
                 LEFT JOIN img_attachment i ON a.article_id = i.article_id
                 LEFT JOIN users u ON a.user_id = u.id
                 LEFT JOIN faculties f on u.faculty_id = f.id
                 WHERE a.status = 'selected'
+                GROUP BY a.article_id, a.title, a.status, a.created_at, u.name, f.faculty_name
                 ORDER BY a.created_at DESC
             ");
             $statement->execute();
@@ -457,6 +470,24 @@ class ArticleTable
         try {
             $statement = $this->db->prepare("
                 SELECT COUNT(*) as total FROM faculties
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
+
+    //count Coordinator
+    public function countCoordinators()
+    {
+        try {
+            $statement = $this->db->prepare("
+                SELECT COUNT(*) as total FROM users 
+                JOIN role_user ON users.id = role_user.user_id
+                JOIN roles ON role_user.role_id = roles.id
+                WHERE roles.role_name = 'Coordinator'
             ");
             $statement->execute();
             return $statement->fetchColumn();

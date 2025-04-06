@@ -19,11 +19,11 @@ $fileName = basename($requestUri);
 
 // Log the page visit
 $activityLogTable->logPageView(
-  $user_id,
-  $_SERVER['REQUEST_URI'],
-  $_SERVER['HTTP_USER_AGENT'],
-  $_SERVER['REMOTE_ADDR'],
-  $fileName
+    $user_id,
+    $_SERVER['REQUEST_URI'],
+    $_SERVER['HTTP_USER_AGENT'],
+    $_SERVER['REMOTE_ADDR'],
+    $fileName
 );
 ?>
 
@@ -51,47 +51,40 @@ $activityLogTable->logPageView(
     rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
     crossorigin="anonymous" />
-
+    
   <style>
     .file-icon {
       font-size: 1.2rem;
       margin-right: 8px;
     }
-
     .file-list {
       list-style-type: none;
       padding-left: 0;
     }
-
     .file-list li {
       margin-bottom: 8px;
     }
-
     .gallery {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-top: 15px;
     }
-
     .gallery img {
       max-width: 200px;
       height: auto;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-
     .gallery img:hover {
       transform: scale(1.05);
     }
-
     .card {
       margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       border: none;
     }
-
     .card-header {
       background-color: #f8f9fa;
       border-bottom: 1px solid #eee;
@@ -159,12 +152,12 @@ $activityLogTable->logPageView(
     </div>
   </nav>
   <!-- Nav bar end -->
-
+  
   <div class="container mt-4 mb-5">
     <h2 class="mb-4">Selected Articles</h2>
-
+    
     <?php if (!empty($articles)) : ?>
-      <?php foreach ($articles as $article) :
+      <?php foreach ($articles as $article) : 
         // Process multiple files
         $docFiles = !empty($article['docfiles']) ? explode('|||', $article['docfiles']) : [];
         $imageFiles = !empty($article['imagefiles']) ? explode('|||', $article['imagefiles']) : [];
@@ -186,13 +179,13 @@ $activityLogTable->logPageView(
                 </span>
               </div>
             </div>
-
+            
             <!-- Document Attachments -->
             <?php if (!empty($docFiles)) : ?>
               <div class="mt-3">
                 <h5>Document Attachments</h5>
                 <ul class="file-list">
-                  <?php foreach ($docFiles as $docFile) :
+                  <?php foreach ($docFiles as $docFile) : 
                     $filePath = "../../../uploads/documents/" . htmlspecialchars($docFile);
                     $fileExt = pathinfo($docFile, PATHINFO_EXTENSION);
                     $fileIcon = getFileIcon($fileExt);
@@ -202,9 +195,10 @@ $activityLogTable->logPageView(
                       <?php if (in_array($fileExt, ['txt', 'pdf'])) : ?>
                         <a href="<?= $filePath ?>" target="_blank"><?= htmlspecialchars($docFile) ?></a>
                       <?php elseif (in_array($fileExt, ['doc', 'docx'])) : ?>
-                        <a href="../../../uploads/documents/<?php echo htmlspecialchars($docFile); ?>" target="_blank" class="pdf-link-btn">
-                          <i class="fas fa-file-pdf"></i> <?php echo htmlspecialchars($docFile); ?>
+                        <a href="https://docs.google.com/gview?url=<?= urlencode('http://' . $_SERVER['HTTP_HOST'] . '/uploads/documents/' . $docFile) ?>&embedded=true" target="_blank">
+                          View <?= htmlspecialchars($docFile) ?>
                         </a>
+                        
                       <?php else : ?>
                         <a href="<?= $filePath ?>" download>Download <?= htmlspecialchars($docFile) ?></a>
                       <?php endif; ?>
@@ -213,7 +207,7 @@ $activityLogTable->logPageView(
                 </ul>
               </div>
             <?php endif; ?>
-
+            
             <!-- Image Attachments -->
             <?php if (!empty($imageFiles)) : ?>
               <div class="mt-3">
@@ -221,9 +215,9 @@ $activityLogTable->logPageView(
                 <div class="gallery">
                   <?php foreach ($imageFiles as $imageFile) : ?>
                     <a href="../../../uploads/images/<?= htmlspecialchars($imageFile) ?>" target="_blank">
-                      <img src="../../../uploads/images/<?= htmlspecialchars($imageFile) ?>"
-                        alt="Article Image"
-                        class="img-fluid rounded shadow">
+                      <img src="../../../uploads/images/<?= htmlspecialchars($imageFile) ?>" 
+                           alt="Article Image" 
+                           class="img-fluid rounded shadow">
                     </a>
                   <?php endforeach; ?>
                 </div>
@@ -246,25 +240,24 @@ $activityLogTable->logPageView(
 </html>
 
 <?php
-function getFileIcon($extension)
-{
-  $icons = [
-    'pdf' => 'fa-file-pdf',
-    'doc' => 'fa-file-word',
-    'docx' => 'fa-file-word',
-    'txt' => 'fa-file-alt',
-    'jpg' => 'fa-file-image',
-    'jpeg' => 'fa-file-image',
-    'png' => 'fa-file-image',
-    'gif' => 'fa-file-image',
-    'zip' => 'fa-file-archive',
-    'rar' => 'fa-file-archive',
-    'xls' => 'fa-file-excel',
-    'xlsx' => 'fa-file-excel',
-    'ppt' => 'fa-file-powerpoint',
-    'pptx' => 'fa-file-powerpoint'
-  ];
-
-  return $icons[strtolower($extension)] ?? 'fa-file';
+function getFileIcon($extension) {
+    $icons = [
+        'pdf' => 'fa-file-pdf',
+        'doc' => 'fa-file-word',
+        'docx' => 'fa-file-word',
+        'txt' => 'fa-file-alt',
+        'jpg' => 'fa-file-image',
+        'jpeg' => 'fa-file-image',
+        'png' => 'fa-file-image',
+        'gif' => 'fa-file-image',
+        'zip' => 'fa-file-archive',
+        'rar' => 'fa-file-archive',
+        'xls' => 'fa-file-excel',
+        'xlsx' => 'fa-file-excel',
+        'ppt' => 'fa-file-powerpoint',
+        'pptx' => 'fa-file-powerpoint'
+    ];
+    
+    return $icons[strtolower($extension)] ?? 'fa-file';
 }
 ?>
