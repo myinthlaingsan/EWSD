@@ -126,9 +126,9 @@ class ArticleTable
 
     //get select contribution for article download
     public function getSelectedArticles($faculty_id)
-{
-    try {
-        $statement = $this->db->prepare("
+    {
+        try {
+            $statement = $this->db->prepare("
             SELECT 
                 a.article_id,
                 a.title,
@@ -148,14 +148,22 @@ class ArticleTable
             GROUP BY a.article_id, a.title, a.status, a.created_at, u.name, f.faculty_name
             ORDER BY a.created_at DESC
         ");
-        $statement->execute(['faculty_id' => $faculty_id]);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        // Better error handling - log the error and return empty array
-        echo "Error:" . $e->getMessage();
-        exit();
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Better error handling - log the error and return empty array
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
     }
-}
+    //get article by id
+    public function getArticleById($article_id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM articles WHERE article_id = :article_id");
+        $stmt->execute([':article_id' => $article_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     //get select contribution for article download
     public function getAllSelectedArticles()
     {
@@ -494,6 +502,58 @@ class ArticleTable
         } catch (PDOException $e) {
             echo $e->getMessage();
             exit();
+        }
+    }
+
+
+    public function deleteArticle($article_id, $user_id)
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Step 1: Verify ownership
+            $stmt = $this->db->prepare("SELECT user_id FROM articles WHERE article_id = :article_id");
+            $stmt->execute([':article_id' => $article_id]);
+            $article = $stmt->fetch();
+
+            if (!$article) {
+                $this->db->rollBack();
+                return false; // Article not found
+            }
+
+            if ($article->user_id != $user_id) {
+                $this->db->rollBack();
+                return false; // Unauthorized
+            }
+
+            // Step 2: Delete related comments
+            $stmt = $this->db->prepare("DELETE FROM comments WHERE article_id = :article_id");
+            $stmt->execute([':article_id' => $article_id]);
+
+            // Step 3: Delete document attachments
+            $stmt = $this->db->prepare("DELETE FROM doc_attachment WHERE article_id = :article_id");
+            $stmt->execute([':article_id' => $article_id]);
+
+            // Step 4: Delete image attachments
+            $stmt = $this->db->prepare("DELETE FROM img_attachment WHERE article_id = :article_id");
+            $stmt->execute([':article_id' => $article_id]);
+
+            // Step 5: Delete notifications
+            $stmt = $this->db->prepare("DELETE FROM notifications WHERE article_id = :article_id");
+            $stmt->execute([':article_id' => $article_id]);
+
+            // Step 6: Delete the article itself
+            $stmt = $this->db->prepare("DELETE FROM articles WHERE article_id = :article_id AND user_id = :user_id");
+            $stmt->execute([
+                ':article_id' => $article_id,
+                ':user_id' => $user_id
+            ]);
+
+            $this->db->commit();
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            throw new PDOException("Article deletion failed: " . $e->getMessage());
         }
     }
 }

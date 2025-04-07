@@ -37,7 +37,7 @@ $BrowserName = new BrowserHelper();
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
 <body>
-    <?php include "header.php"; ?>   
+    <?php include "header.php"; ?>
     <div class="container mt-5" >
         <table class="table table-striped table-bordered">
             <tr>

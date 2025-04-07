@@ -144,11 +144,7 @@ $activityLogTable->logPageView(
                       </a>
 
                     <?php elseif ($fileExt === 'doc' || $fileExt === 'docx'): ?>
-                      <!-- Use Google Docs Viewer for DOC and DOCX -->
-                      <!-- <a href="https://docs.google.com/gview?url=<?= urlencode('http://' . $_SERVER['HTTP_HOST'] . '/uploads/documents/' . $docfile) ?>&embedded=true" target="_blank">
-                        <i class="fas fa-file-word me-2"></i>
-                        <?= htmlspecialchars($docfile) ?>
-                      </a> -->
+                    
                       <a href="../../../uploads/documents/<?php echo htmlspecialchars($docfile); ?>" target="_blank" class="pdf-link-btn">
                           <i class="fas fa-file-pdf"></i> <?php echo htmlspecialchars($docfile); ?>
                         </a>

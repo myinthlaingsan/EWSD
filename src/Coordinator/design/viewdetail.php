@@ -194,6 +194,13 @@ $details = $table->articlebyfacultydetail($article_id);
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
+    <?php if (isset($_SESSION['error'])): ?>
+    <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error']); ?>
+<?php endif; ?> -->
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">

@@ -25,7 +25,7 @@ if ($user) {
     // Redirect based on role
     switch ($user->role_name) {
         case "Admin":
-            HTTP::redirect("/src/Admin/design/dashboard.php");
+            HTTP::redirect("/src/Admin/design/dashboard.php", "login=success");
             break;
         case "Student":
             HTTP::redirect("/src/Students/design/dashboard.php");
