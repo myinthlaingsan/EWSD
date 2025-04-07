@@ -505,6 +505,20 @@ class ArticleTable
         }
     }
 
+    //count total users
+    public function countUsers()
+    {
+        try {
+            $statement = $this->db->prepare("
+                SELECT COUNT(*) as total FROM users
+            ");
+            $statement->execute();
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
 
     public function deleteArticle($article_id, $user_id)
     {

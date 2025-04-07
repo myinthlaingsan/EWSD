@@ -194,14 +194,12 @@ $details = $table->articlebyfacultydetail($article_id);
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
-    <?php if (isset($_SESSION['error'])): ?>
-    <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= $_SESSION['error']; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <?php unset($_SESSION['error']); ?>
-<?php endif; ?> -->
-
+    <!-- <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger">
+            <?= $_SESSION['error']; ?>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?> -->
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <div class="card p-4">
@@ -296,10 +294,17 @@ $details = $table->articlebyfacultydetail($article_id);
             <div class="mb-4">
                 <h4 class="text-md font-medium text-gray-900 mb-2">Comments</h4>
                 <div class="comment-section">
-                    <?php if (empty($comments)) { ?>
+                    <?php if (empty($comments)) : ?>
                         <p class="text-muted">No comments yet.</p>
-                    <?php } else { ?>
-                        <?php foreach ($comments as $comment) { ?>
+                    <?php else : ?>
+                        <?php foreach ($comments as $comment) :
+                            // Check if the comment is from a Coordinator and older than 14 days from article creation
+                            $commentDate = new DateTime($comment['created_at']);
+                            $articleDate = new DateTime($details['created_at']);
+                            $interval = $articleDate->diff($commentDate)->days;
+
+                            $isLateCoordinatorComment = ($comment['role_name'] === 'Coordinator' && $interval > 14);
+                        ?>
                             <div class="comment-card">
                                 <div class="d-flex justify-content-between">
                                     <!-- <span class="font-medium text-gray-900"><?php echo $comment['role_name']; ?></span> -->
@@ -309,10 +314,15 @@ $details = $table->articlebyfacultydetail($article_id);
                                     <span class="text-sm text-muted"><?php echo $comment['created_at']; ?></span>
                                 </div>
                                 <p class="text-sm text-gray-700 mt-1 mx-3"><?php echo $comment['comment_text']; ?></p>
+                                <?php if ($isLateCoordinatorComment) : ?>
+                                    <div class="alert alert-warning mt-2" role="alert">
+                                        <strong>Note:</strong> You can only comment within 14 days of article upload.
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
-                        <?php } ?>
-                    <?php } ?>
+                        <?php endforeach ?>
+                    <?php endif; ?>
                 </div>
                 <!-- Comment Form -->
                 <form action="../../Students/code/comments.php" method="POST" class="mt-3">

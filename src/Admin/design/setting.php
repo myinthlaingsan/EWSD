@@ -8,8 +8,7 @@
 </head>
 <body>
 <?php include "header.php"; ?>
-    <h1>Settings</h1>
-    <div class="container text-center" style="max-width: 680px">
+    <div class="container text-center mt-5" style="max-width: 680px">
         <form action="../code/setting.php" method="post" class="mb-2">
             <input type="text" class="form-control mb-2" name="academicyear" placeholder="Academic Year" required>
             <label>Closure Date</label>

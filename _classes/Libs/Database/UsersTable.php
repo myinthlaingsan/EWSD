@@ -327,7 +327,14 @@ class UsersTable
             exit();
         }
     }
-
+    //update passowrd
+    public function updatePassword($user_id, $password) {
+        $statement = $this->db->prepare("UPDATE users SET password = :password WHERE id = :user_id");
+        return $statement->execute([
+            ':user_id' => $user_id, 
+            ':password' => $password
+        ]);
+    }
     // login
     public function find($email, $password)
     {

@@ -4,16 +4,17 @@ use Helpers\Auth;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 use Libs\Database\ArticleTable;
-
 $auth = Auth::check();
 $username = $auth->name;
 $usertable = new UsersTable(new MySQL);
 $table = new ArticleTable(new MySQL);
+
 $finalclosuredate = $usertable->selectFinalClosureDate();
 $totalArticles = $table->countArticles();
 $totalFaculties = $table->countFaculties();
 $totalStudents = $table->articlesCreateUser();
 $totalCoordinators = $table->countCoordinators();
+$totalUsers = $table->countUsers();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -146,7 +147,7 @@ $totalCoordinators = $table->countCoordinators();
                     <h2 class="text-primary-custom">WELCOME <?= $username ?></h2>
                     <h1 class="text-primary-custom">Contribution Management</h1>
                 </div>
-                <a href="ContributionEntry.php" class="btn-custom">Add New Contribution</a>
+                <a href="userlist.php" class="btn-custom">Users List</a>
             </div>
  
             <!-- Last Contribution Card -->
@@ -159,8 +160,8 @@ $totalCoordinators = $table->countCoordinators();
                             <p><i class="fas fa-university me-2"></i> Faculty: Arts</p>
                         </div>
                         <div class="col-md-6">
-                            <p><i class="fas fa-users me-2"></i>Articles Total Upload by<?= $totalStudents ?> Students</p>
-                            <p><i class="fas fa-user-tie me-2"></i> Faculty Marketing Coordinator: Mr Kelvin</p>
+                            <p><i class="fas fa-users me-2"></i>Articles Total Upload by <?= $totalStudents ?> Students</p>
+                            <p><i class="fas fa-user-tie me-2"></i>Total Users = <?= $totalUsers ?> users</p>
                         </div>
                     </div>
                 </div>

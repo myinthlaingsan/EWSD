@@ -25,6 +25,7 @@ $activityLogTable->logPageView(
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,7 +65,7 @@ $activityLogTable->logPageView(
                 background: var(--primary-dark);
                 padding: 4rem 2rem;
                 transition: right 0.4s ease-in-out;
-                box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+                box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
                 z-index: 1100;
             }
 
@@ -102,6 +103,7 @@ $activityLogTable->logPageView(
 
         /* Keep default navbar for Desktop */
         @media (min-width: 992px) {
+
             .sidebar,
             .backdrop,
             .navbar-toggler {
@@ -110,6 +112,7 @@ $activityLogTable->logPageView(
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark gradient-bg shadow-sm">
         <div class="container">
@@ -119,13 +122,13 @@ $activityLogTable->logPageView(
             </button>
             <div class="collapse navbar-collapse" id="desktopNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="./dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-                    <!-- <li class="nav-item"><a class="nav-link text-white" href="../design/setting.php"><i class="fas fa-calendar-alt"></i> Manage Contribution Date</a></li> -->
+                    <li class="nav-item"><a class="nav-link text-white" href="./index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="./role.php"><i class="fas fa-calendar-alt"></i> Create Role</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="./permissions.php"><i class="fas fa-calendar-alt"></i> Create Permission</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i>Add Faculties</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i> Add Faculties</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="Reports.php"><i class="fa-solid fa-flag"></i> Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="./setting.php"><i class="fa-solid fa-gear"></i></a></li>
                 </ul>
@@ -136,11 +139,13 @@ $activityLogTable->logPageView(
     <div class="sidebar" id="sidebarMenu">
         <span class="close-btn" id="closeMenu">&times;</span>
         <ul class="navbar-nav text-white mt-4">
-            <li class="nav-item"><a class="nav-link text-white" href="./dashboard.php"><i class="fas fa-home"></i> Home</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="Manage_Contribution.php"><i class="fas fa-calendar-alt"></i> Manage Contribution Date</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="faculties.php"><i class="fas fa-building"></i> Faculties</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./index.php"><i class="fas fa-home"></i> Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./role.php"><i class="fas fa-calendar-alt"></i> Create Role</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./permissions.php"><i class="fas fa-calendar-alt"></i> Create Permission</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i>Add Faculties</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="Reports.php"><i class="fa-solid fa-flag"></i> Reports</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="./setting.php"><i class="fa-solid fa-gear"></i></a></li>
         </ul>

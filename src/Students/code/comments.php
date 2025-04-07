@@ -35,7 +35,8 @@ if (!empty($lastComment['role_name'])) {
             HTTP::redirect("/src/Students/design/view_articles.php");
             break;
         case "Coordinator":
-            HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id);
+            // $_SESSION['error'] = "You can only comment within 14 days of article upload.";
+            HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id , "comment=error");
             break;
         default:
             HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");
