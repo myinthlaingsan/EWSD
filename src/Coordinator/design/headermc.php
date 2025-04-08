@@ -124,7 +124,7 @@ $activityLogTable->logPageView(
                     <li class="nav-item"><a class="nav-link text-white" href="Guest_Lists.php"><i class="fa-solid fa-users"></i> Guests</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="viewarticlebyfaculty1.php"><i class="fas fa-building"></i> Faculties</a></li>
                     <!-- <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-chart-bar"></i> View Statistics</a></li> -->
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fas fa-user"></i> Profile</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </div>

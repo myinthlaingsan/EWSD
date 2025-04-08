@@ -122,7 +122,7 @@ $activityLogTable->logPageView(
                     <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fa-solid fa-file-lines"></i> Articles</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fa-solid fa-folder-open"></i> Reports</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="Statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
@@ -136,7 +136,7 @@ $activityLogTable->logPageView(
             <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fas fa-calendar-alt"></i> Articles</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fas fa-building"></i> Reports</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="Statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>

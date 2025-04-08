@@ -52,7 +52,7 @@ $faculties = $table->getAllFaculty();
 
     <!-- Category 2: Health & Medical Sciences -->
     <div class="category-header">
-        <h3 class="fw-bold fs-4">Health & Medical Sciences</h3>
+        <h3 class="fw-bold fs-4">Faculty</h3>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
         <?php foreach( $faculties as $faculty) : ?>
@@ -62,7 +62,7 @@ $faculties = $table->getAllFaculty();
                     <div class="card-body text-center">
                         <i class="fas fa-stethoscope fa-2x mb-3 text-primary"></i>
                         <h3 class="card-title fw-semibold"><?= $faculty->faculty_name; ?></h3>
-                        <p class="card-text text-muted">General Medicine, Surgery, Pediatrics, etc.</p>
+                        <!-- <p class="card-text text-muted">General Medicine, Surgery, Pediatrics, etc.</p> -->
                     </div>
                 </a>
             </div>

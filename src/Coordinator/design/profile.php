@@ -82,7 +82,7 @@ $facultyname = $table->getfacultyname($faculty_id);
         }
 
         .edit-btn {
-            background-color: var(--primary-light);
+            background-color: #3b82f6;
             color: white;
             border: none;
             padding: 0.5rem 1.5rem;
@@ -110,7 +110,7 @@ $facultyname = $table->getfacultyname($faculty_id);
 </head>
 
 <body>
-    <?php include "header.php"; ?>
+    <?php include "headermc.php"; ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger">
             <?php
@@ -127,7 +127,7 @@ $facultyname = $table->getfacultyname($faculty_id);
             ?>
         </div>
     <?php endif; ?>
-
+    
     <?php if (isset($_SESSION['error'])): ?>
         <div class="alert alert-danger">
             <?= $_SESSION['error']; ?>
@@ -220,7 +220,7 @@ $facultyname = $table->getfacultyname($faculty_id);
             </div>
         </div>
     </div>
-
+    <?php include "footer.php"; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

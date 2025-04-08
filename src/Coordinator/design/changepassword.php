@@ -35,13 +35,12 @@
     </style>
 </head>
 <body>
-<?php include "header.php"; ?>
+<?php include "headermc.php"; ?>
     <div class="container">
         <div class="password-container">
             <div class="password-header">
                 <h3>Change Password</h3>
             </div>
-
             <form action="../code/update_password.php" method="POST">
                 <input type="hidden" name="user_id" value="<?= htmlspecialchars($_GET['id']) ?>">
                 

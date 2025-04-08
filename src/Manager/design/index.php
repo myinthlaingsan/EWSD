@@ -179,7 +179,7 @@ echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON
         <!-- Selected Contributions Overview -->
         <section class="mb-5">
             <div class="card p-4">
-                <h2 class="fs-4 fw-bold text-primary-dark mb-4">Last 3 Selected Contributions</h2>
+                <h2 class="fs-4 fw-bold text-primary-dark mb-4">Selected Contributions</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -189,6 +189,7 @@ echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON
                                 <th>Faculty</th>
                                 <th>Student</th>
                                 <th>Final Closure Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -200,6 +201,7 @@ echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON
                                     <td><?= $selectedArticle['faculty_name'] ?></td>
                                     <td><?= $selectedArticle['name'] ?></td>
                                     <td><?= $finalclosuredate ?></td>
+                                    <td><a href="viewdetail.php?id=<?= $selectedArticle['article_id'] ?>" class="btn btn-primary">view</a></td>
                                 </tr>
                             <?php endforeach ?>
                         </tbody>

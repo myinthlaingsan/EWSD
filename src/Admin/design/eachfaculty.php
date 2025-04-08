@@ -7,7 +7,10 @@ use Libs\Database\MySQL;
 // $user_id = $auth->id;
 $faculty_id = $_GET['id'];
 $table = new ArticleTable(new MySQL);
-$members = $table->getFacultyArticles($faculty_id);
+$members = $table->getfacultyStudent($faculty_id);
+$totalStudents = $table->countfacultyStudents($faculty_id);
+$facultyname = $table->getfacultyname($faculty_id);
+$coorname = $table->getCoordinatorName();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,9 +102,9 @@ $members = $table->getFacultyArticles($faculty_id);
             </h1>
             <div class="faculty-card p-4">
                 <div class="faculty-details">
-                    <p class="mb-3"><i class="fas fa-building me-2 text-primary-light"></i>Department: Science and Technology</p>
-                    <p class="mb-3"><i class="fas fa-users me-2 text-primary-light"></i>Total Students: 25</p>
-                    <p class="mb-0"><i class="fas fa-user-tie me-2 text-primary-light"></i>Marketing Coordinator: Mickey</p>
+                    <p class="mb-3"><i class="fas fa-building me-2 text-primary-light"></i>Department: <?= $facultyname ?></p>
+                    <p class="mb-3"><i class="fas fa-users me-2 text-primary-light"></i>Total Students: <?= $totalStudents ?></p>
+                    <p class="mb-0"><i class="fas fa-user-tie me-2 text-primary-light"></i>Marketing Coordinator: <?= $coorname; ?></p>
                 </div>
             </div>
         </section>
@@ -116,8 +119,8 @@ $members = $table->getFacultyArticles($faculty_id);
                         <div class="d-flex align-items-start">
                             <!-- <div class="member-icon"><?php echo $firstLetter; ?></div> -->
                             <div class="ms-4">
-                                <h3 class="member-name">Name: <?php echo $member['student_name']; ?></h3>
-                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Total Contribution: <?php echo 1 ?></p>
+                                <h3 class="member-name">Name: <?php echo $member['name']; ?></h3>
+                                <p class="member-info mt-2"><i class="fas fa-file-alt me-2 text-primary-light"></i>Faculty Name <?= $facultyname ?></p>
                                 <p class="member-info mt-1"><i class="fas fa-calendar-alt me-2 text-primary-light"></i>Since: <?php echo $member['created_at']; ?></p>
                             </div>
                         </div>

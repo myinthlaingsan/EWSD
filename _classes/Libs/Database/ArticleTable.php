@@ -220,19 +220,24 @@ class ArticleTable
         }
     }
     // get faculty student
-    // public function getfacultyStudent($faculty_id){
-    //     try{
-    //         $statement-> = $this->db->prepare(
-    //             "SELECT u.*, r.role_name from users u
-    //             LEFT JOIN roles r ON u.id = r.user_id
-    //             LEFT JOIN role_user ru u.id = ru.user_id
-    //             WHERE r.role_name = 'Student'"
-    //         );
-    //     }catch(PDOException $e){
-    //         echo "Error:" . $e->getMessage();
-    //         exit();
-    //     }
-    // }
+    public function getfacultyStudent($faculty_id){
+        try{
+            $statement = $this->db->prepare(
+                "SELECT u.*, r.role_name from users u
+                LEFT JOIN faculties ON u.faculty_id = faculties.id
+                LEFT JOIN roles r ON u.id = r.id
+                LEFT JOIN role_user ru ON u.id = ru.user_id
+                WHERE u.faculty_id = :faculty_id
+                AND r.role_name = 'Student'"
+            );
+            $statement->bindParam(':faculty_id', $faculty_id, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
     //select faculty name
     public function getfacultyname($faculty_id)
     {
@@ -241,6 +246,22 @@ class ArticleTable
                 "SELECT faculty_name FROM faculties WHERE id = :faculty_id"
             );
             $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            echo "Error:" . $e->getMessage();
+            exit();
+        }
+    }
+    //get coordinator name
+    public function getCoordinatorName(){
+        try {
+            $statement = $this->db->prepare(
+                "SELECT u.name FROM users u
+                JOIN role_user ru ON u.id = ru.user_id
+                JOIN roles r ON ru.role_id = r.id
+                WHERE r.role_name = 'Coordinator'"
+            );
+            $statement->execute();
             return $statement->fetchColumn();
         } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
@@ -504,7 +525,25 @@ class ArticleTable
             exit();
         }
     }
-
+    //count Faculty Students
+    public function countfacultyStudents($faculty_id)
+    {
+        try {
+            $statement = $this->db->prepare("
+                SELECT COUNT(*) as total FROM users
+                JOIN faculties ON users.faculty_id = faculties.id 
+                JOIN role_user ON users.id = role_user.user_id
+                JOIN roles ON role_user.role_id = roles.id
+                WHERE roles.role_name = 'Student'
+                AND faculties.id = :faculty_id
+            ");
+            $statement->execute(['faculty_id' => $faculty_id]);
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
     //count total users
     public function countUsers()
     {
