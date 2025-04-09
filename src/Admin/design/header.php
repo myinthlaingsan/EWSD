@@ -126,7 +126,7 @@ $activityLogTable->logPageView(
                     <li class="nav-item"><a class="nav-link text-white" href="./role.php"><i class="fas fa-calendar-alt"></i> Create Role</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="./permissions.php"><i class="fas fa-calendar-alt"></i> Create Permission</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i> Add Faculties</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="Reports.php"><i class="fa-solid fa-flag"></i> Reports</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -143,7 +143,7 @@ $activityLogTable->logPageView(
             <li class="nav-item"><a class="nav-link text-white" href="./role.php"><i class="fas fa-calendar-alt"></i> Create Role</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="./permissions.php"><i class="fas fa-calendar-alt"></i> Create Permission</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="./faculty.php"><i class="fas fa-building"></i>Add Faculties</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="Reports.php"><i class="fa-solid fa-flag"></i> Reports</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>

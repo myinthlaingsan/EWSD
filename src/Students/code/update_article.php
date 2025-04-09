@@ -5,10 +5,10 @@ use Helpers\Auth;
 use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\ArticleTable;
-
+use Libs\Database\UsersTable;
 $auth = Auth::check();
 $table = new ArticleTable(new MySQL);
-
+$usertable = new UsersTable(new MySQL);
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $article_id = $_POST['article_id'];
     $title = $_POST['title'];
@@ -67,11 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    $comments = $table->getCommnetbyarticleid($facultyArticle['article_id']);
-    $lastComment = end($comments);
-
-    if (!empty($lastComment['role_name'])) {
-        switch ($lastComment['role_name']) {
+    // $comments = $table->getCommnetbyarticleid($facultyArticle['article_id']);
+    // $lastComment = end($comments);
+    $rolename = $usertable->getUserRoleName($auth->id);
+    if (!empty($rolename)) {
+        switch ($rolename) {
             case "Student":
                 HTTP::redirect("/src/Students/design/view_articles.php");
                 break;

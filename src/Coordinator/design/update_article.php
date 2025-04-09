@@ -83,7 +83,7 @@ $article = $table->articlebyfacultydetail($article_id);
     <div class="container mt-5">
         <h2 class="mb-4">Update Article</h2>
 
-        <form action="../code/update_article.php" method="POST" enctype="multipart/form-data">
+        <form action="../../Students/code/update_article.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="article_id" value="<?= htmlspecialchars($article['article_id']) ?>">
 
             <div class="mb-3">
