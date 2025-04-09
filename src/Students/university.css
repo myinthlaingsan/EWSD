@@ -231,3 +231,39 @@ footer {
   }
 }
 /* Footer end */
+
+/* view article start */
+main .container
+{
+  max-width: 1000px;
+}
+.document-btn
+{
+  background-color: var(--color3);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.document-btn:hover {
+  background-color: skyblue;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+.document-btn i {
+  font-size: 1.1rem;
+}
+main .articletextcolor
+{
+  color: var(--color1);
+  font-weight: 500;
+  font-size: 20px;
+}
+/* view article end */
