@@ -231,3 +231,69 @@ footer {
   }
 }
 /* Footer end */
+
+/* view article start */
+main .container
+{
+  max-width: 1000px;
+}
+.document-btn
+{
+  background-color: var(--color3);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.document-btn:hover {
+  background-color: skyblue;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+.document-btn i {
+  font-size: 1.1rem;
+}
+main .articletextcolor
+{
+  color: var(--color1);
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+}
+main .comment-section {
+  max-height: 300px;
+  overflow-y: auto;
+}
+main .comment-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-submit-comment {
+  background-color: var(--color3);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+.btn-submit-comment:hover {
+  background-color: skyblue;
+}
+.btn-submit-comment i {
+  font-size: 1rem;
+}
+/* view article end */
