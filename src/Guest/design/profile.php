@@ -2,6 +2,7 @@
 include('../../../vendor/autoload.php');
 
 use Helpers\Auth;
+use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 use Libs\Database\ArticleTable;
@@ -10,6 +11,11 @@ $auth = Auth::check();
 $user_id = $auth->id ?? null;
 $faculty_id = $auth->faculty_id ?? null;
 $usertable = new UsersTable(new MySQL);
+$role = $usertable->getUserRoleName($user_id);
+if ($role !== 'Guest') {
+    HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
+    exit();
+}
 $table = new ArticleTable(new MySQL);
 $profile = $usertable->getuserbyId($user_id);
 $rolename = $usertable->getUserRoleName($user_id);

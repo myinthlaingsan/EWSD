@@ -2,14 +2,23 @@
 include("../../../vendor/autoload.php");
 
 use Helpers\Auth;
-use Libs\Database\ArticleTable;
+use Helpers\HTTP;
 use Libs\Database\MySQL;
+use Libs\Database\UsersTable;
+use Libs\Database\ArticleTable;
 use Libs\Database\ActivityLogsTable;
 
 $auth = Auth::check();
 $user_id = $auth->id ?? null;
 $faculty_id = $auth->faculty_id;
 $table = new ArticleTable(new MySQL);
+
+$usertable = new UsersTable(new MySQL);
+$role = $usertable->getUserRoleName($user_id);
+if ($role !== 'Guest') {
+    HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
+    exit();
+}
 $articles = $table->getSelectedArticles($faculty_id);
 
 $activityLogTable = new ActivityLogsTable(new MySQL);

@@ -2,6 +2,7 @@
 include("../../../vendor/autoload.php");
 
 use Helpers\Auth;
+use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 use Libs\Database\ArticleTable;
@@ -11,7 +12,12 @@ $auth = Auth::check();
 $table = new UsersTable(new MySQL);
 $articleTable = new ArticleTable(new MySQL);
 $user = $table->getuserbyId($auth->id);
-
+$user_id = $auth->id ?? null;
+$role = $table->getUserRoleName($user_id);
+if ($role !== 'Student') {
+    HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
+    exit();
+}
 // Get closure date information
 $closureDate = $table->selectClosureDate();
 $submissionsClosed = ($closureDate && date('Y-m-d') > $closureDate);

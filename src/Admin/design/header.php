@@ -2,14 +2,17 @@
 include('../../../vendor/autoload.php');
 
 use Helpers\Auth;
+use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\ActivityLogsTable;
-
+use Libs\Database\UsersTable;
 if (!isset($auth)) {
     $auth = Auth::check();
 }
 $user_id = $auth->id ?? null;
 $activityLogTable = new ActivityLogsTable(new MySQL);
+$usertable = new UsersTable(new MySQL);
+$role = $usertable->getUserRoleName($user_id);
 // Extract file name from the request URI
 $requestUri = $_SERVER['REQUEST_URI'];
 $fileName = basename($requestUri);
@@ -22,6 +25,12 @@ $activityLogTable->logPageView(
     $_SERVER['REMOTE_ADDR'],
     $fileName
 );
+
+if ($role !== 'Admin') {
+    // Optional: show error or redirect
+    HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
