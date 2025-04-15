@@ -68,7 +68,6 @@ try {
     $db->exec("
         CREATE TABLE IF NOT EXISTS settings(
             setting_id INT NOT NULL,
-            academicyear VARCHAR(100) UNIQUE NOT NULL,
             closure_date DATE NOT NULL,
             final_closure_date DATE NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -81,6 +80,7 @@ try {
             user_id INT NOT NULL,
             title VARCHAR(255) NOT NULL,
             status VARCHAR(30),
+            academicyear VARCHAR(25) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
@@ -124,7 +124,6 @@ try {
             article_id INT NOT NULL,
             user_id INT NOT NULL,
             message TEXT NOT NULL,
-            is_read BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             deadline_date DATE NOT NULL,
             FOREIGN KEY (article_id) REFERENCES articles(article_id),

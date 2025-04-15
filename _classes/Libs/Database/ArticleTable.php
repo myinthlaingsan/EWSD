@@ -20,7 +20,7 @@ class ArticleTable
     {
         try {
             $statement = $this->db->prepare(
-                "INSERT INTO articles (user_id,title,status, created_at) VALUES (:user_id,:title,:status, NOW())"
+                "INSERT INTO articles (user_id,title,status,academicyear,created_at) VALUES (:user_id,:title,:status,:academicyear, NOW())"
             );
             $statement->execute($data);
             return $this->db->lastInsertId();
@@ -69,6 +69,7 @@ class ArticleTable
                 a.article_id,
                 a.title,
                 a.status,
+                a.academicyear,
                 a.created_at,
                 u.name,
                 GROUP_CONCAT(DISTINCT d.docfile SEPARATOR '|||') as docfiles,
@@ -103,7 +104,35 @@ class ArticleTable
             exit();
         }
     }
+    // Get single comment by ID
+    // In your ArticleTable class
+    public function getCommentById($id)
+    {
+        try {
+            $statement = $this->db->prepare("
+            SELECT c.*, u.role 
+            FROM comments c
+            JOIN users u ON c.user_id = u.id
+            WHERE c.comment_id = :id
+        ");
+            $statement->execute(['id' => $id]);
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Get comment error: " . $e->getMessage());
+            return false;
+        }
+    }
 
+    public function deleteComment($id)
+    {
+        try {
+            $statement = $this->db->prepare("DELETE FROM comments WHERE comment_id = :id");
+            return $statement->execute(['id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Delete comment error: " . $e->getMessage());
+            return false;
+        }
+    }
     //select comment article_id
     public function getCommnetbyarticleid($article_id)
     {
@@ -197,6 +226,7 @@ class ArticleTable
                 a.article_id, 
                 a.title, 
                 a.status, 
+                a.academicyear,
                 a.created_at,
                 u.name AS student_name, 
                 f.faculty_name,
@@ -220,8 +250,9 @@ class ArticleTable
         }
     }
     // get faculty student
-    public function getfacultyStudent($faculty_id){
-        try{
+    public function getfacultyStudent($faculty_id)
+    {
+        try {
             $statement = $this->db->prepare(
                 "SELECT u.*, r.role_name from users u
                 LEFT JOIN faculties ON u.faculty_id = faculties.id
@@ -233,7 +264,7 @@ class ArticleTable
             $statement->bindParam(':faculty_id', $faculty_id, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             echo "Error:" . $e->getMessage();
             exit();
         }
@@ -253,7 +284,8 @@ class ArticleTable
         }
     }
     //get coordinator name
-    public function getCoordinatorName(){
+    public function getCoordinatorName()
+    {
         try {
             $statement = $this->db->prepare(
                 "SELECT u.name FROM users u
@@ -293,7 +325,7 @@ class ArticleTable
     {
         try {
             $statement = $this->db->prepare(
-                "SELECT a.article_id, a.title, a.status, a.created_at,
+                "SELECT a.article_id, a.title, a.status, a.academicyear,a.created_at,
              GROUP_CONCAT(DISTINCT d.docfile SEPARATOR ',') as documents,
              GROUP_CONCAT(DISTINCT i.imagefile SEPARATOR ',') as images,
              u.name, f.faculty_name
@@ -394,7 +426,7 @@ class ArticleTable
     {
         try {
             $statement = $this->db->prepare(
-                "UPDATE articles SET title = :title, status = :status, updated_at = NOW() WHERE article_id = :article_id"
+                "UPDATE articles SET title = :title, status = :status, academicyear = :academicyear, updated_at = NOW() WHERE article_id = :article_id"
             );
             $statement->execute($data);
             return true;

@@ -159,7 +159,12 @@ $finalclosuredate = $usertable->selectFinalClosureDate();
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
-
+    <?php if (isset($_SESSION['delete'])): ?>
+        <div class="alert alert-danger">
+            <?= $_SESSION['delete']; ?>
+        </div>
+        <?php unset($_SESSION['delete']); ?>
+    <?php endif; ?>
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <!-- Contribution Info -->
@@ -232,7 +237,10 @@ $finalclosuredate = $usertable->selectFinalClosureDate();
                                 <i class="far fa-clock me-1"></i>
                                 <?= date('M j, Y g:i A', strtotime($article['created_at'])) ?>
                             </div>
-                            
+                            <div class="text-sm text-muted mb-3">
+                                <i class="far fa-clock me-1"></i>
+                                <?= $article['academicyear'] ?>
+                            </div>
                             <?php if (count($images) > 1) : ?>
                                 <div class="mb-3">
                                     <small class="text-muted">Additional Images:</small>

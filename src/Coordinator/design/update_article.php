@@ -94,6 +94,10 @@ $article = $table->articlebyfacultydetail($article_id);
                 <label class="form-label">Status</label>
                 <input type="text" class="form-control" name="status" value="<?= $article['status'] ?>" required>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Academic Year</label>
+                <input type="text" class="form-control" name="academicyear" value="<?= $article['academicyear'] ?>" required>
+            </div>
             <!-- Current Images -->
             <div class="mb-3 current-files">
                 <label class="form-label">Current Images</label>

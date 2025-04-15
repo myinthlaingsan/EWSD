@@ -198,7 +198,14 @@ class UsersTable
     //insert setting
     public function insertSetting($data)
     {
-        $statement = $this->db->prepare("INSERT INTO settings (academicyear,closure_date,final_closure_date,created_at,updated_at) values (:academicyear,:closuredate,:finalclosuredate,NOW(),NOW())");
+        $statement = $this->db->prepare("INSERT INTO settings (closure_date,final_closure_date,created_at,updated_at) values (:closuredate,:finalclosuredate,NOW(),NOW())");
+        $statement->execute($data);
+        return $this->db;
+    }
+    //update setting
+    public function updateSetting($data)
+    {
+        $statement = $this->db->prepare("UPDATE settings SET closure_date = :closuredate, final_closure_date = :finalclosuredate, updated_at = NOW() WHERE setting_id = 1");
         $statement->execute($data);
         return $this->db;
     }
@@ -334,6 +341,32 @@ class UsersTable
             ':user_id' => $user_id, 
             ':password' => $password
         ]);
+    }
+    //update user
+    public function updateBasicInfo($data) {
+        try {
+            $statement = $this->db->prepare("
+                UPDATE users SET 
+                    name = :name,
+                    email = :email,
+                    address = :address,
+                    phone = :phone,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = :id
+            ");
+            
+            return $statement->execute([
+                ':name' => $data['name'],
+                ':email' => $data['email'],
+                ':address' => $data['address'],
+                ':phone' => $data['phone'],
+                ':id' => $data['id']
+            ]);
+            
+        } catch (PDOException $e) {
+            error_log("User update error: " . $e->getMessage());
+            return false;
+        }
     }
     // login
     public function find($email, $password)

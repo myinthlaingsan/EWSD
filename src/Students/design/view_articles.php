@@ -5,12 +5,15 @@ use Helpers\Auth;
 use Libs\Database\ArticleTable;
 use Libs\Database\MySQL;
 use Libs\Database\ActivityLogsTable;
+use Libs\Database\UsersTable;
 
 $auth = Auth::check();
 $user_id = $auth->id ?? null;
 $table = new ArticleTable(new MySQL);
+$usertable = new UsersTable(new MySQL);
 $articles = $table->getArticlesByUserId($user_id);
-
+$finalclosuredate = $usertable->selectFinalClosureDate();
+$currentDate = date('Y-m-d');
 $activityLogTable = new ActivityLogsTable(new MySQL);
 // Extract file name from the request URI
 $requestUri = $_SERVER['REQUEST_URI'];
@@ -18,11 +21,11 @@ $fileName = basename($requestUri);
 
 // Log the page visit
 $activityLogTable->logPageView(
-    $user_id,
-    $_SERVER['REQUEST_URI'],
-    $_SERVER['HTTP_USER_AGENT'],
-    $_SERVER['REMOTE_ADDR'],
-    $fileName
+  $user_id,
+  $_SERVER['REQUEST_URI'],
+  $_SERVER['HTTP_USER_AGENT'],
+  $_SERVER['REMOTE_ADDR'],
+  $fileName
 );
 ?>
 
@@ -103,6 +106,9 @@ $activityLogTable->logPageView(
           <li class="nav-item me-5">
             <a class="nav-link" href="#contactpage">Contact Us</a>
           </li>
+          <li class="nav-item me-5">
+              <a class="nav-link" href="profile.php">Profile</a>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="../../Auth/code/logout.php"><i class="fa-solid me-2 fa-arrow-right-from-bracket"></i>Logout</a>
           </li>
@@ -121,7 +127,7 @@ $activityLogTable->logPageView(
             <h5><strong>Article Title:</strong> <?= htmlspecialchars($article['title']) ?></h5>
             <p><strong>Status:</strong> <span class="badge bg-<?= $article['status'] === 'selected' ? 'success' : ($article['status'] === 'pending' ? 'warning' : 'secondary') ?>"><?= ucfirst($article['status']) ?></span></p>
             <p><small>Created on: <?= date('F j, Y, g:i a', strtotime($article['created_at'])) ?></small></p>
-
+            <p><small>Academic Year: <?= $article['academicyear'] ?></small></p>
             <!-- Document Attachments -->
             <?php if (!empty($article['docfiles'])) : ?>
               <p><strong>Documents:</strong></p>
@@ -144,10 +150,10 @@ $activityLogTable->logPageView(
                       </a>
 
                     <?php elseif ($fileExt === 'doc' || $fileExt === 'docx'): ?>
-                    
+
                       <a href="../../../uploads/documents/<?php echo htmlspecialchars($docfile); ?>" target="_blank" class="pdf-link-btn">
-                          <i class="fas fa-file-pdf"></i> <?php echo htmlspecialchars($docfile); ?>
-                        </a>
+                        <i class="fas fa-file-pdf"></i> <?php echo htmlspecialchars($docfile); ?>
+                      </a>
                     <?php else: ?>
                       <!-- For unsupported files, provide download link -->
                       <a href="<?= $filePath ?>" download>
@@ -206,6 +212,11 @@ $activityLogTable->logPageView(
                             <?= ucfirst($comment['role_name']) ?>
                           </span>
                         </div>
+                        <?php if ($comment['user_id'] == $auth->id): ?>
+                          <div class="mt-2 text-end">
+                            <a href="../code/deletecomment.php?id=<?= $comment['comment_id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>
+                          </div>
+                        <?php endif; ?>
                       </div>
                     </li>
                   <?php endforeach ?>
@@ -228,9 +239,16 @@ $activityLogTable->logPageView(
                   <i class="fas fa-comment me-1"></i> Add Comment
                 </button>
                 <!-- Update Button (Link to Update Page) -->
-                <a href="update_articles.php?id=<?= $article['article_id'] ?>" class="btn btn-warning">
+                <!-- <a href="update_articles.php?id=<?= $article['article_id'] ?>" class="btn btn-warning">
                   <i class="fas fa-edit me-1"></i> Edit Article
-                </a>
+                </a> -->
+                <?php if ($currentDate <= $finalclosuredate) : ?>
+                  <a href="update_articles.php?id=<?= $article['article_id'] ?>" class="btn btn-warning">
+                    <i class="fas fa-edit me-1"></i> Edit Article
+                  </a>
+                <?php else : ?>
+                  <span class="text-muted">Editing closed after <?= $finalclosuredate ?></span>
+                <?php endif; ?>
                 <?php if ($article['status'] !== 'selected') : ?>
                   <a href="../code/delete_article.php?id=<?= $article['article_id'] ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')">
                     <i class="fas fa-trash me-1"></i> Delete
@@ -248,7 +266,66 @@ $activityLogTable->logPageView(
       </div>
     <?php endif; ?>
   </div>
-
+  <!-- footer start -->
+  <footer>
+    <div class="container-fluid">
+      <div class="row text-light text-center justify-content-center">
+        <div class="col-6 col-lg-2 p-lg-4 mt-sm-4">
+          <h3><i class="fa-solid fa-location-dot"></i></h3>
+          <h5>Address</h5>
+          <h6>
+            Riverstone University <br />
+            456 Elm St, Springfield, IL 62704, USA
+          </h6>
+        </div>
+        <div class="col-6 col-lg-2 p-lg-4 mt-sm-4">
+          <h3><i class="fa-solid fa-square-phone"></i></h3>
+          <h5>Call Us</h5>
+          <h6>+1 (555) 123-4567</h6>
+        </div>
+        <div class="col-12 col-lg-3 p-lg-4 mt-4">
+          <iframe
+            class="footermap1 img img-fluid rounded"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3045.624315425934!2d-89.650847684609!3d39.781734979425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8875395a5b8f5b5f%3A0x1f1e5b5b5b5b5b5b!2s456%20Elm%20St%2C%20Springfield%2C%20IL%2062704%2C%20USA!5e0!3m2!1sen!2sus!4v1633024000000!5m2!1sen!2sus"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="col-6 col-lg-2 p-lg-4 mt-sm-4">
+          <h3><i class="fa-solid fa-envelope-open-text"></i></h3>
+          <h5>Email</h5>
+          <h6>info@riverstone.edu</h6>
+        </div>
+        <div class="col-6 col-lg-2 p-lg-4 mt-sm-4">
+          <h3><i class="fa-regular fa-thumbs-up"></i></h3>
+          <h5>Follow us</h5>
+          <h6>
+            <i class="me-1 fa-brands fa-facebook"></i>
+            <i class="me-1 fa-brands fa-youtube"></i>
+            <i class="me-1 fa-brands fa-x-twitter"></i>
+            <i class="me-1 fa-brands fa-instagram"></i>
+          </h6>
+        </div>
+        <div class="col-12 mb-4 mt-2">
+          <iframe
+            class="footermap2 img img-fluid rounded"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3045.624315425934!2d-89.650847684609!3d39.781734979425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8875395a5b8f5b5f%3A0x1f1e5b5b5b5b5b5b!2s456%20Elm%20St%2C%20Springfield%2C%20IL%2062704%2C%20USA!5e0!3m2!1sen!2sus!4v1633024000000!5m2!1sen!2sus"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="col-12 my-3">
+          <h6>Copyright © 2025 Riverstone University. All Rights reserved</h6>
+          <h6>
+            Designed by <b class="text-danger"> Error 404 Team Found </b>
+          </h6>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- footer end -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

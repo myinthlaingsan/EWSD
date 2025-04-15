@@ -4,11 +4,17 @@ include("../../../vendor/autoload.php");
 use Helpers\Auth;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
+use Libs\Database\ArticleTable;
 use Libs\Database\ActivityLogsTable;
 
 $auth = Auth::check();
 $table = new UsersTable(new MySQL);
+$articleTable = new ArticleTable(new MySQL);
 $user = $table->getuserbyId($auth->id);
+
+// Get closure date information
+$closureDate = $table->selectClosureDate();
+$submissionsClosed = ($closureDate && date('Y-m-d') > $closureDate);
 
 $user_id = $auth->id ?? null;
 $activityLogTable = new ActivityLogsTable(new MySQL);
@@ -32,7 +38,7 @@ $activityLogTable->logPageView(
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Submit Article</title>
   <!-- Font Awesome Link -->
   <link
     rel="stylesheet"
@@ -48,6 +54,15 @@ $activityLogTable->logPageView(
     rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
     crossorigin="anonymous" />
+  <style>
+    .readonly-field {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+    .form-control:disabled, .form-control[readonly] {
+      background-color: #e9ecef;
+    }
+  </style>
 </head>
 
 <body>
@@ -98,17 +113,14 @@ $activityLogTable->logPageView(
             <a
               class="nav-link"
               aria-current="page"
-              href="Studenthomepage.html#aboutus">Aboout</a>
+              href="Studenthomepage.html#aboutus">About</a>
           </li>
           <li class="nav-item me-5">
             <a class="nav-link" href="Studenthomepage.html#contactpage">Contact Us</a>
           </li>
-          <!-- <li class="nav-item">
-              <a class="nav-link" href="studentregister.html"
-                ><i class="fa-solid me-2 fa-arrow-right-to-bracket"></i>Sign
-                In</a
-              >
-            </li> -->
+          <li class="nav-item me-5">
+              <a class="nav-link" href="profile.php">Profile</a>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="../../Auth/code/logout.php"><i class="fa-solid me-2 fa-arrow-right-from-bracket"></i>Logout</a>
           </li>
@@ -132,67 +144,94 @@ $activityLogTable->logPageView(
     <p class="stuinfo">Submit Articles</p>
     <hr />
 
-    <form class="row g-3" action="../code/create_articles.php" method="post" enctype="multipart/form-data">
-      <div class="col-md-12">
-        <label for="inputname" class="form-label">Article Title</label>
-        <input type="text" class="form-control" id="inputname" name="title" required />
+    <?php if ($submissionsClosed): ?>
+      <div class="alert alert-danger">
+        <h4>Submissions Closed!</h4>
+        <p>New article submissions are no longer being accepted as the deadline has passed.</p>
+        <p>The submission deadline was: <?= date('F j, Y', strtotime($closureDate)) ?></p>
+        <a href="dashboard.php" class="btn btn-primary">Return to Dashboard</a>
       </div>
-      <div class="col-md-12">
-        <label for="inputname" class="form-label">Author(s) Name</label>
-        <input type="text" class="form-control" id="inputname" name="userid" value="<?= htmlspecialchars($user->id) ?>" required />
-      </div>
-      <div class="col-md-12">
-        <label for="inputname" class="form-label">Author(s) Name</label>
-        <input type="text" class="form-control" id="inputname" name="username" value="<?= htmlspecialchars($user->name) ?>" required />
-      </div>
-
-      <div class="col-md-6">
-        <label for="formFileMultiple" class="form-label">Upload Files</label>
-        <input
-          class="form-control"
-          type="file"
-          id="formFileMultiple"
-          name="docfile[]"
-          accept=".doc,.docx,.pdf,.txt"
-          multiple required aria-describedby="filehelp" />
-
-        <span id="filehelp" class="form-text text-dark">Upload only word file</span>
-      </div>
-
-      <div class="col-md-6">
-        <label for="formFileMultiple" class="form-label">Upload Images</label>
-        <input
-          class="form-control"
-          type="file"
-          id="formFileMultiple"
-          name="imagefile[]"
-          accept="image/*"
-          multiple required />
-      </div>
-
-      <div class="col-12 mb-lg-2">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck" name="agree" />
-          <label class="form-check-label" for="gridCheck">
-            Agree Terms and Conditions
-          </label>
+    <?php else: ?>
+      <form class="row g-3 needs-validation" action="../code/create_articles.php" method="post" enctype="multipart/form-data" novalidate>
+        <div class="col-md-12">
+          <label for="inputname" class="form-label">Article Title *</label>
+          <input type="text" class="form-control" id="inputname" name="title" required />
+          <div class="invalid-feedback">
+            Please provide an article title.
+          </div>
         </div>
-      </div>
-      <div>
-        <p class="text-danger">Note.</p>
-        <p class="text-danger">
-          Please submit articles until [Submission End Date] <br />
-          We will not accept any articles submitted beyond this date. <br />
-          You can edit/modify your articles until [Final Closure Date]
-        </p>
-      </div>
+        <div class="col-md-12">
+          <label for="userid" class="form-label">Author ID *</label>
+          <input type="text" class="form-control" id="userid" name="userid" value="<?= htmlspecialchars($user->id) ?>" readonly required />
+        </div>
+        <div class="col-md-12">
+          <label for="username" class="form-label">Author Name *</label>
+          <input type="text" class="form-control" id="username" name="username" value="<?= htmlspecialchars($user->name) ?>" readonly required />
+        </div>
+        <div class="col-md-12">
+          <label for="userid" class="form-label">Add Your Academic Year</label>
+          <input type="text" class="form-control" id="academicyear" name="academicyear" required />
+        </div>
+        <div class="col-md-6">
+          <label for="docFiles" class="form-label">Upload Files *</label>
+          <input
+            class="form-control"
+            type="file"
+            id="docFiles"
+            name="docfile[]"
+            accept=".doc,.docx,.pdf,.txt"
+            multiple required aria-describedby="fileHelp" />
+          <div id="fileHelp" class="form-text text-dark">Accepted formats: DOC, DOCX, PDF, TXT</div>
+          <div class="invalid-feedback">
+            Please upload at least one document file.
+          </div>
+        </div>
 
-      <div class="col-12 submitearticle">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
+        <div class="col-md-6">
+          <label for="imageFiles" class="form-label">Upload Images *</label>
+          <input
+            class="form-control"
+            type="file"
+            id="imageFiles"
+            name="imagefile[]"
+            accept="image/*"
+            multiple required />
+          <div class="form-text text-dark">Accepted formats: JPG, PNG</div>
+          <div class="invalid-feedback">
+            Please upload at least one image.
+          </div>
+        </div>
+
+        <div class="col-12 mb-lg-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agreeTerms" name="agree" required />
+            <label class="form-check-label" for="agreeTerms">
+              I agree to the Terms and Conditions *
+            </label>
+            <div class="invalid-feedback">
+              You must agree to the Terms and Conditions before submitting.
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <p class="text-danger"><strong>Important Notes:</strong></p>
+          <p class="text-danger">
+            Please submit articles before <?= date('F j, Y', strtotime($closureDate)) ?> <br />
+            We will not accept any articles submitted beyond this date. <br />
+            You can edit/modify your articles until <?= date('F j, Y', strtotime($closureDate . ' + 14 days')) ?>
+          </p>
+        </div>
+
+        <div class="col-12 submitearticle">
+          <button type="submit" class="btn btn-primary">Submit Article</button>
+          <a href="dashboard.php" class="btn btn-secondary ms-2">Cancel</a>
+        </div>
+      </form>
+    <?php endif; ?>
   </div>
   <!-- Form end -->
+  
   <!-- footer start -->
   <footer>
     <div class="container-fluid">
@@ -253,14 +292,37 @@ $activityLogTable->logPageView(
     </div>
   </footer>
   <!-- footer end -->
+
+  <!-- Main JS Link -->
+  <script src="../main.js"></script>
+
+  <!-- Bootstrap JS CDN Link -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <!-- Form Validation Script -->
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
 </body>
-<!-- Main JS Link -->
-<script src="../main.js"></script>
-
-<!-- Bootstrap JS CDN Link -->
-<script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-  crossorigin="anonymous"></script>
-
 </html>

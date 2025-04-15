@@ -1,10 +1,12 @@
 <?php 
 include("../../../vendor/autoload.php");
+use Helpers\Auth;
 use Helpers\HTTP;
 use Libs\Database\ArticleTable;
 use Libs\Database\UsersTable;
 use Libs\Database\MySQL;
 
+Auth::check();
 $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $article_id = $_POST['article_id'];
@@ -35,8 +37,9 @@ if (!empty($lastComment['role_name'])) {
             HTTP::redirect("/src/Students/design/view_articles.php");
             break;
         case "Coordinator":
-            // $_SESSION['error'] = "You can only comment within 14 days of article upload.";
-            HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id , "comment=error");
+            
+            $_SESSION['comment'] = "Your Comment added successfully";
+            HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id);
             break;
         default:
             HTTP::redirect("/src/Auth/design/login.php", "unauthorized=1");

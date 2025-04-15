@@ -60,7 +60,7 @@ $faculties = $table->getAllFaculty();
             <div class="card h-100 p-4">
                 <a href="eachfaculty.php?id=<?= $faculty->id ?>" class="stretched-link">
                     <div class="card-body text-center">
-                        <i class="fas fa-stethoscope fa-2x mb-3 text-primary"></i>
+                        <!-- <i class="fas fa-stethoscope fa-2x mb-3 text-primary"></i> -->
                         <h3 class="card-title fw-semibold"><?= $faculty->faculty_name; ?></h3>
                         <!-- <p class="card-text text-muted">General Medicine, Surgery, Pediatrics, etc.</p> -->
                     </div>

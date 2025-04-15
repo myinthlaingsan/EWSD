@@ -27,12 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Get form data
     $id = $_POST['userid'];
     $title = $_POST['title'];
+    $academicyear = $_POST['academicyear'];
     // Insert article metadata
     $article_id = $table->articleInsert([
         "user_id" => $id,
         // "setting_id" => 1,
         "title" => $title,
         "status" => "submitted",
+        "academicyear" => $academicyear,
         
     ]);
     if (!$article_id) {

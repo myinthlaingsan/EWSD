@@ -29,9 +29,9 @@ $activityLogTable->logPageView(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Admin Header</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="../../../css/bootstrap.min.css" rel="stylesheet">
+    <script src="../../../css/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../../../css/all.min.css">
     <style>
         :root {
             --primary-dark: #1e3a8a;
@@ -122,7 +122,7 @@ $activityLogTable->logPageView(
                     <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fa-solid fa-file-lines"></i> Articles</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fa-solid fa-folder-open"></i> Reports</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
@@ -136,7 +136,7 @@ $activityLogTable->logPageView(
             <li class="nav-item"><a class="nav-link text-white" href="index.php"><i class="fas fa-home"></i> Home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="All_Contribution.php"><i class="fas fa-calendar-alt"></i> Articles</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="All_Reports.php"><i class="fas fa-building"></i> Reports</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../../statistics/piechart.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="statistics.php"><i class="fas fa-chart-bar"></i> View Statistics</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../profile.php"><i class="fas fa-user"></i> Profile</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../../Auth/code/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>

@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $article_id = $_POST['article_id'];
     $title = $_POST['title'];
     $status = $_POST['status'];
-
+    $academicyear = $_POST['academicyear'];
     // Update article metadata
     $updated = $table->updateArticle([
         "article_id" => $article_id,

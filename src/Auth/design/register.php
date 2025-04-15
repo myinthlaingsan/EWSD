@@ -17,11 +17,15 @@ $faculties = $table->getAllFaculty();
     <div class="container text-center" style="max-width: 600px">
         <h1 class="h3 my-4">Register</h1>
         <form action="../code/register.php" method="post" class="mb-2">
+            <label>Name</label>
             <input type="text" name="name" class="form-control mb-2" placeholder="Name" required>
+            <label for="email">Email</label>
             <input type="email" name="email" class="form-control mb-2" placeholder="Email" required>
+            <label for="Address">Address</label>
             <input type="text" name="address" class="form-control mb-2" placeholder="Address" required>
+            <label for="Phone">Phone</label>
             <input type="number" name="phone" class="form-control mb-2" placeholder="Phone" required>
-            
+            <label for="password">Password</label>
             <input type="password" name="password" class="form-control mb-2" placeholder="Password" required>
             <label class="form-label">Select your faculty</label>
                 <select name="faculty_id" class="form-control mb-2">

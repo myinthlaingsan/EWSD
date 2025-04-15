@@ -15,40 +15,8 @@ $selected = $table->getAllSelectedArticles();
 $countarticle = $table->countArticles();
 $usercreatearticle = $table->articlesCreateUser();
 $countfaculty = $table->countFaculties();
-
 ?>
-<?php
-$host = "localhost";
-$username = "root";
-$password = "";
-$db = "ewsd";
-$port = "3306";
 
-$con = new mysqli($host, $username, $password, $db, $port);
-if ($con->connect_errno) {
-    echo "Connection Failed";
-}
-
-// Faculty Contribution Percentage Query
-$fac_cont_perc_q = "SELECT
-                        f.faculty_name,
-                        (COUNT(a.article_id) * 100.0 / (SELECT COUNT(*) FROM articles WHERE YEAR(created_at) = 2025)) AS contribution_percentage
-                    FROM articles a
-                    JOIN users u ON a.user_id = u.id
-                    JOIN faculties f ON u.faculty_id = f.id
-                    WHERE YEAR(a.created_at) = 2025
-                    GROUP BY f.faculty_name;";
-
-$fac_cont_perc_res = $con->query($fac_cont_perc_q);
-
-// Prepare data points for faculty contribution chart
-$fac_dataPoints = [];
-while ($row = $fac_cont_perc_res->fetch_assoc()) {
-    $fac_dataPoints[] = array("label" => $row['faculty_name'], "y" => (float)$row['contribution_percentage']);
-}
-
-echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON_NUMERIC_CHECK) . ");</script>";
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -211,117 +179,7 @@ echo "<script>console.log('Faculty Data:', " . json_encode($fac_dataPoints, JSON
         </section>
 
         <!-- Statistics -->
-        <section class="mb-5">
-            <div class="card p-4">
-                <h2 class="fs-4 fw-bold text-primary-dark mb-4">Statistics (2025 Academic Year)</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <p>Total Articles: <span class="stat-value"><?= $countarticle ?></span></p>
-                    </div>
-                    <div class="col-md-4">
-                        <p>Total Contributors: <span class="stat-value"><?= $usercreatearticle ?></span></p>
-                    </div>
-                    <div class="col-md-4">
-                        <p>Faculties Represented: <span class="stat-value"><?= $countfaculty ?></span></p>
-                    </div>
-                </div>
-                <div class="table-responsive mt-4">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Faculty</th>
-                                <th>Contributions</th>
-                                <th>Percentage</th>
-                                <th>Contributors</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $facultyStats = [
-                                ["faculty" => "Information Technology", "contributions" => 12, "percentage" => 26.7, "contributors" => 8],
-                                ["faculty" => "Engineering", "contributions" => 10, "percentage" => 22.2, "contributors" => 7],
-                                ["faculty" => "Business", "contributions" => 8, "percentage" => 17.8, "contributors" => 5],
-                                ["faculty" => "Arts & Humanities", "contributions" => 6, "percentage" => 13.3, "contributors" => 4]
-                            ];
-                            foreach ($facultyStats as $stats) {
-                                echo "<tr>";
-                                echo "<td>{$stats['faculty']}</td>";
-                                echo "<td>{$stats['contributions']}</td>";
-                                echo "<td>{$stats['percentage']}%</td>";
-                                echo "<td>{$stats['contributors']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pie Chart Contribution by each facuty  -->
-                <div class="chart-containers">
-                    <div id="facultyChartContainer" class="chart-container"></div>
-                    
-                </div>
-
-                <script>
-                    window.onload = function() {
-                        var facultyChart = new CanvasJS.Chart("facultyChartContainer", {
-                            animationEnabled: true,
-                            title: {
-                                text: "Faculty Article Contribution (2025)"
-                            },
-                            data: [{
-                                type: "pie",
-                                showInLegend: true,
-                                legendText: "{label}",
-                                indexLabel: "{label} - #percent%",
-                                yValueFormatString: "#,##0.##%",
-                                dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
-                            }]
-                        });
-
-                        facultyChart.render();
-                    };
-                </script>
-            </div>
-        </section>
-
-        <!-- Exception Reports -->
-        <section class="mb-5">
-            <div class="card p-4">
-                <h2 class="fs-4 fw-bold text-primary-dark mb-4">Exception Reports</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Faculty</th>
-                                <th>Student</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $exceptionReports = [
-                                ["id" => 1, "title" => "Photo Essay", "faculty" => "Arts & Humanities", "student" => "Michale", "description" => "No Comments"],
-                                ["id" => 2, "title" => "Data Analysis", "faculty" => "Information Technology", "student" => "Jane", "description" => "Without a Comments after 14 days"],
-                                ["id" => 3, "title" => "Bridge Safety", "faculty" => "Engineering", "student" => "Sophia", "description" => "No Comments"]
-                            ];
-                            foreach ($exceptionReports as $report) {
-                                echo "<tr>";
-                                echo "<td>{$report['id']}</td>";
-                                echo "<td>{$report['title']}</td>";
-                                echo "<td>{$report['faculty']}</td>";
-                                echo "<td>{$report['student']}</td>";
-                                echo "<td>{$report['description']}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+        
     </main>
 
     <!-- Footer -->

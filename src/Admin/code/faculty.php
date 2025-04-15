@@ -9,4 +9,4 @@ $table = new UsersTable(new MySQL);
 $table->insertFaculty([
     "faculty_name" => $_POST['faculty_name']
 ]);
-HTTP::redirect('/src/Admin/design/dashboard.php');
+HTTP::redirect('/src/Admin/design/faculty.php');

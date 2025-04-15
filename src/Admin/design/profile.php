@@ -110,6 +110,7 @@ $facultyname = $table->getfacultyname($faculty_id);
 </head>
 
 <body>
+    
     <?php include "header.php"; ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger">
@@ -142,6 +143,12 @@ $facultyname = $table->getfacultyname($faculty_id);
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
+    <?php if (isset($_SESSION['update'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['update']; ?>
+        </div>
+        <?php unset($_SESSION['update']); ?>
+    <?php endif; ?>
 
     <div class="profile-container">
         <div class="profile-card">

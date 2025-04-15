@@ -7,9 +7,8 @@ use Helpers\HTTP;
 
 $table = new UsersTable(new MySQL);
 
-$table->insertSetting([
-    "academicyear" => $_POST['academicyear'],
+$table->updateSetting([
     "closuredate" => $_POST['closuredate'],
     "finalclosuredate" => $_POST['finalclosuredate'],
 ]);
-HTTP::redirect('/src/Admin/design/dashboard.php');
+HTTP::redirect('/src/Admin/design/index.php');

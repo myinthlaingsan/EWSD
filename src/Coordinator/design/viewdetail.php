@@ -11,6 +11,7 @@ $user_id = $auth->id;
 $table = new ArticleTable(new MySQL);
 $article_id = $_GET['id'];
 $details = $table->articlebyfacultydetail($article_id);
+$comments = $table->getCommnetbyarticleid($article_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -194,12 +195,12 @@ $details = $table->articlebyfacultydetail($article_id);
 <body>
     <!-- Header -->
     <?php include "headermc.php"; ?>
-    <!-- <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger">
-            <?= $_SESSION['error']; ?>
+    <?php if (isset($_SESSION['comment'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['comment']; ?>
         </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?> -->
+        <?php unset($_SESSION['comment']); ?>
+    <?php endif; ?>
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <div class="card p-4">
@@ -211,6 +212,7 @@ $details = $table->articlebyfacultydetail($article_id);
                 <div>
                     <span class="font-medium text-gray-900"><?php echo $details['name']; ?></span>
                     <div class="text-sm text-muted">Upload Time: <?php echo $details['created_at']; ?></div>
+                    <div class="text-sm text-muted">academic year: <?php echo $details['academicyear']; ?></div>
                 </div>
                 <form action="../code/updatestatus.php" method="post" class="ms-auto">
                     <input type="hidden" name="article_id" value="<?= $article_id ?>">
@@ -288,9 +290,9 @@ $details = $table->articlebyfacultydetail($article_id);
             </div>
 
             <!-- Comments Section -->
-            <?php
-            $comments = $table->getCommnetbyarticleid($article_id);
-            ?>
+            <!-- <?php
+                    $comments = $table->getCommnetbyarticleid($article_id);
+                    ?> -->
             <div class="mb-4">
                 <h4 class="text-md font-medium text-gray-900 mb-2">Comments</h4>
                 <div class="comment-section">
@@ -313,6 +315,11 @@ $details = $table->articlebyfacultydetail($article_id);
                                     </span>
                                     <span class="text-sm text-muted"><?php echo $comment['created_at']; ?></span>
                                 </div>
+                                <?php if ($comment['user_id'] == $auth->id): ?>
+                                    <div class="mt-2 text-end">
+                                        <a href="../code/deletecomment.php?id=<?= $comment['comment_id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>
+                                    </div>
+                                <?php endif; ?>
                                 <p class="text-sm text-gray-700 mt-1 mx-3"><?php echo $comment['comment_text']; ?></p>
                                 <?php if ($isLateCoordinatorComment) : ?>
                                     <div class="alert alert-warning mt-2" role="alert">
