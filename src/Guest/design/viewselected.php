@@ -136,9 +136,9 @@ $activityLogTable->logPageView(
           <li class="nav-item me-5">
             <a class="nav-link" aria-current="page" href="./dashboard.php">Home</a>
           </li>
-          <li class="nav-item me-5">
+          <!-- <li class="nav-item me-5">
             <a class="nav-link" aria-current="page" href="create_articles.php">Add Article</a>
-          </li>
+          </li> -->
           <li class="nav-item me-5">
             <a class="nav-link" aria-current="page" href="viewselected.php">View Article</a>
           </li>

@@ -110,6 +110,7 @@ $facultyname = $table->getfacultyname($faculty_id);
 </head>
 
 <body>
+    
     <?php include "headermm.php"; ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger">
@@ -127,7 +128,7 @@ $facultyname = $table->getfacultyname($faculty_id);
             ?>
         </div>
     <?php endif; ?>
-    
+
     <?php if (isset($_SESSION['error'])): ?>
         <div class="alert alert-danger">
             <?= $_SESSION['error']; ?>
@@ -148,6 +149,7 @@ $facultyname = $table->getfacultyname($faculty_id);
         </div>
         <?php unset($_SESSION['update']); ?>
     <?php endif; ?>
+
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-header">
@@ -193,7 +195,7 @@ $facultyname = $table->getfacultyname($faculty_id);
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Employee ID:</span>
-                                <p>RU-IT-0042</p>
+                                <p><?= $profile->id ?></p>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Join Date:</span>
@@ -217,15 +219,16 @@ $facultyname = $table->getfacultyname($faculty_id);
                             </div>
                         </div>
                         <div class="col-md-6 d-flex align-items-center justify-content-end">
-                            <a href="changepassword.php?id=<?= $user_id ?>" class="btn edit-btn me-2"><i class="fas fa-key me-1"></i> Change Password</a>
-                            <a href="update.php?id=<?= $user_id ?>" class="btn edit-btn me-2"><i class="fas fa-key me-1"></i> Edit Profile</a>
+                            <a href="changepassword.php?id=<?= $user_id ?>" class="edit-btn me-2"><i class="fas fa-key me-1"></i> Change Password</a>
+                            <a href="update.php?id=<?= $user_id ?>" class="edit-btn me-2"><i class="fas fa-key me-1"></i> Edit Profile</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <?php include "footer.php"; ?>
+<!-- Footer -->
+<?php include "footer.php"; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");

@@ -1,18 +1,29 @@
-in your pc not having composer download composer
+in your pc not having composer need to download composer
+
 (https://getcomposer.org/)
 
 after download check in "cmd" => run "composer"
 
 after this in your vs code terminal run "composer install"
 
-in phpmyadmin create database name with "ewsd" and then 
+in phpmyadmin create database name with "ewsd"
+(or)
+import ewsd.sql to phpmyadmin
 
 in chrome => db connect and create table
 first => http://localhost/ewsd/_classes/Libs/Database/MySQL.php
-second => http://localhost/ewsd/_classes/Libs/Database/Setup.php
+(or)
+import ewsd.sql no need to do this => second => http://localhost/ewsd/_classes/Libs/Database/Setup.php
 
-to test register with using simple password using "password"
-third register => http://localhost/ewsd/src/Auth/design/login.php
+login => http://localhost/ewsd/src/Auth/design/login.php
+
+admin -> admin@gmail.com,password
+manager -> manager@gmail.com, password
+coordniator => coor@gmail.com , password
+student => student@gmail.com, password
+guest => guest@gmail.com, password
+
+all user password are "password"
 
 after register and login => create Role, "assign role" to user, assing permission
 

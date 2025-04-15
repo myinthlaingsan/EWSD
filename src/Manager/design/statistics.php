@@ -12,6 +12,7 @@ $yearRows = $table->getacademicyear();
 $years = array_unique(array_map(fn($row) => $row['academicyear'], $yearRows));
 rsort($years); // Sort years descending
 
+//piechart
 $fac_cont_perc_res = $table->percentage($selectedYear);
 $fac_dataPoints = [];
 foreach ($fac_cont_perc_res as $row) {
@@ -20,6 +21,17 @@ foreach ($fac_cont_perc_res as $row) {
         "y" => (float)$row['contribution_percentage']
     ];
 }
+
+//bargraph
+$articlesByFaculty = $table->getArticlesByFaculty(); // Assume this method runs your query
+$labels = [];
+$data = [];
+
+foreach ($articlesByFaculty as $row) {
+    $labels[] = $row['faculty_name'];
+    $data[] = (int)$row['total_articles_by_faculty'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -192,6 +204,15 @@ foreach ($fac_cont_perc_res as $row) {
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-chart-bar me-2"></i>Total Contributions by Faculty</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="barChart" height="100"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -512,6 +533,50 @@ foreach ($fac_cont_perc_res as $row) {
             window.addEventListener('resize', adjustChart);
         };
     </script>
+    <!-- Bar graph -->
+     
+    <script>
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+
+        const barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: <?= json_encode($labels) ?>,
+                datasets: [{
+                    label: 'Total Articles',
+                    data: <?= json_encode($data) ?>,
+                    backgroundColor: '#4e73df',
+                    borderColor: '#2e59d9',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

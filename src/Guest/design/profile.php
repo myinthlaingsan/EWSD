@@ -245,10 +245,10 @@ $facultyname = $table->getfacultyname($faculty_id);
                 <span class="info-label">Phone:</span>
                 <p><?= $profile->phone ?></p>
               </div>
-              <div class="info-item">
+              <!-- <div class="info-item">
                 <span class="info-label">Date of Birth:</span>
                 <p>January 15, 1985</p>
-              </div>
+              </div> -->
             </div>
           </div>
 
