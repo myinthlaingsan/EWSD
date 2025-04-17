@@ -19,7 +19,7 @@ $permissions=$table->allpermissions();
 <?php include "header.php"; ?>
     <div class="container text-center mt-5" style="max-width: 680px">
         <form action="../code/permissions.php" method="post" class="mb-2">
-            <input type="text" class="form-control mb-2" name="permission_name" placeholder="Role" required>
+            <input type="text" class="form-control mb-2 pb-3" name="permission_name" placeholder="New Permission" required>
             <button class="btn btn-primary w-100">Create</button>
         </form>
         <a href="register.php">Create Permission</a>
@@ -30,7 +30,7 @@ $permissions=$table->allpermissions();
             <tr>
                 <th>ID</th>
                 <th>Permission Name</th>
-                <th></th>
+                <!-- <th></th> -->
             </tr>
             <?php if (!empty($permissions)) : ?>
             <?php foreach($permissions as $permission) : ?>

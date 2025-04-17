@@ -45,14 +45,14 @@ $faculties = $table->getAllFaculty();
     <main class="container my-5">
     <div class="container text-center mt-4" style="max-width: 680px">
         <form action="../code/faculty.php" method="post" class="mb-2">
-            <input type="text" class="form-control mb-2" name="faculty_name" placeholder="Faculty" required>
+            <input type="text" class="form-control mb-2" name="faculty_name" placeholder="New Faculty" required>
             <button class="btn btn-primary w-100">Add Faculty</button>
         </form>
     </div>
 
     <!-- Category 2: Health & Medical Sciences -->
     <div class="category-header">
-        <h3 class="fw-bold fs-4">Faculty</h3>
+        <h3 class="fw-bold fs-4">Faculties</h3>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
         <?php foreach( $faculties as $faculty) : ?>
