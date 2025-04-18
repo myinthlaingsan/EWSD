@@ -1,5 +1,6 @@
 <?php
 include('../../../vendor/autoload.php');
+use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($new_role_id) {
         $table->assignRole($user_id, $new_role_id);
-        header("Location: dashboard.php"); // Redirect after assignment
+        HTTP::redirect('/src/Admin/design/userlist.php'); // Redirect after assignment
         exit;
     }
 }

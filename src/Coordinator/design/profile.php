@@ -189,11 +189,11 @@ $facultyname = $table->getfacultyname($faculty_id);
                         <div class="profile-section">
                             <h3 class="profile-section-title"><i class="fas fa-briefcase me-2"></i>Professional Information</h3>
                             <div class="info-item">
-                                <span class="info-label">Position:</span>
+                                <span class="info-label">Role:</span>
                                 <p><?= $rolename ?></p>
                             </div>
                             <div class="info-item">
-                                <span class="info-label">Department:</span>
+                                <span class="info-label">Faculty:</span>
                                 <p><?= $facultyname ?></p>
                             </div>
                             <div class="info-item">
