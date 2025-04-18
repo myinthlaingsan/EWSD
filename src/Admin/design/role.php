@@ -19,7 +19,7 @@ $roles=$table->roleall();
 <?php include "header.php"; ?>
     <div class="container text-center" style="max-width: 680px">
         <form action="../code/role.php" method="post" class="mb-2">
-            <input type="text" class="form-control mb-2" name="role_name" placeholder="Role" required>
+            <input type="text" class="form-control mt-4 mb-2" name="role_name" placeholder="New Role" required>
             <button class="btn btn-primary w-100">Create Role</button>
         </form>
     </div>

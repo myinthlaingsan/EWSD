@@ -3,6 +3,7 @@ include('../../../vendor/autoload.php');
 use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
+use Helpers\HTTP;
 
 // Get user ID from URL
 $user_id = $_GET['id'] ?? null;
