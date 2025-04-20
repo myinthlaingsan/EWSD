@@ -1,5 +1,6 @@
 <?php
 include('../../../vendor/autoload.php');
+
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
 
@@ -9,22 +10,24 @@ if (!$role_id) {
     die("Role ID is required!");
 }
 $table = new UsersTable(new MySQL);
-$roles=$table->getrolebyId($role_id);
-$permissions=$table->allpermissions();
+$roles = $table->getrolebyId($role_id);
+$permissions = $table->allpermissions();
 $assigned_permissions = $table->getPermissionByRole($role_id);
 $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
+
 <body>
-<?php include "header.php"; ?>
+    <?php include "header.php"; ?>
 
     <div class="container mt-5 mb-5">
         <h2>Assign Permission to <?= $roles->role_name ?></h2>
@@ -37,12 +40,11 @@ $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
             </div>
 
             <div class="mb-3">
-            <label class="form-label"><strong>Permissions:</strong></label>
+                <label class="form-label"><strong>Permissions:</strong></label>
                 <br>
                 <?php foreach ($permissions as $permission): ?>
                     <input type="checkbox" name="permissions[]" value="<?= $permission->id ?>"
-                        <?= in_array($permission->id, $assigned_permission_ids) ? 'checked' : '' ?>
-                    >
+                        <?= in_array($permission->id, $assigned_permission_ids) ? 'checked' : '' ?>>
                     <?= htmlspecialchars($permission->permission_name) ?><br>
                 <?php endforeach; ?>
             </div>
@@ -51,6 +53,7 @@ $assigned_permission_ids = array_map(fn($p) => $p->id, $assigned_permissions);
             <a href="role.php" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
-    <?php include "header.php"; ?>
+
 </body>
+
 </html>
