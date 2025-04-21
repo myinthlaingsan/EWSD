@@ -590,7 +590,24 @@ class ArticleTable
             exit();
         }
     }
-
+    //count students
+    public function countUsersByRole($roleName)
+    {
+        try {
+            $statement = $this->db->prepare("
+            SELECT COUNT(*) as total 
+            FROM users u
+            JOIN role_user ru ON u.id = ru.user_id
+            JOIN roles r ON ru.role_id = r.id
+            WHERE r.role_name = :role_name
+        ");
+            $statement->execute([':role_name' => $roleName]);
+            return $statement->fetchColumn();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit();
+        }
+    }
     public function deleteArticle($article_id, $user_id)
     {
         try {

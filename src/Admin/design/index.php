@@ -12,7 +12,7 @@ $table = new ArticleTable(new MySQL);
 $finalclosuredate = $usertable->selectFinalClosureDate();
 $totalArticles = $table->countArticles();
 $totalFaculties = $table->countFaculties();
-$totalStudents = $table->articlesCreateUser();
+$totalStudents = $table->countUsersByRole('Student');
 $totalCoordinators = $table->countCoordinators();
 $totalUsers = $table->countUsers();
 ?>
