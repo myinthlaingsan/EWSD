@@ -21,7 +21,8 @@ $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $facultyname = $table->getfacultyname($faculty_id);
 $settings = $usertable->selectSetting();
-$usercreatedarticle = $table->articlesCreateUser();
+// $usercreatedarticle = $table->articlesCreateUser();
+$students = $usertable->getStudentRolesByFaculty($faculty_id);
 ?>
 
 <!DOCTYPE html>
@@ -189,7 +190,7 @@ $usercreatedarticle = $table->articlesCreateUser();
                         <span>Marketing Coordinator - <?= $username ?></span>
                     </div>
                     <div class="mt-2 text-sm text-muted">
-                        <span>Total Students - <?= $usercreatedarticle ?></span>
+                        <span>Total Students - <?php echo count($students); ?></span>
                     </div>
                 </div>
                 <div class="mt-3 mt-md-0 col-md-6 d-flex align-items-end">

@@ -18,7 +18,9 @@ $usertable = new UsersTable(new MySQL);
 $closuredate = $usertable->selectClosureDate();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST['agree'])) {
-        die("You must agree to the Terms and Conditions.");
+        $_SESSION['error'] = "You must agree to the Terms and Conditions.";
+        HTTP::redirect('/src/Students/design/create_articles.php');
+        exit();
     }
     // Check if new submissions are allowed
     // if ($closuredate && date('Y-m-d') > $closuredate) {

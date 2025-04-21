@@ -15,8 +15,8 @@ $user = $table->getuserbyId($auth->id);
 $user_id = $auth->id ?? null;
 $role = $table->getUserRoleName($user_id);
 if ($role !== 'Student') {
-    HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
-    exit();
+  HTTP::redirect('/unauthorized.php'); // Create this page to show access denied
+  exit();
 }
 // Get closure date information
 $closureDate = $table->selectClosureDate();
@@ -30,11 +30,11 @@ $fileName = basename($requestUri);
 
 // Log the page visit
 $activityLogTable->logPageView(
-    $user_id,
-    $_SERVER['REQUEST_URI'],
-    $_SERVER['HTTP_USER_AGENT'],
-    $_SERVER['REMOTE_ADDR'],
-    $fileName
+  $user_id,
+  $_SERVER['REQUEST_URI'],
+  $_SERVER['HTTP_USER_AGENT'],
+  $_SERVER['REMOTE_ADDR'],
+  $fileName
 );
 
 ?>
@@ -65,7 +65,9 @@ $activityLogTable->logPageView(
       background-color: #e9ecef;
       cursor: not-allowed;
     }
-    .form-control:disabled, .form-control[readonly] {
+
+    .form-control:disabled,
+    .form-control[readonly] {
       background-color: #e9ecef;
     }
   </style>
@@ -125,8 +127,8 @@ $activityLogTable->logPageView(
             <a class="nav-link" href="Studenthomepage.html#contactpage">Contact Us</a>
           </li>
           <li class="nav-item me-5">
-              <a class="nav-link" href="profile.php">Profile</a>
-            </li>
+            <a class="nav-link" href="profile.php">Profile</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="../../Auth/code/logout.php"><i class="fa-solid me-2 fa-arrow-right-from-bracket"></i>Logout</a>
           </li>
@@ -140,6 +142,13 @@ $activityLogTable->logPageView(
       <?= $_SESSION['login_message'] ?>
     </div>
     <?php unset($_SESSION['login_message']); ?>
+  <?php endif; ?>
+
+  <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+      <?= $_SESSION['error'] ?>
+    </div>
+    <?php unset($_SESSION['error']); ?>
   <?php endif; ?>
   <!-- Form start -->
   <div class="registerform container my-5 text-black pt-4 pb-3 w-75">
@@ -219,7 +228,7 @@ $activityLogTable->logPageView(
             </div>
           </div>
         </div>
-        
+
         <div class="col-12">
           <p class="text-danger"><strong>Important Notes:</strong></p>
           <p class="text-danger">
@@ -237,7 +246,7 @@ $activityLogTable->logPageView(
     <?php endif; ?>
   </div>
   <!-- Form end -->
-  
+
   <!-- footer start -->
   <footer>
     <div class="container-fluid">
@@ -331,4 +340,5 @@ $activityLogTable->logPageView(
     })()
   </script>
 </body>
+
 </html>
