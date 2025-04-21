@@ -12,7 +12,8 @@ $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $facultyArticles = $table->getFacultyArticles($faculty_id);
 $facultyname = $table->getFacultyName($faculty_id);
-$usercreatedarticle = $table->articlesCreateUser();
+// $usercreatedarticle = $table->articlesCreateUser();
+$students = $usertable->getStudentRolesByFaculty($faculty_id);
 $finalclosuredate = $usertable->selectFinalClosureDate();
 ?>
 <!DOCTYPE html>
@@ -179,7 +180,7 @@ $finalclosuredate = $usertable->selectFinalClosureDate();
                     <div class="mb-3">
                         <span class="text-muted font-medium">Total Contributors</span>
                         <span class="mx-2">-</span>
-                        <span class="text-gray-900"><?= htmlspecialchars($usercreatedarticle) ?></span>
+                        <span class="text-gray-900"><?php echo count($students); ?></span>
                     </div>
                     <div class="mb-3">
                         <span class="text-muted font-medium">Final Closure Date</span>
