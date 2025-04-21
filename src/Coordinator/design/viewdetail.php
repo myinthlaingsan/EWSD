@@ -201,6 +201,12 @@ $comments = $table->getCommnetbyarticleid($article_id);
         </div>
         <?php unset($_SESSION['comment']); ?>
     <?php endif; ?>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-primary">
+            <?= $_SESSION['success'] ?>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <div class="card p-4">

@@ -34,6 +34,7 @@ $lastComment = end($comments);
 if (!empty($lastComment['role_name'])) {
     switch ($lastComment['role_name']) {
         case "Student":
+            $_SESSION['comment'] = "Your Comment added successfully";
             HTTP::redirect("/src/Students/design/view_articles.php");
             break;
         case "Coordinator":

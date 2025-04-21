@@ -125,7 +125,19 @@ $activityLogTable->logPageView(
     </div>
   </nav>
   <!-- Nav bar end -->
+  <?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-primary">
+      <?= $_SESSION['success'] ?>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+  <?php endif; ?>
 
+  <?php if (isset($_SESSION['comment'])): ?>
+        <div class="alert alert-success">
+            <?= $_SESSION['comment']; ?>
+        </div>
+        <?php unset($_SESSION['comment']); ?>
+    <?php endif; ?>
   <div class="container mt-4">
     <h2>My Articles</h2>
     <?php if (!empty($articles)) : ?>

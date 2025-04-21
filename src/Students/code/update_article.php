@@ -74,9 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($rolename)) {
         switch ($rolename) {
             case "Student":
+                $_SESSION['success'] = "Article Update Successfully";
                 HTTP::redirect("/src/Students/design/view_articles.php");
                 break;
             case "Coordinator":
+                $_SESSION['success'] = "Article Update Successfully";
                 HTTP::redirect("/src/Coordinator/design/viewdetail.php?id=" . $article_id);
                 break;
             default:
