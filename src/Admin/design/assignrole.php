@@ -1,5 +1,6 @@
 <?php
 include('../../../vendor/autoload.php');
+
 use Helpers\HTTP;
 use Libs\Database\MySQL;
 use Libs\Database\UsersTable;
@@ -12,8 +13,8 @@ if (!$user_id) {
 }
 
 $table = new UsersTable(new MySQL);
-$users=$table->getuserbyId($user_id);
-$roles=$table->roleall();
+$users = $table->getuserbyId($user_id);
+$roles = $table->roleall();
 $currentRole = $table->getUserRole($user_id);
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,14 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../../css/bootstrap.min.css">
 </head>
+
 <body>
-<?php include "header.php"; ?>
+    <?php include "header.php"; ?>
     <div class="container mt-5">
         <h2>Assign Role to <?= $users->name ?></h2>
 
@@ -69,4 +72,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php include "footer.php"; ?>
 </body>
+
 </html>
