@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "article_id" => $article_id,
         "title" => $title,
         "status" => $status,
+        "academicyear" => $academicyear,
     ]);
 
     if (!$updated) {
