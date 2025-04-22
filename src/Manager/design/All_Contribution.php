@@ -23,7 +23,8 @@ $finalClosureDate = $table->selectFinalClosureDate();
 $currentDate = date('Y-m-d');
 $selectedArticles = $articleTable->getAllSelectedArticles();
 
-function handleDownload($table, $articleTable, $user_id) {
+function handleDownload($table, $articleTable, $user_id)
+{
     $userRole = $table->getUserRoleName($user_id);
     if ($userRole != 'Manager') {
         HTTP::redirect("/article/selected_articles.php", "error=unauthorized");
@@ -37,7 +38,7 @@ function handleDownload($table, $articleTable, $user_id) {
 
     $baseUploadPath = realpath(__DIR__ . "/../../../uploads/") . DIRECTORY_SEPARATOR;
     $zipDir = $baseUploadPath . "zips" . DIRECTORY_SEPARATOR;
-    
+
     if (!file_exists($zipDir)) {
         mkdir($zipDir, 0755, true);
     }
@@ -46,7 +47,7 @@ function handleDownload($table, $articleTable, $user_id) {
         // Create parent zip containing all articles
         $parentZipFileName = "All_Selected_Articles_" . date('Y-m-d') . ".zip";
         $parentZipFilePath = $zipDir . $parentZipFileName;
-        
+
         $parentZip = new ZipArchive();
         if ($parentZip->open($parentZipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             HTTP::redirect("/article/selected_articles.php", "error=zip_failed");
@@ -55,15 +56,15 @@ function handleDownload($table, $articleTable, $user_id) {
         foreach ($selectedArticles as $article) {
             $filesToZip = [];
             addFilesToZip($article, $baseUploadPath, $filesToZip);
-            
+
             if (!empty($filesToZip)) {
                 // Create folder for each article in the parent zip
                 $articleFolder = "Article_" . $article['article_id'] . "_" . preg_replace('/[^a-zA-Z0-9]/', '_', $article['title']) . "/";
-                
+
                 foreach ($filesToZip as $file) {
                     if (file_exists($file['path'])) {
                         $parentZip->addFile(
-                            $file['path'], 
+                            $file['path'],
                             $articleFolder . $file['type'] . "s/" . basename($file['path'])
                         );
                     }
@@ -86,11 +87,10 @@ function handleDownload($table, $articleTable, $user_id) {
         header("Pragma: no-cache");
         header("Expires: 0");
         readfile($parentZipFilePath);
-        
+
         // Clean up
         unlink($parentZipFilePath);
         exit;
-        
     } elseif (isset($_GET['download_single'])) {
         // Single article download
         $articleId = (int)$_GET['download_single'];
@@ -109,17 +109,17 @@ function handleDownload($table, $articleTable, $user_id) {
         if (!$article) {
             HTTP::redirect("/article/selected_articles.php", "error=article_not_found");
         }
-        
+
         $filesToZip = [];
         addFilesToZip($article, $baseUploadPath, $filesToZip);
-        
+
         if (empty($filesToZip)) {
             HTTP::redirect("/article/selected_articles.php", "error=no_files");
         }
 
-        $zipFileName = "Selected_Article_" . $article['article_id'] . "_" . 
-                      preg_replace('/[^a-zA-Z0-9]/', '_', $article['title']) . "_" . 
-                      date('Y-m-d') . ".zip";
+        $zipFileName = "Selected_Article_" . $article['article_id'] . "_" .
+            preg_replace('/[^a-zA-Z0-9]/', '_', $article['title']) . "_" .
+            date('Y-m-d') . ".zip";
         $zipFilePath = $zipDir . $zipFileName;
 
         $zip = new ZipArchive();
@@ -142,14 +142,15 @@ function handleDownload($table, $articleTable, $user_id) {
         header("Pragma: no-cache");
         header("Expires: 0");
         readfile($zipFilePath);
-        
+
         // Clean up
         unlink($zipFilePath);
         exit;
     }
 }
 
-function addFilesToZip($article, $basePath, &$filesArray) {
+function addFilesToZip($article, $basePath, &$filesArray)
+{
     // Handle multiple documents
     if (!empty($article['docfiles'])) {
         $docFiles = explode('|||', $article['docfiles']);
@@ -288,7 +289,7 @@ function addFilesToZip($article, $basePath, &$filesArray) {
         <!-- Error message display -->
         <?php if (isset($_GET['error'])): ?>
             <div class="alert alert-danger">
-                <?php 
+                <?php
                 $errors = [
                     'unauthorized' => 'You are not authorized to download files.',
                     'no_articles' => 'No selected articles found.',
@@ -328,7 +329,7 @@ function addFilesToZip($article, $basePath, &$filesArray) {
                                     <td class="text-center" style="width: 150px;">
                                         <?php if (strtotime($currentDate) >= strtotime($finalClosureDate)): ?>
                                             <a href="?download_single=<?= $article['article_id'] ?>" class="btn-download">
-                                                <i class="fas fa-arrow-down"></i> Download
+                                                Download
                                             </a>
                                         <?php else: ?>
                                             <span class="text-muted">Available after <?= $finalClosureDate ?></span>
@@ -350,4 +351,5 @@ function addFilesToZip($article, $basePath, &$filesArray) {
     <!-- Footer -->
     <?php include "footer.php"; ?>
 </body>
+
 </html>

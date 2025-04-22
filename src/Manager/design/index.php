@@ -144,7 +144,11 @@ $countfaculty = $table->countFaculties();
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <h1 class="header-title mb-5 d-flex align-items-center">
+<<<<<<< HEAD
             <i class="fas fa-briefcase me-3 text-primary-light"></i> Welcome!!!!<br> <?= $username ?>
+=======
+            <i class="fas fa-briefcase me-3 text-primary-light"></i> Welcome!!!!<br> Marketing Manager
+>>>>>>> origin/main
         </h1>
 
         <!-- Selected Contributions Overview -->
