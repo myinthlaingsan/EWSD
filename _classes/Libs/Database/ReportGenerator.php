@@ -163,7 +163,8 @@ class ReportGenerator
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getArticlesByFaculty() {
+    public function getArticlesByFaculty()
+    {
         $query = "
             SELECT f.faculty_name, COUNT(a.article_id) AS total_articles_by_faculty
             FROM articles a
@@ -173,5 +174,4 @@ class ReportGenerator
         ";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
-    
 }
