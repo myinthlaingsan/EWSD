@@ -224,7 +224,7 @@ foreach ($articlesByFaculty as $row) {
 
                 <div class="card report-card mb-4">
                     <div class="card-header report-header">
-                        <h5 class="mb-0"><i class="fas fa-percentage me-2"></i>Percentage of Contributions by Faculty 2025</h5>
+                        <h5 class="mb-0"><i class="fas fa-percentage me-2"></i>Percentage of Contributions by Faculty</h5>
                     </div>
                     <div class="card-body">
                         <form method="get" class="mb-4 row g-3 align-items-center">
@@ -508,7 +508,6 @@ foreach ($articlesByFaculty as $row) {
                     indexLabelFontColor: "#333",
                     indexLabelLineColor: "rgba(0,0,0,0.1)",
                     indexLabelPlacement: "inside",
-                    yValueFormatString: "#,##0.##%",
                     toolTipContent: "<b>{label}</b>: {y}% (#percent%)",
                     dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
                 }]
