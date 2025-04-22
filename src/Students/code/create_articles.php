@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($article_id) {
         $user = $usertable->getuserbyId($id);
-        $facultyName = $table->getfacultyname($user->id);
+        $facultyName = $table->getfacultyname($user->faculty_id);
         // Get all marketing coordinators
         $coordinators = $usertable->getCoorEmail($user->faculty_id);
         

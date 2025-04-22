@@ -325,7 +325,7 @@ function addFilesToZip($article, $basePath, &$filesArray) {
                                     <td><?= htmlspecialchars($article['faculty_name']) ?></td>
                                     <td><?= htmlspecialchars($article['name']) ?></td>
                                     <td><?= htmlspecialchars($finalClosureDate) ?></td>
-                                    <td>
+                                    <td class="text-center" style="width: 150px;">
                                         <?php if (strtotime($currentDate) >= strtotime($finalClosureDate)): ?>
                                             <a href="?download_single=<?= $article['article_id'] ?>" class="btn-download">
                                                 <i class="fas fa-arrow-down"></i> Download

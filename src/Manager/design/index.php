@@ -8,6 +8,8 @@ use Libs\Database\UsersTable;
 use Libs\Database\MySQL;
 
 $auth = Auth::check();
+$user_id = $auth->id;
+$username = $auth->name;
 $table = new ArticleTable(new MySQL);
 $usertable = new UsersTable(new MySQL);
 $finalclosuredate = $usertable->selectFinalClosureDate();
@@ -15,6 +17,7 @@ $selected = $table->getAllSelectedArticles();
 $countarticle = $table->countArticles();
 $usercreatearticle = $table->articlesCreateUser();
 $countfaculty = $table->countFaculties();
+// $name = $usertable->getuserbyId($user_id);
 ?>
 
 
@@ -141,7 +144,7 @@ $countfaculty = $table->countFaculties();
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-5">
         <h1 class="header-title mb-5 d-flex align-items-center">
-            <i class="fas fa-briefcase me-3 text-primary-light"></i> Welcome!!!!<br> Marketing Manager Name
+            <i class="fas fa-briefcase me-3 text-primary-light"></i> Welcome!!!!<br> <?= $username ?>
         </h1>
 
         <!-- Selected Contributions Overview -->
