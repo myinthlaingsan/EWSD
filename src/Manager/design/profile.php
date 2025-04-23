@@ -110,7 +110,7 @@ $facultyname = $table->getfacultyname($faculty_id);
 </head>
 
 <body>
-    
+
     <?php include "headermm.php"; ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger">
@@ -155,7 +155,7 @@ $facultyname = $table->getfacultyname($faculty_id);
             <div class="profile-header">
                 <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-avatar">
                 <h2><?= $profile->name ?></h2>
-                <p class="mb-0">Administrator</p>
+                <p class="mb-0">University Marketing Manager</p>
             </div>
 
             <div class="profile-body">
@@ -227,8 +227,8 @@ $facultyname = $table->getfacultyname($faculty_id);
             </div>
         </div>
     </div>
-<!-- Footer -->
-<?php include "footer.php"; ?>
+    <!-- Footer -->
+    <?php include "footer.php"; ?>
     <script>
         document.getElementById("menuToggle").addEventListener("click", function() {
             document.getElementById("sidebarMenu").classList.add("show");
