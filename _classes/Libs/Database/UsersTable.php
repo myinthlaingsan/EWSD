@@ -335,15 +335,17 @@ class UsersTable
         }
     }
     //update passowrd
-    public function updatePassword($user_id, $password) {
+    public function updatePassword($user_id, $password)
+    {
         $statement = $this->db->prepare("UPDATE users SET password = :password WHERE id = :user_id");
         return $statement->execute([
-            ':user_id' => $user_id, 
+            ':user_id' => $user_id,
             ':password' => $password
         ]);
     }
     //update user
-    public function updateBasicInfo($data) {
+    public function updateBasicInfo($data)
+    {
         try {
             $statement = $this->db->prepare("
                 UPDATE users SET 
@@ -354,7 +356,7 @@ class UsersTable
                     updated_at = CURRENT_TIMESTAMP
                 WHERE id = :id
             ");
-            
+
             return $statement->execute([
                 ':name' => $data['name'],
                 ':email' => $data['email'],
@@ -362,7 +364,6 @@ class UsersTable
                 ':phone' => $data['phone'],
                 ':id' => $data['id']
             ]);
-            
         } catch (PDOException $e) {
             error_log("User update error: " . $e->getMessage());
             return false;
@@ -384,14 +385,14 @@ class UsersTable
             $user = $statement->fetch();
             if ($user) {
                 if (password_verify($password, $user->password)) {
-                    $updateStatement = $this->db->prepare("
-                    UPDATE users 
-                    SET last_login = CURRENT_TIMESTAMP 
-                    WHERE id = :id
-                ");
-                    $updateStatement->execute(['id' => $user->id]);
-                    $statement->execute(['email' => $email]);
-                    $user = $statement->fetch();
+                //     $updateStatement = $this->db->prepare("
+                //     UPDATE users 
+                //     SET last_login = CURRENT_TIMESTAMP 
+                //     WHERE id = :id
+                // ");
+                //     $updateStatement->execute(['id' => $user->id]);
+                //     $statement->execute(['email' => $email]);
+                //     $user = $statement->fetch();
                     return $user;
                 }
             }
@@ -400,5 +401,15 @@ class UsersTable
             echo $e->getMessage();
             exit();
         }
+    }
+
+    public function updateLastLogin($id)
+    {
+        $statement = $this->db->prepare("
+        UPDATE users 
+        SET last_login = CURRENT_TIMESTAMP 
+        WHERE id = :id
+    ");
+        $statement->execute(['id' => $id]);
     }
 }

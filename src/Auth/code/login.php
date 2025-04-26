@@ -16,12 +16,20 @@ if ($user) {
     session_start();
     $_SESSION['user'] = $user;
     // Add last login message to session
-    if ($user->last_login) {
+    // if ($user->last_login) {
+    //     $lastLogin = new DateTime($user->last_login);
+    //     $_SESSION['login_message'] = "Welcome back! Your last login was on " . $lastLogin->format('F j, Y \a\t g:i a');
+    // } else {
+    //     $_SESSION['login_message'] = "Welcome! This is your first login.";
+    // }
+
+    if (empty($user->last_login) || $user->last_login === "0000-00-00 00:00:00") {
+        $_SESSION['login_message'] = "Welcome! This is your first login.";
+    } else {
         $lastLogin = new DateTime($user->last_login);
         $_SESSION['login_message'] = "Welcome back! Your last login was on " . $lastLogin->format('F j, Y \a\t g:i a');
-    } else {
-        $_SESSION['login_message'] = "Welcome! This is your first login.";
     }
+    $table->updateLastLogin($user->id);   
     // Redirect based on role
     switch ($user->role_name) {
         case "Admin":
