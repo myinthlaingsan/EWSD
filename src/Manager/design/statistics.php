@@ -509,6 +509,7 @@ foreach ($articlesByFaculty as $row) {
                     indexLabelLineColor: "rgba(0,0,0,0.1)",
                     indexLabelPlacement: "inside",
                     toolTipContent: "<b>{label}</b>: {y}% (#percent%)",
+                    
                     dataPoints: <?php echo json_encode($fac_dataPoints, JSON_NUMERIC_CHECK); ?>
                 }]
             });
