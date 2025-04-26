@@ -201,6 +201,14 @@ $comments = $table->getCommnetbyarticleid($article_id);
         </div>
         <?php unset($_SESSION['comment']); ?>
     <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger">
+            <?= $_SESSION['error']; ?>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+    
     <?php if (isset($_SESSION['success'])): ?>
         <div class="alert alert-primary">
             <?= $_SESSION['success'] ?>
