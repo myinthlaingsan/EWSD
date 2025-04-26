@@ -262,7 +262,7 @@ foreach ($articlesByFaculty as $row) {
                                             <td><?= htmlspecialchars($report['percentage']) ?>%</td>
                                             <td>
                                                 <div class="percentage-bar">
-                                                    <div class="percentage-fill" style="width: <?= $report['percentage'] ?>%">
+                                                    <div class="percentage-fill text-black ps-4" style="width: <?= $report['percentage'] ?>%">
                                                         <?= $report['percentage'] ?>%
                                                     </div>
                                                 </div>

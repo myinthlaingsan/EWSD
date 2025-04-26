@@ -231,7 +231,7 @@ $facultyname = $table->getfacultyname($faculty_id);
       <div class="profile-header">
         <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-avatar">
         <h2><?= $profile->name ?></h2>
-        <p class="mb-0">Administrator</p>
+        <p class="mb-0">Student</p>
       </div>
 
       <div class="profile-body">

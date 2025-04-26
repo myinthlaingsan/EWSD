@@ -36,6 +36,7 @@ class ReportGenerator
     // 2. Percentage of contributions by each Faculty for any academic year
     public function getContributionPercentageByFaculty($academicYear)
     {
+        
         $query = "
             SELECT 
                 f.faculty_name,

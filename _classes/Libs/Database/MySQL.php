@@ -15,7 +15,7 @@ class MySQL{
         $dbhost="localhost",
         $dbuser="root",
         $dbpass="",
-        $dbname="ewsd1")
+        $dbname="ewsd")
     {
         $this->dbhost=$dbhost;
         $this->dbuser=$dbuser;
